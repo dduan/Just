@@ -1,5 +1,45 @@
 import Foundation
 
+public class HTTPResult {
+    public var data:NSData?
+    public var response:NSURLResponse?
+    public var error:NSError?
+    public var request:NSURLRequest?
+    public var encoding:NSStringEncoding = NSUTF8StringEncoding
+    init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
+        self.data = data
+        self.response = response
+        self.error = error
+        self.request = request
+    }
+
+    public var json:AnyObject? {
+        if let theData = self.data {
+            return NSJSONSerialization.JSONObjectWithData(theData, options: NSJSONReadingOptions(0), error: nil)
+        }
+        return nil
+    }
+    public var statusCode: Int? {
+        if let theResponse = self.response as? NSHTTPURLResponse {
+            return theResponse.statusCode
+        }
+
+        return nil
+    }
+
+    public var text:String? {
+        if let theData = self.data {
+            return NSString(data:theData, encoding:encoding) as? String
+        }
+        return nil
+    }
+
+    public lazy var headers:CaseInsensitiveDictionary<String,String> = {
+        return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
+        }()
+}
+
+
 public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, DictionaryLiteralConvertible {
     private var _data:[Key: Value] = [:]
     private var _keyMap: [String: Key] = [:]
@@ -70,45 +110,6 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
     var values: LazyForwardCollection<MapCollectionView<[Key : Value], Value>> {
         return _data.values
     }
-}
-
-public class HTTPResult {
-    public var data:NSData?
-    public var response:NSURLResponse?
-    public var error:NSError?
-    public var request:NSURLRequest?
-
-    init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
-        self.data = data
-        self.response = response
-        self.error = error
-        self.request = request
-    }
-
-    public var json:AnyObject? {
-        if let theData = self.data {
-            return NSJSONSerialization.JSONObjectWithData(theData, options: NSJSONReadingOptions(0), error: nil)
-        }
-        return nil
-    }
-    public var statusCode: Int? {
-        if let theResponse = self.response as? NSHTTPURLResponse {
-            return theResponse.statusCode
-        }
-
-        return nil
-    }
-    
-    public var text:String? {
-        if let theData = self.data {
-            return NSString(data:theData, encoding:NSUTF8StringEncoding) as? String
-        }
-        return nil
-    }
-
-    public lazy var headers:CaseInsensitiveDictionary<String,String> = {
-        return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-    }()
 }
 
 public class Requests {
