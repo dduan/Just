@@ -1,11 +1,25 @@
 import Foundation
 
-public class HTTPResult {
+public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var data:NSData?
     public var response:NSURLResponse?
     public var error:NSError?
     public var request:NSURLRequest?
     public var encoding:NSStringEncoding = NSUTF8StringEncoding
+
+    public override var description:String {
+        if let status = statusCode {
+            return "<HTTPResult [\(status)]>"
+        } else {
+            return "<HTTPRequest [Empty]>"
+        }
+    }
+
+    public override var debugDescription:String {
+        return description
+    }
+
+
     init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
         self.data = data
         self.response = response
@@ -36,7 +50,11 @@ public class HTTPResult {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-        }()
+    }()
+
+    public var ok:Bool {
+        return statusCode != nil && statusCode! >= 200 && statusCode! < 300
+    }
 }
 
 
@@ -122,8 +140,8 @@ public class Requests {
     }
 
     var session: NSURLSession
-    var invalidURLError = NSError(domain: "requests.swift.invalidURL", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
-    var syncResultAccessError = NSError(domain: "requests", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
+    var invalidURLError = NSError(domain: "requests.swift", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
+    var syncResultAccessError = NSError(domain: "requests.swift", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
     
     init(session:NSURLSession? = nil) {
         if let initialSession = session {

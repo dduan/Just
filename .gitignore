@@ -16,6 +16,7 @@ profile
 DerivedData
 .idea/
 *.hmap
+*.xctimeline
 
 #CocoaPods
 Pods
@@ -23,3 +24,4 @@ Podfile.lock
 
 #
 build/
+
