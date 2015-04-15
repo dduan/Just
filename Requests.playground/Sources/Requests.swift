@@ -1,5 +1,18 @@
 import Foundation
 
+enum HTTPMethod: String {
+    case OPTIONS = "OPTIONS"
+    case GET = "GET"
+    case HEAD = "HEAD"
+    case POST = "POST"
+    case PUT = "PUT"
+    case PATCH = "PATCH"
+    case DELETE = "DELETE"
+    case TRACE = "TRACE"
+    case CONNECT = "CONNECT"
+}
+
+
 public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var data:NSData?
     public var response:NSURLResponse?
@@ -8,10 +21,13 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var encoding:NSStringEncoding = NSUTF8StringEncoding
 
     public override var description:String {
-        if let status = statusCode {
-            return "<HTTPResult [\(status)]>"
+        if let status = statusCode,
+            urlString = request?.URL?.absoluteString,
+            method = request?.HTTPMethod
+        {
+            return "\(method) \(urlString) \(status)"
         } else {
-            return "<HTTPRequest [Empty]>"
+            return "<Empty>"
         }
     }
 
@@ -50,7 +66,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-    }()
+        }()
 
     public var ok:Bool {
         return statusCode != nil && statusCode! >= 200 && statusCode! < 300
@@ -142,7 +158,7 @@ public class Requests {
     var session: NSURLSession
     var invalidURLError = NSError(domain: "requests.swift", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
     var syncResultAccessError = NSError(domain: "requests.swift", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
-    
+
     init(session:NSURLSession? = nil) {
         if let initialSession = session {
             self.session = initialSession
@@ -151,91 +167,130 @@ public class Requests {
         }
     }
 
+    func queryComponents(key: String, _ value: AnyObject) -> [(String, String)] {
+        var components: [(String, String)] = []
+        if let dictionary = value as? [String: AnyObject] {
+            for (nestedKey, value) in dictionary {
+                components += queryComponents("\(key)[\(nestedKey)]", value)
+            }
+        } else if let array = value as? [AnyObject] {
+            for value in array {
+                components += queryComponents("\(key)[]", value)
+            }
+        } else {
+            components.extend([(percentEncodeString(key), percentEncodeString("\(value)"))])
+        }
+
+        return components
+    }
+
+    func query(parameters: [String: AnyObject]) -> String {
+        var components: [(String, String)] = []
+        for key in sorted(Array(parameters.keys), <) {
+            let value: AnyObject! = parameters[key]
+            components += self.queryComponents(key, value)
+        }
+
+        return join("&", components.map{"\($0)=\($1)"} as [String])
+    }
+
     func percentEncodeString(originalObject: AnyObject) -> String {
         if originalObject is NSNull {
             return "null"
         } else {
-            let allowedCharacterSet = NSCharacterSet(charactersInString: ":/?@!$&'()*+,;=").invertedSet
-            return "\(originalObject)".stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacterSet)!
+            let legalURLCharactersToBeEscaped: CFStringRef = ":&=;+!@#$()',*"
+            return CFURLCreateStringByAddingPercentEscapes(nil, "\(originalObject)", nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String
         }
     }
 
-    func constructFlatRequestBody(parameters: [String: AnyObject]) -> NSData? {
-        return (join("&", Array(parameters.keys).map {
-            if let value:AnyObject = parameters[$0] {
-                return "\(self.percentEncodeString($0))=\(self.percentEncodeString(value))"
-            } else {
-                return ""
-            }
-            } as [String]) as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-    }
 
-    func makeTask(method:String, URLString:String, data:NSData? = nil, headers:CaseInsensitiveDictionary<String,String>=[:], completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask? {
-        if let url = NSURL(string: URLString) {
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = method
-            if let requestData = data {
-                request.HTTPBody = requestData
+    func makeTask(request:NSURLRequest, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
+        if let handler = completionHandler {
+            return session.dataTaskWithRequest(request) { (data, response, error) in
+                let result = HTTPResult(data: data, response: response, error: error, request: request)
+                handler(result)
             }
-            for (k,v) in headers {
-                request.addValue(v, forHTTPHeaderField: k)
-            }
-            if let handler = completionHandler {
-                return session.dataTaskWithRequest(request) { (data, response, error) in
-                    let result = HTTPResult(data: data, response: response, error: error, request: request)
-                    handler(result)
-                }
-            } else {
-                return session.dataTaskWithRequest(request, completionHandler: nil)
-            }
+        } else {
+            return session.dataTaskWithRequest(request, completionHandler: nil)
         }
-        return nil
     }
 
-    func request(
-        method:String,
+    func synthesizeRequest(
+        method:HTTPMethod,
         URLString:String,
-        params:[String:AnyObject]=[:],
-        data:NSData?=nil,
-        headers:CaseInsensitiveDictionary<String,String>=[:],
-        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
+        params:[String:AnyObject],
+        json:[String:AnyObject]?,
+        headers:CaseInsensitiveDictionary<String,String>,
+        data:NSData?,
+        URLQuery:String?
+        ) -> NSURLRequest? {
+            var body:NSData?
+            if let urlComponent = NSURLComponents(string: URLString) {
+                if let theQuery = URLQuery {
+                    urlComponent.percentEncodedQuery = URLQuery
+                } else {
+                    var queryString = query(params)
+                    if count(queryString) == 0 { // try json just in case
+                        queryString = json == nil ? "" : query(json!)
+                    }
+                    if count(queryString) > 0 && shouldQuery(method) {
+                        urlComponent.percentEncodedQuery = queryString
+                    }
+                }
+                
+                var finalHeaders = headers
+
+                if let requestData = data {
+                    body = requestData
+                } else {
+                    if let requestJSON = json {
+                        body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: NSJSONWritingOptions(0), error: nil)
+                        finalHeaders["Content-Type"] = "application/json"
+                    } else {
+                        if params.count > 0 {
+                            if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
+                                body = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(0), error: nil)
+                            } else if !shouldQuery(method) {
+                                body = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(0), error: nil)
+                            }
+                        }
+                    }
+                }
+
+                if let URL = urlComponent.URL {
+                    let request = NSMutableURLRequest(URL: URL)
+                    request.HTTPMethod = method.rawValue
+                    request.HTTPBody = body
+                    for (k,v) in finalHeaders {
+                        request.addValue(v, forHTTPHeaderField: k)
+                    }
+                    return request
+                }
+
+            }
+            return nil
+    }
+
+    func shouldQuery(method:HTTPMethod) -> Bool {
+        return method == .GET && method == .HEAD && method == .DELETE
+    }
+
+    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, data:NSData?, URLQuery:String?, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
         let isSync = asyncCompletionHandler == nil
         var semaphore = dispatch_semaphore_create(0)
         var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
-        var bodyData:NSData?
-
-        // `data` takes priority as body of the request
-        if let theData = data {
-            bodyData = data
-        } else {
-            // user indicated json
-            var needJSONBody = headers["content-type"]?.lowercaseString == "application/json"
-
-            // parameters aren't flat
-            for (k,v) in params {
-                if let t = v as? NSDictionary { needJSONBody = true }
-                if let t = v as? NSArray { needJSONBody = true }
+        if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
+            let task = makeTask(request) { (result) in
+                if let handler = asyncCompletionHandler {
+                    handler(result)
+                }
+                if isSync {
+                    requestResult = result
+                    dispatch_semaphore_signal(semaphore)
+                }
             }
-            if needJSONBody {
-                bodyData = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(0), error: nil)
-            } else {
-                bodyData = constructFlatRequestBody(params)
-            }
-
-        }
-
-
-        if let task = makeTask(method, URLString: URLString, data:bodyData, headers: headers, completionHandler: { (result) in
-            if let handler = asyncCompletionHandler {
-                handler(result)
-            }
-            if isSync {
-                requestResult = result
-                dispatch_semaphore_signal(semaphore)
-            }
-        }) {
             task.resume()
             if isSync {
                 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
@@ -250,15 +305,29 @@ public class Requests {
             }
         }
         return requestResult
+
     }
 
     public class func get(
         URLString:String,
         params:[String:AnyObject]=[:],
+        json:[String:AnyObject]?=nil,
         headers:CaseInsensitiveDictionary<String,String>=[:],
+        data:NSData? = nil,
+        URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-        return Requests.shared.request("get", URLString: URLString, params: params, headers: headers, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
     }
 
+    public class func post(
+        URLString:String,
+        params:[String:AnyObject]=[:],
+        json:[String:AnyObject]?=nil,
+        headers:CaseInsensitiveDictionary<String,String>=[:],
+        data:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
+            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
+    }
     
 }
