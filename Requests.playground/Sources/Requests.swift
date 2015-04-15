@@ -12,7 +12,6 @@ enum HTTPMethod: String {
     case CONNECT = "CONNECT"
 }
 
-
 public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var data:NSData?
     public var response:NSURLResponse?
@@ -146,7 +145,7 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
     }
 }
 
-public class Requests {
+public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     class var shared: Requests {
         struct Singleton {
@@ -155,15 +154,17 @@ public class Requests {
         return Singleton.instance
     }
 
-    var session: NSURLSession
+    var credentials:[Int:(String,String)]=[:]
+    var session: NSURLSession!
     var invalidURLError = NSError(domain: "requests.swift", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
     var syncResultAccessError = NSError(domain: "requests.swift", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
 
     init(session:NSURLSession? = nil) {
+        super.init()
         if let initialSession = session {
             self.session = initialSession
         } else {
-            self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+            self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate:self, delegateQueue:nil)
         }
     }
 
@@ -204,15 +205,20 @@ public class Requests {
     }
 
 
-    func makeTask(request:NSURLRequest, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
+    func makeTask(request:NSURLRequest, credential:(String,String)? = nil, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
+        let task:NSURLSessionDataTask
         if let handler = completionHandler {
-            return session.dataTaskWithRequest(request) { (data, response, error) in
+            task = session.dataTaskWithRequest(request) { (data, response, error) in
                 let result = HTTPResult(data: data, response: response, error: error, request: request)
                 handler(result)
             }
         } else {
-            return session.dataTaskWithRequest(request, completionHandler: nil)
+            task = session.dataTaskWithRequest(request, completionHandler: nil)
         }
+        if let credentialValue = credential {
+            credentials[task.taskIdentifier] = credentialValue
+        }
+        return task
     }
 
     func synthesizeRequest(
@@ -237,7 +243,7 @@ public class Requests {
                         urlComponent.percentEncodedQuery = queryString
                     }
                 }
-                
+
                 var finalHeaders = headers
 
                 if let requestData = data {
@@ -275,14 +281,14 @@ public class Requests {
         return method == .GET && method == .HEAD && method == .DELETE
     }
 
-    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, data:NSData?, URLQuery:String?, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
+    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, auth:(String, String)?, data:NSData?, URLQuery:String?, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
         let isSync = asyncCompletionHandler == nil
         var semaphore = dispatch_semaphore_create(0)
         var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
         if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
-            let task = makeTask(request) { (result) in
+            let task = makeTask(request, credential:auth) { (result) in
                 if let handler = asyncCompletionHandler {
                     handler(result)
                 }
@@ -313,10 +319,11 @@ public class Requests {
         params:[String:AnyObject]=[:],
         json:[String:AnyObject]?=nil,
         headers:CaseInsensitiveDictionary<String,String>=[:],
+        auth:(String,String)?=nil,
         data:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
     }
 
     public class func post(
@@ -324,10 +331,26 @@ public class Requests {
         params:[String:AnyObject]=[:],
         json:[String:AnyObject]?=nil,
         headers:CaseInsensitiveDictionary<String,String>=[:],
+        auth:(String,String)?=nil,
         data:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
     }
-    
+
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+        var disposition = NSURLSessionAuthChallengeDisposition.PerformDefaultHandling
+        var endCredential:NSURLCredential? = nil
+
+        if let credential = credentials[task.taskIdentifier] {
+            if challenge.previousFailureCount > 0 {
+                disposition = .CancelAuthenticationChallenge
+            } else {
+                disposition = .UseCredential
+                endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+            }
+        }
+        
+        completionHandler(disposition, endCredential)
+    }
 }
