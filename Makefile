@@ -1,4 +1,5 @@
 PWD=$(shell pwd)
+PLAYGROUND=$(PWD)/Requests.playground
 BUILD_PATH=build
 APP_NAME=Contents
 MODULE_NAME=Requests
@@ -19,8 +20,8 @@ main : clean
 		-emit-module-path $(SWIFT_MODULE_PATH) \
 		-module-name $(MODULE_NAME) \
 		-module-link-name $(MODULE_NAME) \
-		Sources/*.swift
-	@swiftc $(APP_NAME).swift \
+		$(PLAYGROUND)/Sources/*.swift
+	@swiftc $(PLAYGROUND)/$(APP_NAME).swift \
 		-sdk $(SDK) \
 		-o $(PWD)/$(BUILD_PATH)/$(APP_NAME) \
 		-I $(PWD)/$(BUILD_PATH) \
