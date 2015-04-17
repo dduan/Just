@@ -52,7 +52,6 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
         if let theResponse = self.response as? NSHTTPURLResponse {
             return theResponse.statusCode
         }
-
         return nil
     }
 
@@ -145,6 +144,12 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
     }
 }
 
+typealias TaskID = Int
+struct TaskConfiguration {
+    var credential:(String, String)?
+    var redirects:Bool
+}
+
 public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     class var shared: Requests {
@@ -155,6 +160,8 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     }
 
     var credentials:[Int:(String,String)]=[:]
+    var taskConfigs:[TaskID:TaskConfiguration]=[:]
+
     var session: NSURLSession!
     var invalidURLError = NSError(domain: "requests.swift", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
     var syncResultAccessError = NSError(domain: "requests.swift", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
@@ -205,7 +212,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     }
 
 
-    func makeTask(request:NSURLRequest, credential:(String,String)? = nil, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
+    func makeTask(request:NSURLRequest, configuration: TaskConfiguration, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
         let task:NSURLSessionDataTask
         if let handler = completionHandler {
             task = session.dataTaskWithRequest(request) { (data, response, error) in
@@ -215,9 +222,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         } else {
             task = session.dataTaskWithRequest(request, completionHandler: nil)
         }
-        if let credentialValue = credential {
-            credentials[task.taskIdentifier] = credentialValue
-        }
+        taskConfigs[task.taskIdentifier] = configuration
         return task
     }
 
@@ -281,14 +286,15 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         return method == .GET && method == .HEAD && method == .DELETE
     }
 
-    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, auth:(String, String)?, data:NSData?, URLQuery:String?, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
+    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, auth:(String, String)?, data:NSData?, URLQuery:String?, redirects:Bool, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
         let isSync = asyncCompletionHandler == nil
         var semaphore = dispatch_semaphore_create(0)
         var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
+        let config = TaskConfiguration(credential:auth, redirects:redirects)
         if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
-            let task = makeTask(request, credential:auth) { (result) in
+            let task = makeTask(request, configuration:config) { (result) in
                 if let handler = asyncCompletionHandler {
                     handler(result)
                 }
@@ -320,10 +326,11 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         json:[String:AnyObject]?=nil,
         headers:CaseInsensitiveDictionary<String,String>=[:],
         auth:(String,String)?=nil,
+        allowRedirects:Bool=true,
         data:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
     }
 
     public class func post(
@@ -332,17 +339,18 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         json:[String:AnyObject]?=nil,
         headers:CaseInsensitiveDictionary<String,String>=[:],
         auth:(String,String)?=nil,
+        allowRedirects:Bool=true,
         data:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
     }
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
         var disposition = NSURLSessionAuthChallengeDisposition.PerformDefaultHandling
         var endCredential:NSURLCredential? = nil
 
-        if let credential = credentials[task.taskIdentifier] {
+        if let credential = taskConfigs[task.taskIdentifier]?.credential {
             if challenge.previousFailureCount > 0 {
                 disposition = .CancelAuthenticationChallenge
             } else {
@@ -350,7 +358,18 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
             }
         }
-        
+
         completionHandler(disposition, endCredential)
+    }
+
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, willPerformHTTPRedirection response: NSHTTPURLResponse, newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void) {
+        if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
+            if !allowRedirects {
+                completionHandler(nil)
+                return
+            }
+            completionHandler(request)
+        }
+        completionHandler(request)
     }
 }
