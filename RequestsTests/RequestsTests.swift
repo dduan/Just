@@ -6,13 +6,11 @@
 //
 //
 
-import UIKit
-import XCTest
 import Requests
 import Quick
 import Nimble
 
-class RequestsTests: XCTestCase {
-
-    
+class RequestSpec: QuickSpec {
+    override func spec() {
+    }
 }
