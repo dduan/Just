@@ -9,6 +9,8 @@
 import UIKit
 import XCTest
 import Requests
+import Quick
+import Nimble
 
 class RequestsTests: XCTestCase {
 

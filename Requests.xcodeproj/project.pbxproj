@@ -11,6 +11,8 @@
 		94D19A121AE2FAD900DF93C5 /* Requests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D19A061AE2FAD900DF93C5 /* Requests.framework */; };
 		94D19A191AE2FAD900DF93C5 /* RequestsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D19A181AE2FAD900DF93C5 /* RequestsTests.swift */; };
 		94D19A231AE2FAFC00DF93C5 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D19A221AE2FAFC00DF93C5 /* Requests.swift */; };
+		94D19A281AE304C000DF93C5 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D19A261AE304C000DF93C5 /* Nimble.framework */; };
+		94D19A291AE304C000DF93C5 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D19A271AE304C000DF93C5 /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +33,8 @@
 		94D19A171AE2FAD900DF93C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94D19A181AE2FAD900DF93C5 /* RequestsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTests.swift; sourceTree = "<group>"; };
 		94D19A221AE2FAFC00DF93C5 /* Requests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		94D19A261AE304C000DF93C5 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		94D19A271AE304C000DF93C5 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +50,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				94D19A121AE2FAD900DF93C5 /* Requests.framework in Frameworks */,
+				94D19A281AE304C000DF93C5 /* Nimble.framework in Frameworks */,
+				94D19A291AE304C000DF93C5 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +106,8 @@
 		94D19A161AE2FAD900DF93C5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				94D19A261AE304C000DF93C5 /* Nimble.framework */,
+				94D19A271AE304C000DF93C5 /* Quick.framework */,
 				94D19A171AE2FAD900DF93C5 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -144,6 +152,7 @@
 				94D19A0D1AE2FAD900DF93C5 /* Sources */,
 				94D19A0E1AE2FAD900DF93C5 /* Frameworks */,
 				94D19A0F1AE2FAD900DF93C5 /* Resources */,
+				94D19A251AE3044300DF93C5 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -205,6 +214,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		94D19A251AE3044300DF93C5 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		94D19A011AE2FAD900DF93C5 /* Sources */ = {
@@ -362,6 +389,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -379,6 +407,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = RequestsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
