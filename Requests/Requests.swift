@@ -64,7 +64,22 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-        }()
+    }()
+
+    public lazy var cookies:[String:NSHTTPCookie] = {
+        let foundCookies: [NSHTTPCookie]
+        if let responseHeaders = (self.response as? NSHTTPURLResponse)?.allHeaderFields {
+            foundCookies = NSHTTPCookie.cookiesWithResponseHeaderFields(responseHeaders, forURL:NSURL(string:"")!) as! [NSHTTPCookie]
+        } else {
+            foundCookies = []
+        }
+        var result:[String:NSHTTPCookie] = [:]
+        for cookie in foundCookies {
+            println(cookie.name)
+            result[cookie.name] = cookie
+        }
+        return result
+    }()
 
     public var ok:Bool {
         return statusCode != nil && statusCode! >= 200 && statusCode! < 300
