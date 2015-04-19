@@ -321,16 +321,28 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     }
 
     public class func get(
-        URLString:String,
-        params:[String:AnyObject]=[:],
-        json:[String:AnyObject]?=nil,
-        headers:CaseInsensitiveDictionary<String,String>=[:],
-        auth:(String,String)?=nil,
-        allowRedirects:Bool=true,
-        requestBody:NSData? = nil,
-        URLQuery:String? = nil,
-        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: requestBody, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
+        URLString              : String,
+        params                 : [String:AnyObject]                       = [:],
+        json                   : [String:AnyObject]?                      = nil,
+        headers                : CaseInsensitiveDictionary<String,String> = [:],
+        auth                   : (String,String)?                         = nil,
+        allowRedirects         : Bool                                     = true,
+        requestBody            : NSData?                                  = nil,
+        URLQuery               : String?                                  = nil,
+        asyncCompletionHandler :((HTTPResult!) -> Void)?                  = nil
+        ) -> HTTPResult {
+        return Requests.shared.request(
+            .GET,
+            URLString              : URLString,
+            params                 : params,
+            json                   : json,
+            headers                : headers,
+            auth                   : auth,
+            data                   : requestBody,
+            URLQuery               : URLQuery,
+            redirects              : allowRedirects,
+            asyncCompletionHandler : asyncCompletionHandler
+        )
     }
 
     public class func post(
