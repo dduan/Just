@@ -327,23 +327,35 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         headers:CaseInsensitiveDictionary<String,String>=[:],
         auth:(String,String)?=nil,
         allowRedirects:Bool=true,
-        data:NSData? = nil,
+        requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
+            return Requests.shared.request(.GET, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: requestBody, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
     }
 
     public class func post(
-        URLString:String,
-        params:[String:AnyObject]=[:],
-        json:[String:AnyObject]?=nil,
-        headers:CaseInsensitiveDictionary<String,String>=[:],
-        auth:(String,String)?=nil,
-        allowRedirects:Bool=true,
-        data:NSData? = nil,
-        URLQuery:String? = nil,
-        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil) -> HTTPResult {
-            return Requests.shared.request(.POST, URLString: URLString, params: params, json: json, headers: headers, auth: auth, data: data, URLQuery:URLQuery, redirects:allowRedirects, asyncCompletionHandler: asyncCompletionHandler)
+        URLString              : String,
+        params                 : [String:AnyObject]                       = [:],
+        json                   : [String:AnyObject]?                      = nil,
+        headers                : CaseInsensitiveDictionary<String,String> = [:],
+        auth                   : (String,String)?                         = nil,
+        allowRedirects         : Bool                                     = true,
+        requestBody            : NSData?                                  = nil,
+        URLQuery               : String?                                  = nil,
+        asyncCompletionHandler : ((HTTPResult!) -> Void)?                 = nil
+        ) -> HTTPResult {
+        return Requests.shared.request(
+            .POST,
+            URLString              : URLString,
+            params                 : params,
+            json                   : json,
+            headers                : headers,
+            auth                   : auth,
+            data                   : requestBody,
+            URLQuery               : URLQuery,
+            redirects              : allowRedirects,
+            asyncCompletionHandler : asyncCompletionHandler
+        )
     }
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
