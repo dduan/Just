@@ -301,7 +301,18 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         return method == .GET && method == .HEAD && method == .DELETE
     }
 
-    func request(method:HTTPMethod, URLString:String, params:[String:AnyObject], json:[String:AnyObject]?, headers:CaseInsensitiveDictionary<String,String>, auth:(String, String)?, data:NSData?, URLQuery:String?, redirects:Bool, asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
+    func request(
+        method:HTTPMethod,
+        URLString:String,
+        params:[String:AnyObject],
+        json:[String:AnyObject]?,
+        headers:CaseInsensitiveDictionary<String,String>,
+        auth:(String, String)?,
+        cookies: [String:String],
+        data:NSData?,
+        URLQuery:String?,
+        redirects:Bool,
+        asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
         let isSync = asyncCompletionHandler == nil
         var semaphore = dispatch_semaphore_create(0)
@@ -309,6 +320,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
         let config = TaskConfiguration(credential:auth, redirects:redirects)
         if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
+            addCookies(request.URL!, newCookies: cookies)
             let task = makeTask(request, configuration:config) { (result) in
                 if let handler = asyncCompletionHandler {
                     handler(result)
@@ -335,6 +347,19 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     }
 
+    func addCookies(URL:NSURL, newCookies:[String:String]) {
+        for (k,v) in newCookies {
+            if let cookie = NSHTTPCookie(properties: [
+                NSHTTPCookieName: k,
+                NSHTTPCookieValue: v,
+                NSHTTPCookieOriginURL: URL,
+                NSHTTPCookiePath: "/"
+            ]) {
+                session.configuration.HTTPCookieStorage?.setCookie(cookie)
+            }
+        }
+    }
+
     public class func get(
         URLString              : String,
         params                 : [String:AnyObject]                       = [:],
@@ -342,6 +367,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         headers                : CaseInsensitiveDictionary<String,String> = [:],
         auth                   : (String,String)?                         = nil,
         allowRedirects         : Bool                                     = true,
+        cookies                : [String:String]                          = [:],
         requestBody            : NSData?                                  = nil,
         URLQuery               : String?                                  = nil,
         asyncCompletionHandler :((HTTPResult!) -> Void)?                  = nil
@@ -353,6 +379,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             json                   : json,
             headers                : headers,
             auth                   : auth,
+            cookies                : cookies,
             data                   : requestBody,
             URLQuery               : URLQuery,
             redirects              : allowRedirects,
@@ -366,6 +393,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         json                   : [String:AnyObject]?                      = nil,
         headers                : CaseInsensitiveDictionary<String,String> = [:],
         auth                   : (String,String)?                         = nil,
+        cookies                : [String:String]                          = [:],
         allowRedirects         : Bool                                     = true,
         requestBody            : NSData?                                  = nil,
         URLQuery               : String?                                  = nil,
@@ -378,6 +406,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             json                   : json,
             headers                : headers,
             auth                   : auth,
+            cookies                : cookies,
             data                   : requestBody,
             URLQuery               : URLQuery,
             redirects              : allowRedirects,

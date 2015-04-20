@@ -21,6 +21,16 @@ class RequestsSpec: QuickSpec {
                     expect(cookie.value).to(equal("requests"))
                 }
             }
+            it("sends cookies in specified in requests") {
+                Requests.get("http://httpbin.org/cookies/delete?test")
+                let r = Requests.get("http://httpbin.org/cookies", cookies:["test":"requests"])
+
+                if let cookieValue = (r.json as! [String:[String:String]])["cookies"]?["test"] {
+                    expect(cookieValue).to(equal("requests"))
+                } else {
+                    fail("httpbin did not find specified cookies")
+                }
+            }
         }
     }
 }
