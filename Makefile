@@ -1,2 +1,2 @@
 test :
-	@xcodebuild test -project Requests.xcodeproj -scheme Requests -destination 'platform=iOS Simulator,name=iPhone 6' | xcpretty
+	@xcodebuild test -project Just.xcodeproj -scheme Just -destination 'platform=iOS Simulator,name=iPhone 6' | xcpretty

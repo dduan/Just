@@ -1,3 +1,11 @@
+//
+//  Just.swift
+//  Just
+//
+//  Created by Daniel Duan on 4/21/15.
+//  Copyright (c) 2015 JustHTTP. All rights reserved.
+//
+
 import Foundation
 
 enum HTTPMethod: String {
@@ -64,7 +72,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-    }()
+        }()
 
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
@@ -79,7 +87,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
             result[cookie.name] = cookie
         }
         return result
-    }()
+        }()
 
     public var ok:Bool {
         return statusCode != nil && statusCode! >= 200 && statusCode! < 300
@@ -165,11 +173,11 @@ struct TaskConfiguration {
     var redirects:Bool
 }
 
-public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
-    class var shared: Requests {
+    class var shared: Just {
         struct Singleton {
-            static let instance = Requests()
+            static let instance = Just()
         }
         return Singleton.instance
     }
@@ -178,8 +186,8 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
 
     var session: NSURLSession!
-    var invalidURLError = NSError(domain: "requests.swift", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Requests] URL is invalid"])
-    var syncResultAccessError = NSError(domain: "requests.swift", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Requests] You are accessing asynchronous result synchronously."])
+    var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
+    var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
 
     init(session:NSURLSession? = nil) {
         super.init()
@@ -314,36 +322,36 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         redirects:Bool,
         asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
-        let isSync = asyncCompletionHandler == nil
-        var semaphore = dispatch_semaphore_create(0)
-        var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
+            let isSync = asyncCompletionHandler == nil
+            var semaphore = dispatch_semaphore_create(0)
+            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
-        let config = TaskConfiguration(credential:auth, redirects:redirects)
-        if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
-            addCookies(request.URL!, newCookies: cookies)
-            let task = makeTask(request, configuration:config) { (result) in
-                if let handler = asyncCompletionHandler {
-                    handler(result)
+            let config = TaskConfiguration(credential:auth, redirects:redirects)
+            if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
+                addCookies(request.URL!, newCookies: cookies)
+                let task = makeTask(request, configuration:config) { (result) in
+                    if let handler = asyncCompletionHandler {
+                        handler(result)
+                    }
+                    if isSync {
+                        requestResult = result
+                        dispatch_semaphore_signal(semaphore)
+                    }
                 }
+                task.resume()
                 if isSync {
-                    requestResult = result
-                    dispatch_semaphore_signal(semaphore)
+                    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                    return requestResult
+                }
+            } else {
+                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
+                if let handler = asyncCompletionHandler {
+                    handler(erronousResult)
+                } else {
+                    return erronousResult
                 }
             }
-            task.resume()
-            if isSync {
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-                return requestResult
-            }
-        } else {
-            let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
-            if let handler = asyncCompletionHandler {
-                handler(erronousResult)
-            } else {
-                return erronousResult
-            }
-        }
-        return requestResult
+            return requestResult
 
     }
 
@@ -354,8 +362,8 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 NSHTTPCookieValue: v,
                 NSHTTPCookieOriginURL: URL,
                 NSHTTPCookiePath: "/"
-            ]) {
-                session.configuration.HTTPCookieStorage?.setCookie(cookie)
+                ]) {
+                    session.configuration.HTTPCookieStorage?.setCookie(cookie)
             }
         }
     }
@@ -372,19 +380,19 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         URLQuery               : String?                                  = nil,
         asyncCompletionHandler :((HTTPResult!) -> Void)?                  = nil
         ) -> HTTPResult {
-        return Requests.shared.request(
-            .GET,
-            URLString              : URLString,
-            params                 : params,
-            json                   : json,
-            headers                : headers,
-            auth                   : auth,
-            cookies                : cookies,
-            data                   : requestBody,
-            URLQuery               : URLQuery,
-            redirects              : allowRedirects,
-            asyncCompletionHandler : asyncCompletionHandler
-        )
+            return Just.shared.request(
+                .GET,
+                URLString              : URLString,
+                params                 : params,
+                json                   : json,
+                headers                : headers,
+                auth                   : auth,
+                cookies                : cookies,
+                data                   : requestBody,
+                URLQuery               : URLQuery,
+                redirects              : allowRedirects,
+                asyncCompletionHandler : asyncCompletionHandler
+            )
     }
 
     public class func post(
@@ -399,19 +407,19 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         URLQuery               : String?                                  = nil,
         asyncCompletionHandler : ((HTTPResult!) -> Void)?                 = nil
         ) -> HTTPResult {
-        return Requests.shared.request(
-            .POST,
-            URLString              : URLString,
-            params                 : params,
-            json                   : json,
-            headers                : headers,
-            auth                   : auth,
-            cookies                : cookies,
-            data                   : requestBody,
-            URLQuery               : URLQuery,
-            redirects              : allowRedirects,
-            asyncCompletionHandler : asyncCompletionHandler
-        )
+            return Just.shared.request(
+                .POST,
+                URLString              : URLString,
+                params                 : params,
+                json                   : json,
+                headers                : headers,
+                auth                   : auth,
+                cookies                : cookies,
+                data                   : requestBody,
+                URLQuery               : URLQuery,
+                redirects              : allowRedirects,
+                asyncCompletionHandler : asyncCompletionHandler
+            )
     }
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
@@ -429,7 +437,7 @@ public class Requests:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
         completionHandler(disposition, endCredential)
     }
-
+    
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, willPerformHTTPRedirection response: NSHTTPURLResponse, newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void) {
         if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
             if !allowRedirects {
