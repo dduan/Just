@@ -13,6 +13,27 @@ import Nimble
 class JustSpec: QuickSpec {
     override func spec() {
 
+        describe("result ok-ness") {
+            it("should be ok with non-error status codes") {
+                expect(Just.get("http://httpbin.org/status/200").ok).to(beTrue())
+                expect(Just.get("http://httpbin.org/status/299").ok).to(beTrue())
+                expect(Just.get("http://httpbin.org/status/301", allowRedirects:false).ok).to(beTrue())
+                expect(Just.get("http://httpbin.org/status/302", allowRedirects:false).ok).to(beTrue())
+            }
+
+            it("should not be ok with 4xx status codes") {
+                expect(Just.get("http://httpbin.org/status/400").ok).toNot(beTrue())
+                expect(Just.get("http://httpbin.org/status/401").ok).toNot(beTrue())
+                expect(Just.get("http://httpbin.org/status/404").ok).toNot(beTrue())
+                expect(Just.get("http://httpbin.org/status/499").ok).toNot(beTrue())
+            }
+
+            it("should not be ok with 5xx status codes") {
+                expect(Just.get("http://httpbin.org/status/500").ok).toNot(beTrue())
+                expect(Just.get("http://httpbin.org/status/501").ok).toNot(beTrue())
+                expect(Just.get("http://httpbin.org/status/599").ok).toNot(beTrue())
+            }
+        }
         describe("basic authentication") {
             it("should fail at a challenge when auth is missing") {
                 let r = Just.get("http://httpbin.org/basic-auth/dan/pass")
