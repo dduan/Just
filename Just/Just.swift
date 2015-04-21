@@ -188,6 +188,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     var session: NSURLSession!
     var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
     var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
+    let errorDomain = "net.justhttp.Just"
 
     init(session:NSURLSession? = nil) {
         super.init()
@@ -423,19 +424,16 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     }
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
-        var disposition = NSURLSessionAuthChallengeDisposition.PerformDefaultHandling
         var endCredential:NSURLCredential? = nil
 
         if let credential = taskConfigs[task.taskIdentifier]?.credential {
             if challenge.previousFailureCount > 0 {
-                disposition = .CancelAuthenticationChallenge
             } else {
-                disposition = .UseCredential
                 endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
             }
         }
 
-        completionHandler(disposition, endCredential)
+        completionHandler(.UseCredential, endCredential)
     }
     
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, willPerformHTTPRedirection response: NSHTTPURLResponse, newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void) {
