@@ -33,6 +33,28 @@ class JustSpec: QuickSpec {
             }
         }
 
+        describe("digest authentication") {
+            it("should fail at a challenge when auth is missing") {
+                let r = Just.get("http://httpbin.org/digest-auth/auth/dan/pass")
+                expect(r.ok).to(beFalse())
+            }
+            it("should succeed at a challenge when auth info is correct") {
+                let username = "dan"
+                let password = "password"
+                let r = Just.get("http://httpbin.org/digest-auth/auth/\(username)/\(password)", auth:(username, password))
+                expect(r.ok).to(beTrue())
+            }
+            it("should fail a challenge when auth contains wrong value") {
+                let username = "dan"
+                let password = "password"
+                let r = Just.get("http://httpbin.org/digest-auth/auth/\(username)/\(password)x", auth:(username, password))
+                expect(r.ok).to(beFalse())
+                expect(r.statusCode).to(equal(401))
+            }
+        }
+
+
+
         describe("cookies") {
             it("should get cookies contained in responses") {
                 let r = Just.get("http://httpbin.org/cookies/set/test/just", allowRedirects:false)
