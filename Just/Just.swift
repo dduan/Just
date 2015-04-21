@@ -90,7 +90,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
         }()
 
     public var ok:Bool {
-        return statusCode != nil && statusCode! >= 200 && statusCode! < 300
+        return statusCode != nil && !(statusCode! >= 400 && statusCode! < 600)
     }
 }
 
