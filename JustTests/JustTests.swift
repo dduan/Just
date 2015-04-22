@@ -34,6 +34,14 @@ class JustSpec: QuickSpec {
                 expect(Just.get("http://httpbin.org/status/599").ok).toNot(beTrue())
             }
         }
+
+        describe("result status code") {
+                expect(Just.get("http://httpbin.org/status/200").statusCode).to(equal(200))
+                expect(Just.get("http://httpbin.org/status/302", allowRedirects:false).statusCode).to(equal(302))
+                expect(Just.get("http://httpbin.org/status/404").statusCode).to(equal(404))
+                expect(Just.get("http://httpbin.org/status/501").statusCode).to(equal(501))
+        }
+
         describe("basic authentication") {
             it("should fail at a challenge when auth is missing") {
                 let r = Just.get("http://httpbin.org/basic-auth/dan/pass")
@@ -73,8 +81,6 @@ class JustSpec: QuickSpec {
                 expect(r.statusCode).to(equal(401))
             }
         }
-
-
 
         describe("cookies") {
             it("should get cookies contained in responses") {
