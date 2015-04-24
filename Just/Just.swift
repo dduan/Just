@@ -371,6 +371,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     public class func get(
         URLString              : String,
         params                 : [String:AnyObject]                       = [:],
+        data                   : [String:AnyObject]                       = [:],
         json                   : [String:AnyObject]?                      = nil,
         headers                : CaseInsensitiveDictionary<String,String> = [:],
         auth                   : (String,String)?                         = nil,
@@ -398,6 +399,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     public class func post(
         URLString              : String,
         params                 : [String:AnyObject]                       = [:],
+        data                   : [String:AnyObject]                       = [:],
         json                   : [String:AnyObject]?                      = nil,
         headers                : CaseInsensitiveDictionary<String,String> = [:],
         auth                   : (String,String)?                         = nil,

@@ -51,6 +51,51 @@ class JustSpec: QuickSpec {
                 }
             }
         }
+
+        describe("sending url query as http body") {
+            it("should add x-www-form-urlencoded header automatically when body is in url format") {
+                let r = Just.post("http://httpbin.org/post", data:["a":1])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let headers = jsonData["headers"] as? [String:String],
+                    let contentType = headers["Content-Type"] {
+                    expect(contentType).to(equal("application/x-www-form-urlencoded"))
+                } else {
+                    fail("expected header was not sent")
+                }
+            }
+
+            it("should add x-www-form-urlencoded header automatically when body is in url format, even for GET requests") {
+                let r = Just.get("http://httpbin.org/get", data:["a":1])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let headers = jsonData["headers"] as? [String:String],
+                    let contentType = headers["Content-Type"] {
+                    expect(contentType).to(equal("application/x-www-form-urlencoded"))
+                } else {
+                    fail("expected header was not sent")
+                }
+            }
+
+            it("should send simple form url query when asked so") {
+                let r = Just.post("http://httpbin.org/post", data:["a":1])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let form = jsonData["form"] as? [String:String] {
+                    expect(form).to(equal(["a":"1"]))
+                } else {
+                    fail("expected form data was not sent")
+                }
+            }
+
+            it("should send compound form url query when asked so") {
+                let r = Just.post("http://httpbin.org/post", data:["a":[1,2]])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let form = jsonData["form"] as? [String:[String]] {
+                    expect(form).to(equal(["a":["1","2"]]))
+                } else {
+                    fail("expected form data was not sent")
+                }
+            }
+        }
+
         describe("result ok-ness") {
             it("should be ok with non-error status codes") {
                 expect(Just.get("http://httpbin.org/status/200").ok).to(beTrue())
