@@ -13,6 +13,44 @@ import Nimble
 class JustSpec: QuickSpec {
     override func spec() {
 
+        describe("URL query string") {
+            it("should sends simple query string specified for GET") {
+                let r = Just.get("http://httpbin.org/get", params:["a":1])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let args = jsonData["args"] as? [String:String] {
+                    expect(args).to(equal(["a":"1"]))
+                } else {
+                    fail("expected query string was not sent")
+                }
+            }
+            it("should sends compound query string specified for GET") {
+                let r = Just.get("http://httpbin.org/get", params:["a":[1,2]])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let args = jsonData["args"] as? [String:[String]] {
+                    expect(args).to(equal(["a":["1", "2"]]))
+                } else {
+                    fail("expected query string was not sent")
+                }
+            }
+            it("should sends simple query string specified for POST") {
+                let r = Just.post("http://httpbin.org/post", params:["a":1])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let args = jsonData["args"] as? [String:String] {
+                    expect(args).to(equal(["a":"1"]))
+                } else {
+                    fail("expected query string was not sent")
+                }
+            }
+            it("should sends compound query string specified for POST") {
+                let r = Just.post("http://httpbin.org/post", params:["a":[1,2]])
+                if let jsonData = r.json as? [String:AnyObject],
+                    let args = jsonData["args"] as? [String:[String]] {
+                    expect(args).to(equal(["a":["1", "2"]]))
+                } else {
+                    fail("expected query string was not sent")
+                }
+            }
+        }
         describe("result ok-ness") {
             it("should be ok with non-error status codes") {
                 expect(Just.get("http://httpbin.org/status/200").ok).to(beTrue())
