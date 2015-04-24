@@ -83,7 +83,6 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
         }
         var result:[String:NSHTTPCookie] = [:]
         for cookie in foundCookies {
-            println(cookie.name)
             result[cookie.name] = cookie
         }
         return result
@@ -307,7 +306,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
     }
 
     func shouldQuery(method:HTTPMethod) -> Bool {
-        return method == .GET && method == .HEAD && method == .DELETE
+        return method == .GET || method == .HEAD || method == .DELETE
     }
 
     func request(
