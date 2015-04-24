@@ -91,6 +91,10 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var ok:Bool {
         return statusCode != nil && !(statusCode! >= 400 && statusCode! < 600)
     }
+
+    public var url:NSURL? {
+        return response?.URL
+    }
 }
 
 
@@ -206,7 +210,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             }
         } else if let array = value as? [AnyObject] {
             for value in array {
-                components += queryComponents("\(key)[]", value)
+                components += queryComponents("\(key)", value)
             }
         } else {
             components.extend([(percentEncodeString(key), percentEncodeString("\(value)"))])
@@ -260,16 +264,12 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         ) -> NSURLRequest? {
             var body:NSData?
             if let urlComponent = NSURLComponents(string: URLString) {
-                if let theQuery = URLQuery {
-                    urlComponent.percentEncodedQuery = URLQuery
-                } else {
-                    var queryString = query(params)
-                    if count(queryString) == 0 { // try json just in case
-                        queryString = json == nil ? "" : query(json!)
-                    }
-                    if count(queryString) > 0 && shouldQuery(method) {
-                        urlComponent.percentEncodedQuery = queryString
-                    }
+                var queryString = query(params)
+                if count(queryString) == 0 { // try json just in case
+                    queryString = json == nil ? "" : query(json!)
+                }
+                if count(queryString) > 0 {
+                    urlComponent.percentEncodedQuery = queryString
                 }
 
                 var finalHeaders = headers
