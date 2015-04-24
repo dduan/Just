@@ -257,9 +257,10 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         method:HTTPMethod,
         URLString:String,
         params:[String:AnyObject],
+        data:[String:AnyObject],
         json:[String:AnyObject]?,
         headers:CaseInsensitiveDictionary<String,String>,
-        data:NSData?,
+        requestBody:NSData?,
         URLQuery:String?
         ) -> NSURLRequest? {
             var body:NSData?
@@ -274,18 +275,22 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
                 var finalHeaders = headers
 
-                if let requestData = data {
+                if let requestData = requestBody {
                     body = requestData
                 } else {
                     if let requestJSON = json {
                         body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: NSJSONWritingOptions(0), error: nil)
                         finalHeaders["Content-Type"] = "application/json"
                     } else {
-                        if params.count > 0 {
+                        if data.count > 0 {
                             if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
-                                body = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(0), error: nil)
-                            } else if !shouldQuery(method) {
-                                body = NSJSONSerialization.dataWithJSONObject(params, options: NSJSONWritingOptions(0), error: nil)
+                                body = NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions(0), error: nil)
+                            } else {
+                                finalHeaders["Content-Type"] = "application/x-www-form-urlencoded"
+                                body = query(data).dataUsingEncoding(NSUTF8StringEncoding)
+                                if let length = body?.length {
+                                    finalHeaders["Content-Length"] = "\(length)"
+                                }
                             }
                         }
                     }
@@ -305,19 +310,16 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             return nil
     }
 
-    func shouldQuery(method:HTTPMethod) -> Bool {
-        return method == .GET || method == .HEAD || method == .DELETE
-    }
-
     func request(
         method:HTTPMethod,
         URLString:String,
         params:[String:AnyObject],
+        data:[String:AnyObject],
         json:[String:AnyObject]?,
         headers:CaseInsensitiveDictionary<String,String>,
         auth:(String, String)?,
         cookies: [String:String],
-        data:NSData?,
+        requestBody:NSData?,
         URLQuery:String?,
         redirects:Bool,
         asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
@@ -327,7 +329,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
             let config = TaskConfiguration(credential:auth, redirects:redirects)
-            if let request = synthesizeRequest(method, URLString: URLString, params: params, json: json, headers: headers, data: data, URLQuery: URLQuery) {
+            if let request = synthesizeRequest(method, URLString: URLString, params: params, data: data, json: json, headers: headers, requestBody:requestBody, URLQuery: URLQuery) {
                 addCookies(request.URL!, newCookies: cookies)
                 let task = makeTask(request, configuration:config) { (result) in
                     if let handler = asyncCompletionHandler {
@@ -385,11 +387,12 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 .GET,
                 URLString              : URLString,
                 params                 : params,
+                data                   : data,
                 json                   : json,
                 headers                : headers,
                 auth                   : auth,
                 cookies                : cookies,
-                data                   : requestBody,
+                requestBody            : requestBody,
                 URLQuery               : URLQuery,
                 redirects              : allowRedirects,
                 asyncCompletionHandler : asyncCompletionHandler
@@ -413,11 +416,12 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 .POST,
                 URLString              : URLString,
                 params                 : params,
+                data                   : data,
                 json                   : json,
                 headers                : headers,
                 auth                   : auth,
                 cookies                : cookies,
-                data                   : requestBody,
+                requestBody            : requestBody,
                 URLQuery               : URLQuery,
                 redirects              : allowRedirects,
                 asyncCompletionHandler : asyncCompletionHandler
@@ -436,7 +440,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
         completionHandler(.UseCredential, endCredential)
     }
-    
+
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, willPerformHTTPRedirection response: NSHTTPURLResponse, newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void) {
         if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
             if !allowRedirects {
