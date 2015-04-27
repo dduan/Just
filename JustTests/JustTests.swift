@@ -96,6 +96,80 @@ class JustSpec: QuickSpec {
             }
         }
 
+        describe("redirect") {
+            it("should redirect when asked to do so") {
+            }
+            it("should not redircet when asked to do so") {
+            }
+        }
+
+        describe("JSON sending") {
+            it("should not add JSON header when no JSON is supplied") {
+                let r = Just.post("http://httpbin.org/post", data:["A":"a"])
+                expect(r.ok).to(beTrue())
+                if let jsonData = r.json as? [String:AnyObject],
+                    let headers = jsonData["headers"] as? [String:String] {
+                    if let contentType = headers["Content-Type"] {
+                        expect(contentType).toNot(equal("application/json"))
+                    }
+                }
+            }
+
+            it("should add JSON header even if an empty argument is set") {
+                let r = Just.post("http://httpbin.org/post", json:[:])
+                expect(r.ok).to(beTrue())
+                if let jsonData = r.json as? [String:AnyObject],
+                    let headers = jsonData["headers"] as? [String:String] {
+                    if let contentType = headers["Content-Type"] {
+                    expect(contentType).to(equal("application/json"))
+                    }
+                } else {
+                    fail("JSON header was not added when empty JSON argument is supplied")
+                }
+            }
+            it("should send flat JSON data in JSON format") {
+                let r = Just.post("http://httpbin.org/post", json:["a":1])
+                expect(r.ok).to(beTrue())
+                if let data = r.json as? [String:AnyObject],
+                    let JSONInData = data["json"] as? [String:Int] {
+                    expect(JSONInData).to(equal(["a":1]))
+                } else {
+                    fail("httpbin did not receive flat JSON data")
+                }
+            }
+            it("should send compound JSON data in JSON format") {
+                let r = Just.post("http://httpbin.org/post", json:["a":[1, "b"]])
+                expect(r.ok).to(beTrue())
+                if let data = r.json as? [String:AnyObject],
+                    let JSONInData = data["json"] as? [String:[AnyObject]] {
+                    expect(JSONInData).to(equal(["a":[1,"b"]]))
+                } else {
+                    fail("httpbin did not receive compound JSON data")
+                }
+
+            }
+
+            it("JSON argument should override data directive") {
+                let r = Just.post("http://httpbin.org/post", data:["b":2], json:["a":1])
+                expect(r.ok).to(beTrue())
+                if let data = r.json as? [String:AnyObject] {
+                    if let JSONInData = data["json"] as? [String:Int] {
+                        expect(JSONInData).to(equal(["a":1]))
+                        expect(JSONInData).toNot(equal(["b":2]))
+                    }
+                    if let dataInData = data["data"] as? [String:Int] {
+                        expect(dataInData).to(equal(["a":1]))
+                        expect(dataInData).toNot(equal(["b":2]))
+                    }
+                    if let headersInData = data["headers"] as? [String:String] {
+                        if let contentType = headersInData["Content-Type"] {
+                            expect(contentType).to(equal("application/json"))
+                        }
+                    }
+                }
+            }
+        }
+
         describe("result ok-ness") {
             it("should be ok with non-error status codes") {
                 expect(Just.get("http://httpbin.org/status/200").ok).to(beTrue())
