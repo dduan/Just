@@ -288,9 +288,6 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                             } else {
                                 finalHeaders["Content-Type"] = "application/x-www-form-urlencoded"
                                 body = query(data).dataUsingEncoding(NSUTF8StringEncoding)
-                                if let length = body?.length {
-                                    finalHeaders["Content-Length"] = "\(length)"
-                                }
                             }
                         }
                     }
@@ -298,8 +295,9 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
                 if let URL = urlComponent.URL {
                     let request = NSMutableURLRequest(URL: URL)
-                    request.HTTPMethod = method.rawValue
                     request.HTTPBody = body
+                    request.HTTPMethod = method.rawValue
+
                     for (k,v) in finalHeaders {
                         request.addValue(v, forHTTPHeaderField: k)
                     }
@@ -448,7 +446,8 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 return
             }
             completionHandler(request)
+        } else {
+            completionHandler(request)
         }
-        completionHandler(request)
     }
 }
