@@ -15,38 +15,42 @@ class JustSpec: QuickSpec {
         describe("URL query string") {
             it("should sends simple query string specified for GET") {
                 let r = Just.get("http://httpbin.org/get", params:["a":1])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let args = jsonData["args"] as? [String:String] {
-                    expect(args).to(equal(["a":"1"]))
-                } else {
-                    fail("expected query string was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["args"]).toNot(beNil())
+                    if let args = jsonData["args"] as? [String:String] {
+                        expect(args).to(equal(["a":"1"]))
+                    }
                 }
             }
             it("should sends compound query string specified for GET") {
                 let r = Just.get("http://httpbin.org/get", params:["a":[1,2]])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let args = jsonData["args"] as? [String:[String]] {
-                    expect(args).to(equal(["a":["1", "2"]]))
-                } else {
-                    fail("expected query string was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["args"]).toNot(beNil())
+                    if let args = jsonData["args"] as? [String:String] {
+                        expect(args).to(equal(["a":["1", "2"]]))
+                    }
                 }
             }
             it("should sends simple query string specified for POST") {
                 let r = Just.post("http://httpbin.org/post", params:["a":1])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let args = jsonData["args"] as? [String:String] {
-                    expect(args).to(equal(["a":"1"]))
-                } else {
-                    fail("expected query string was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["args"]).toNot(beNil())
+                    if let args = jsonData["args"] as? [String:String] {
+                        expect(args).to(equal(["a":"1"]))
+                    }
                 }
             }
             it("should sends compound query string specified for POST") {
                 let r = Just.post("http://httpbin.org/post", params:["a":[1,2]])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let args = jsonData["args"] as? [String:[String]] {
-                    expect(args).to(equal(["a":["1", "2"]]))
-                } else {
-                    fail("expected query string was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["args"]).toNot(beNil())
+                    if let args = jsonData["args"] as? [String:String] {
+                        expect(args).to(equal(["a":["1", "2"]]))
+                    }
                 }
             }
         }
@@ -54,12 +58,16 @@ class JustSpec: QuickSpec {
         describe("sending url query as http body") {
             it("should add x-www-form-urlencoded header automatically when body is in url format") {
                 let r = Just.post("http://httpbin.org/post", data:["a":1])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let headers = jsonData["headers"] as? [String:String],
-                    let contentType = headers["Content-Type"] {
-                    expect(contentType).to(equal("application/x-www-form-urlencoded"))
-                } else {
-                    fail("expected header was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["headers"]).toNot(beNil())
+                    if let headers = jsonData["headers"] as? [String:String] {
+                        expect(headers["Content-Type"]).toNot(beNil())
+                        if let contentType = headers["Content-Type"] {
+                            expect(contentType).to(equal("application/x-www-form-urlencoded"))
+                        }
+                    }
+
                 }
             }
 
@@ -77,21 +85,23 @@ class JustSpec: QuickSpec {
 
             it("should send simple form url query when asked so") {
                 let r = Just.post("http://httpbin.org/post", data:["a":1])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let form = jsonData["form"] as? [String:String] {
-                    expect(form).to(equal(["a":"1"]))
-                } else {
-                    fail("expected form data was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["form"]).toNot(beNil())
+                    if let form = jsonData["form"] as? [String:String] {
+                        expect(form).to(equal(["a":"1"]))
+                    }
                 }
             }
 
             it("should send compound form url query when asked so") {
                 let r = Just.post("http://httpbin.org/post", data:["a":[1,2]])
-                if let jsonData = r.json as? [String:AnyObject],
-                    let form = jsonData["form"] as? [String:[String]] {
-                    expect(form).to(equal(["a":["1","2"]]))
-                } else {
-                    fail("expected form data was not sent")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["form"]).toNot(beNil())
+                    if let form = jsonData["form"] as? [String:String] {
+                        expect(form).to(equal(["a":["1","2"]]))
+                    }
                 }
             }
         }
@@ -117,66 +127,84 @@ class JustSpec: QuickSpec {
         describe("JSON sending") {
             it("should not add JSON header when no JSON is supplied") {
                 let r = Just.post("http://httpbin.org/post", data:["A":"a"])
-                expect(r.ok).to(beTrue())
-                if let jsonData = r.json as? [String:AnyObject],
-                    let headers = jsonData["headers"] as? [String:String] {
-                    if let contentType = headers["Content-Type"] {
-                        expect(contentType).toNot(equal("application/json"))
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["headers"]).toNot(beNil())
+                    if let headers = jsonData["headers"] as? [String:String] {
+                        expect(headers["Content-Type"]).toNot(beNil())
+                        if let contentType = headers["Content-Type"] {
+                            expect(contentType).toNot(equal("application/json"))
+                        }
                     }
                 }
             }
 
             it("should add JSON header even if an empty argument is set") {
                 let r = Just.post("http://httpbin.org/post", json:[:])
-                expect(r.ok).to(beTrue())
-                if let jsonData = r.json as? [String:AnyObject],
-                    let headers = jsonData["headers"] as? [String:String] {
-                    if let contentType = headers["Content-Type"] {
-                    expect(contentType).to(equal("application/json"))
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect(jsonData["headers"]).toNot(beNil())
+                    if let headers = jsonData["headers"] as? [String:String] {
+                        expect(headers["Content-Type"]).toNot(beNil())
+                        if let contentType = headers["Content-Type"] {
+                            expect(contentType).to(equal("application/json"))
+                        }
                     }
-                } else {
-                    fail("JSON header was not added when empty JSON argument is supplied")
                 }
             }
             it("should send flat JSON data in JSON format") {
                 let r = Just.post("http://httpbin.org/post", json:["a":1])
-                expect(r.ok).to(beTrue())
-                if let data = r.json as? [String:AnyObject],
-                    let JSONInData = data["json"] as? [String:Int] {
-                    expect(JSONInData).to(equal(["a":1]))
-                } else {
-                    fail("httpbin did not receive flat JSON data")
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["json"]).toNot(beNil())
+                    if let JSONInData = data["json"] as? [String:Int] {
+                        expect(JSONInData).to(equal(["a":1]))
+                    }
                 }
             }
             it("should send compound JSON data in JSON format") {
                 let r = Just.post("http://httpbin.org/post", json:["a":[1, "b"]])
-                expect(r.ok).to(beTrue())
-                if let data = r.json as? [String:AnyObject],
-                    let JSONInData = data["json"] as? [String:[AnyObject]] {
-                    expect(JSONInData).to(equal(["a":[1,"b"]]))
-                } else {
-                    fail("httpbin did not receive compound JSON data")
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["json"]).toNot(beNil())
+                    if let JSONInData = data["json"] as? [String:[AnyObject]] {
+                        expect(JSONInData).to(equal(["a":[1,"b"]]))
+                    }
                 }
 
             }
 
             it("JSON argument should override data directive") {
                 let r = Just.post("http://httpbin.org/post", data:["b":2], json:["a":1])
-                expect(r.ok).to(beTrue())
+                expect(r.json).toNot(beNil())
                 if let data = r.json as? [String:AnyObject] {
+                    expect(data["json"]).toNot(beNil())
                     if let JSONInData = data["json"] as? [String:Int] {
                         expect(JSONInData).to(equal(["a":1]))
                         expect(JSONInData).toNot(equal(["b":2]))
                     }
+                    expect(data["data"]).toNot(beNil())
                     if let dataInData = data["data"] as? [String:Int] {
                         expect(dataInData).to(equal(["a":1]))
                         expect(dataInData).toNot(equal(["b":2]))
                     }
+                    expect(data["headers"]).toNot(beNil())
                     if let headersInData = data["headers"] as? [String:String] {
                         if let contentType = headersInData["Content-Type"] {
                             expect(contentType).to(equal("application/json"))
                         }
                     }
+                }
+            }
+        }
+
+        describe("result url") {
+            it("should contain url from the response") {
+                let targetURLString = "http://httpbin.org/get"
+                let r = Just.get(targetURLString)
+                expect(r.url).toNot(beNil())
+                if let urlString = r.url?.absoluteString {
+                    expect(urlString).to(equal(targetURLString))
                 }
             }
         }
@@ -217,28 +245,36 @@ class JustSpec: QuickSpec {
 
             it("should send single conventional header as provided") {
                 let r = Just.get("http://httpbin.org/get", headers:["Content-Type":"application/json"])
-                if let responseData = r.json as? [String:AnyObject],
-                    let receivedHeaders = responseData["headers"] as? [String:String] {
-                    expect(receivedHeaders["Content-Type"]).to(equal("application/json"))
-
+                expect(r.json).toNot(beNil())
+                if let responseData = r.json as? [String:AnyObject] {
+                    expect(responseData["headers"]).toNot(beNil())
+                    if let receivedHeaders = responseData["headers"] as? [String:String] {
+                        expect(receivedHeaders["Content-Type"]).to(equal("application/json"))
+                    }
                 }
             }
 
             it("should send multiple conventional header as provided") {
                 let r = Just.get("http://httpbin.org/get", headers:["Accept-Language":"*", "Content-Type":"application/json"])
-                if let responseData = r.json as? [String:AnyObject],
-                    let receivedHeaders = responseData["headers"] as? [String:String] {
-                    expect(receivedHeaders["Content-Type"]).to(equal("application/json"))
-                    expect(receivedHeaders["Accept-Language"]).to(equal("*"))
+                expect(r.json).toNot(beNil())
+                if let responseData = r.json as? [String:AnyObject] {
+                    expect(responseData["headers"]).toNot(beNil())
+                    if let receivedHeaders = responseData["headers"] as? [String:String] {
+                        expect(receivedHeaders["Content-Type"]).to(equal("application/json"))
+                        expect(receivedHeaders["Accept-Language"]).to(equal("*"))
+                    }
                 }
             }
 
             it("should send multiple arbitrary header as provided") {
-                let r = Just.get("http://httpbin.org/get", headers:["Winter is?":"coming", "things-know-by-Jon-Snow":"Just42awesome"])
-                if let responseData = r.json as? [String:AnyObject],
-                    let receivedHeaders = responseData["headers"] as? [String:String] {
-                    expect(receivedHeaders["Winter is?"]).to(equal("coming"))
-                    expect(receivedHeaders["things-know-by-Jon-Snow"]).to(equal("Just42awesome"))
+                let r = Just.get("http://httpbin.org/get", headers:["Winter-is":"coming", "things-know-by-Jon-Snow":"Just42awesome"])
+                expect(r.json).toNot(beNil())
+                if let responseData = r.json as? [String:AnyObject] {
+                    expect(responseData["headers"]).toNot(beNil())
+                    if let receivedHeaders = responseData["headers"] as? [String:String] {
+                        expect(receivedHeaders["Winter-Is"]).to(equal("coming"))
+                        expect(receivedHeaders["Things-Know-By-Jon-Snow"]).to(equal("Just42awesome"))
+                    }
                 }
             }
         }
@@ -296,10 +332,12 @@ class JustSpec: QuickSpec {
                 Just.get("http://httpbin.org/cookies/delete?test")
                 let r = Just.get("http://httpbin.org/cookies", cookies:["test":"just"])
 
-                if let cookieValue = (r.json as! [String:[String:String]])["cookies"]?["test"] {
-                    expect(cookieValue).to(equal("just"))
-                } else {
-                    fail("httpbin did not find specified cookies")
+                expect(r.json).toNot(beNil())
+                if let jsonData = r.json as? [String:AnyObject] {
+                    expect((jsonData["cookies"] as? [String:String])?["test"]).toNot(beNil())
+                    if let cookieValue = (jsonData["cookies"] as? [String:String])?["test"] {
+                        expect(cookieValue).to(equal("just"))
+                    }
                 }
             }
         }
