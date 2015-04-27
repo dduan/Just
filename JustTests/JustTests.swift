@@ -97,9 +97,20 @@ class JustSpec: QuickSpec {
         }
 
         describe("redirect") {
+            it("should redirect by default") {
+                let r = Just.get("http://httpbin.org/redirect/2")
+                expect(r.statusCode).to(equal(200))
+                expect(r.statusCode).toNot(equal(302))
+            }
             it("should redirect when asked to do so") {
+                let r = Just.get("http://httpbin.org/redirect/2", allowRedirects:true)
+                expect(r.statusCode).to(equal(200))
+                expect(r.statusCode).toNot(equal(302))
             }
             it("should not redircet when asked to do so") {
+                let r = Just.get("http://httpbin.org/redirect/2", allowRedirects:false)
+                expect(r.statusCode).toNot(equal(200))
+                expect(r.statusCode).to(equal(302))
             }
         }
 
