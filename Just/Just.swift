@@ -8,6 +8,19 @@
 
 import Foundation
 
+struct JustSessionConfig {
+    var JSONReadingOptions: NSJSONReadingOptions? = nil
+    var JSONWritingOptions: NSJSONWritingOptions? = nil
+    var defaultHeaders:[String:String] = [:]
+    var multipartBoundary:String
+}
+
+public enum HTTPFile {
+    case URL(NSURL,String?) // URL to a file, mimetype
+    case Data(String,NSData,String?) // filename, data, mimetype
+    case Text(String,String,String?) // filename, text, mimetype
+}
+
 enum HTTPMethod: String {
     case OPTIONS = "OPTIONS"
     case GET = "GET"
@@ -373,6 +386,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         data                   : [String:AnyObject]                       = [:],
         json                   : [String:AnyObject]?                      = nil,
         headers                : CaseInsensitiveDictionary<String,String> = [:],
+        files                  : [String:HTTPFile]                        = [:],
         auth                   : (String,String)?                         = nil,
         allowRedirects         : Bool                                     = true,
         cookies                : [String:String]                          = [:],
@@ -402,6 +416,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         data                   : [String:AnyObject]                       = [:],
         json                   : [String:AnyObject]?                      = nil,
         headers                : CaseInsensitiveDictionary<String,String> = [:],
+        files                  : [String:HTTPFile]                        = [:],
         auth                   : (String,String)?                         = nil,
         cookies                : [String:String]                          = [:],
         allowRedirects         : Bool                                     = true,
