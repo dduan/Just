@@ -13,6 +13,7 @@
 		94DA2B731AE640980082DC6D /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		94DA2B7B1AE642FB0082DC6D /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; };
 		94DA2B7C1AE642FB0082DC6D /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; };
+		94EDF39C1AEEE38B007BF486 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94DA2B791AE642FB0082DC6D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
 		94DA2B7A1AE642FB0082DC6D /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = SOURCE_ROOT; };
+		94EDF39B1AEEE38B007BF486 /* elon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elon.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		94DA2B631AE640390082DC6D /* JustTests */ = {
 			isa = PBXGroup;
 			children = (
+				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
 				94DA2B661AE640390082DC6D /* JustTests.swift */,
 				94DA2B641AE640390082DC6D /* Supporting Files */,
 			);
@@ -211,6 +214,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94EDF39C1AEEE38B007BF486 /* elon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

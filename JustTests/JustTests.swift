@@ -33,6 +33,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should sends simple query string specified for POST") {
                 let r = Just.post("http://httpbin.org/post", params:["a":1])
                 expect(r.json).toNot(beNil())
@@ -43,6 +44,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should sends compound query string specified for POST") {
                 let r = Just.post("http://httpbin.org/post", params:["a":[1,2]])
                 expect(r.json).toNot(beNil())
@@ -190,6 +192,7 @@ class JustSpec: QuickSpec {
                     }
                     expect(data["headers"]).toNot(beNil())
                     if let headersInData = data["headers"] as? [String:String] {
+                        expect(headersInData["Content-Type"]).toNot(beNil())
                         if let contentType = headersInData["Content-Type"] {
                             expect(contentType).to(equal("application/json"))
                         }
@@ -197,6 +200,232 @@ class JustSpec: QuickSpec {
                 }
             }
         }
+
+        describe("sending files") {
+            it("should not include a multipart header when empty files were specified") {
+                let r = Just.post("http://httpbin.org/post", files:[:])
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["headers"]).toNot(beNil())
+                    if let headersInData = data["headers"] as? [String:String] {
+                        if let contentType = headersInData["Content-Type"] {
+                            expect(contentType).toNot(beginWith("multipart/form-data; boundary="))
+                        }
+                    }
+                }
+            }
+            it("should include a multipart header when empty files were specified") {
+                if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
+                    let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL,nil)])
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["headers"]).toNot(beNil())
+                        if let headersInData = data["headers"] as? [String:String] {
+                            expect(headersInData["Content-Type"]).toNot(beNil())
+                            if let contentType = headersInData["Content-Type"] {
+                                expect(contentType).to(beginWith("multipart/form-data; boundary="))
+                            }
+                        }
+                    }
+                } else {
+                    fail("resource needed for this test can't be found")
+                }
+            }
+            it("should be able to send a single file specified by URL without mimetype") {
+                if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
+                    let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL,nil)])
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon"]).toNot(beNil())
+                        }
+                    }
+                } else {
+                    fail("resource needed for this test can't be found")
+                }
+            }
+            it("should be able to send a single file specified by URL and mimetype") {
+                if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
+                    let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, "image/jpeg")])
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon"]).toNot(beNil())
+                        }
+                    }
+                } else {
+                    fail("resource needed for this test can't be found")
+                }
+            }
+            it("should be able to send a single file specified by data without mimetype") {
+                if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
+                    let r = Just.post("http://httpbin.org/post", files:["elon":.Data("JustTests.swift", dataToSend, nil)])
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon"]).toNot(beNil())
+                        }
+                    }
+                } else {
+                    fail("can't encode text as data")
+                }
+            }
+
+            it("should be able to send a single file specified by data and mimetype") {
+                if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
+                    let r = Just.post("http://httpbin.org/post", files:["elon":.Data("JustTests.swift", dataToSend, "text/plain")])
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon"]).toNot(beNil())
+                        }
+                    }
+                } else {
+                    fail("can't encode text as data")
+                }
+            }
+            it("should be able to send a single file specified by text without mimetype") {
+                let r = Just.post("http://httpbin.org/post", files:["test":.Text("JustTests.swift", "haha not really", nil)])
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["files"]).toNot(beNil())
+                    if let files = data["files"] as? [String:String] {
+                        expect(files["test"]).toNot(beNil())
+                    }
+                }
+            }
+            it("should be able to send a single file specified by text and mimetype") {
+                let r = Just.post("http://httpbin.org/post", files:["test":.Text("JustTests.swift", "haha not really", "text/plain")])
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["files"]).toNot(beNil())
+                    if let files = data["files"] as? [String:String] {
+                        expect(files["test"]).toNot(beNil())
+                    }
+                }
+            }
+            it("should be able to send multiple files specified the same way") {
+                let r = Just.post(
+                    "http://httpbin.org/post",
+                    files:[
+                        "elon1": .Text("JustTests.swift", "haha not really", nil),
+                        "elon2": .Text("JustTests.swift", "haha not really", nil),
+                        "elon3": .Text("JustTests.swift", "haha not really", nil),
+                    ]
+                )
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["files"]).toNot(beNil())
+                    if let files = data["files"] as? [String:String] {
+                        expect(files["elon1"]).toNot(beNil())
+                        expect(files["elon2"]).toNot(beNil())
+                        expect(files["elon3"]).toNot(beNil())
+                    }
+                }
+            }
+            it("should be able to send multiple files specified in different ways") {
+                if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
+                    let r = Just.post(
+                        "http://httpbin.org/post",
+                        files: [
+                            "elon1": .Text("JustTests.swift", "haha not really", nil),
+                            "elon2": .Data("JustTests.swift", dataToSend, nil)
+                        ]
+                    )
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon1"]).toNot(beNil())
+                            expect(files["elon2"]).toNot(beNil())
+                        }
+                    }
+                } else {
+                    fail("can't encode text as data")
+                }
+            }
+            it("should be able to send a file along with some data") {
+                let r = Just.post(
+                    "http://httpbin.org/post",
+                    data:["a":1, "b":2],
+                    files:[
+                        "elon1": .Text("JustTests.swift", "haha not really", nil),
+                    ]
+                )
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["files"]).toNot(beNil())
+                    if let files = data["files"] as? [String:String] {
+                        expect(files["elon1"]).toNot(beNil())
+                    }
+                    expect(data["form"]).toNot(beNil())
+                    if let form = data["form"] as? [String:String] {
+                        expect(form).to(equal(["a":"1", "b":2]))
+                    }
+                }
+            }
+            it("should be able to send multiple files along with some data") {
+                if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
+                    let r = Just.post(
+                        "http://httpbin.org/post",
+                        data:["a":1, "b":2],
+                        files: [
+                            "elon1": .Text("JustTests.swift", "haha not really", nil),
+                            "elon2": .Data("JustTests.swift", dataToSend, nil)
+                        ]
+                    )
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon1"]).toNot(beNil())
+                            expect(files["elon2"]).toNot(beNil())
+                        }
+                        expect(data["form"]).toNot(beNil())
+                        if let form = data["form"] as? [String:String] {
+                            expect(form).to(equal(["a":"1", "b":2]))
+                        }
+                    }
+                } else {
+                    fail("can't encode text as data")
+                }
+            }
+            it("should override JSON when files are specified") {
+                if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
+                    let r = Just.post(
+                        "http://httpbin.org/post",
+                        json:["a":1, "b":2],
+                        files: [
+                            "elon1": .Text("JustTests.swift", "haha not really", nil),
+                            "elon2": .Data("JustTests.swift", dataToSend, nil)
+                        ]
+                    )
+                    expect(r.json).toNot(beNil())
+                    if let data = r.json as? [String:AnyObject] {
+                        expect(data["json"]).toNot(beNil())
+                        if let json = data["json"] as? NSNull {
+                            expect(json).to(beAnInstanceOf(NSNull))
+                        }
+                        expect(data["files"]).toNot(beNil())
+                        if let files = data["files"] as? [String:String] {
+                            expect(files["elon1"]).toNot(beNil())
+                            expect(files["elon2"]).toNot(beNil())
+                        }
+                        expect(data["form"]).toNot(beNil())
+                        if let form = data["form"] as? [String:String] {
+                            expect(form).to(equal([:]))
+                        }
+                    }
+                } else {
+                    fail("can't encode text as data")
+                }
+            }
+        }
+
 
         describe("result url") {
             it("should contain url from the response") {
