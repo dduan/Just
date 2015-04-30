@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		94DA2B5A1AE640390082DC6D /* Just.h in Headers */ = {isa = PBXBuildFile; fileRef = 94DA2B591AE640390082DC6D /* Just.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		94DA2B601AE640390082DC6D /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B541AE640390082DC6D /* Just.framework */; };
-		94DA2B671AE640390082DC6D /* JustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustTests.swift */; };
+		94DA2B671AE640390082DC6D /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
 		94DA2B731AE640980082DC6D /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		94DA2B7B1AE642FB0082DC6D /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; };
 		94DA2B7C1AE642FB0082DC6D /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; };
@@ -32,7 +32,7 @@
 		94DA2B591AE640390082DC6D /* Just.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Just.h; sourceTree = "<group>"; };
 		94DA2B5F1AE640390082DC6D /* JustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94DA2B651AE640390082DC6D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		94DA2B661AE640390082DC6D /* JustTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustTests.swift; sourceTree = "<group>"; };
+		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94DA2B791AE642FB0082DC6D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
 		94DA2B7A1AE642FB0082DC6D /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = SOURCE_ROOT; };
@@ -100,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
-				94DA2B661AE640390082DC6D /* JustTests.swift */,
+				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
 				94DA2B641AE640390082DC6D /* Supporting Files */,
 			);
 			path = JustTests;
@@ -252,7 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94DA2B671AE640390082DC6D /* JustTests.swift in Sources */,
+				94DA2B671AE640390082DC6D /* JustSpecs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
