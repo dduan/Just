@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 struct JustSessionConfig {
     var JSONReadingOptions: NSJSONReadingOptions? = nil
     var JSONWritingOptions: NSJSONWritingOptions? = nil
@@ -84,7 +85,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-    }()
+        }()
 
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
@@ -98,7 +99,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
             result[cookie.name] = cookie
         }
         return result
-    }()
+        }()
 
     public var ok:Bool {
         return statusCode != nil && !(statusCode! >= 400 && statusCode! < 600)
@@ -265,6 +266,59 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         return task
     }
 
+    let kHTTPMultipartBodyBoundary = "Ju5tH77P15Aw350m3"
+
+    func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
+        var body = NSMutableData()
+        let boundary = "--\(kHTTPMultipartBodyBoundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!
+        for (k,v) in data {
+            let valueToSend:AnyObject = v is NSNull ? "null" : v
+            body.appendData(boundary)
+            body.appendData("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("\(valueToSend)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        }
+
+        for (k,v) in files {
+            body.appendData(boundary)
+            var partContent: NSData? = nil
+            var partFilename:String? = nil
+            var partMimetype:String? = nil
+            switch v {
+            case let .URL(URL, mimetype):
+                if let component = URL.lastPathComponent {
+                    partFilename = component
+                }
+                if let URLContent = NSData(contentsOfURL: URL) {
+                    partContent = URLContent
+                }
+                partMimetype = mimetype
+            case let .Text(filename, text, mimetype):
+                partFilename = filename
+                if let textData = text.dataUsingEncoding(NSUTF8StringEncoding) {
+                    partContent = textData
+                }
+                partMimetype = mimetype
+            case let .Data(filename, data, mimetype):
+                partFilename = filename
+                partContent = data
+                partMimetype = mimetype
+            }
+            if let content = partContent, let filename = partFilename {
+                body.appendData(NSData(data: "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding)!))
+                if let type = partMimetype {
+                    body.appendData("Content-Type: \(type)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+                } else {
+                    body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+                }
+                body.appendData(content)
+                body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            }
+        }
+        if body.length > 0 {
+            body.appendData("--\(kHTTPMultipartBodyBoundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        }
+        return body
+    }
     func synthesizeRequest(
         method:HTTPMethod,
         URLString:String,
@@ -272,10 +326,10 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         data:[String:AnyObject],
         json:[String:AnyObject]?,
         headers:CaseInsensitiveDictionary<String,String>,
+        files:[String:HTTPFile],
         requestBody:NSData?,
         URLQuery:String?
         ) -> NSURLRequest? {
-            var body:NSData?
             if let urlComponent = NSURLComponents(string: URLString) {
                 var queryString = query(params)
 
@@ -285,9 +339,13 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
                 var finalHeaders = headers
                 var contentType:String? = nil
+                var body:NSData?
 
                 if let requestData = requestBody {
                     body = requestData
+                } else if files.count > 0 {
+                    body = synthesizeMultipartBody(data, files:files)
+                    contentType = "multipart/form-data; boundary=\(kHTTPMultipartBodyBoundary)"
                 } else {
                     if let requestJSON = json {
                         contentType = "application/json"
@@ -329,6 +387,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         data:[String:AnyObject],
         json:[String:AnyObject]?,
         headers:[String:String],
+        files:[String:HTTPFile],
         auth:(String, String)?,
         cookies: [String:String],
         requestBody:NSData?,
@@ -341,7 +400,8 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
             let config = TaskConfiguration(credential:auth, redirects:redirects)
-            if let request = synthesizeRequest(method, URLString: URLString, params: params, data: data, json: json, headers: CaseInsensitiveDictionary<String,String>(dictionary:headers), requestBody:requestBody, URLQuery: URLQuery) {
+            let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
+            if let request = synthesizeRequest(method, URLString: URLString, params: params, data: data, json: json, headers: caseInsensitiveHeaders, files: files, requestBody:requestBody, URLQuery: URLQuery) {
                 addCookies(request.URL!, newCookies: cookies)
                 let task = makeTask(request, configuration:config) { (result) in
                     if let handler = asyncCompletionHandler {
@@ -395,22 +455,23 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
-    ) -> HTTPResult {
+        ) -> HTTPResult {
 
-        return Just.shared.request(
-            .GET,
-            URLString: URLString,
-            params: params,
-            data: data,
-            json: json,
-            headers: headers,
-            auth: auth,
-            cookies: cookies,
-            requestBody: requestBody,
-            URLQuery: URLQuery,
-            redirects: allowRedirects,
-            asyncCompletionHandler: asyncCompletionHandler
-        )
+            return Just.shared.request(
+                .GET,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
 
     }
 
@@ -427,22 +488,23 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
-    ) -> HTTPResult {
+        ) -> HTTPResult {
 
-        return Just.shared.request(
-            .POST,
-            URLString: URLString,
-            params: params,
-            data: data,
-            json: json,
-            headers: headers,
-            auth: auth,
-            cookies: cookies,
-            requestBody: requestBody,
-            URLQuery: URLQuery,
-            redirects: allowRedirects,
-            asyncCompletionHandler: asyncCompletionHandler
-        )
+            return Just.shared.request(
+                .POST,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
 
     }
 
