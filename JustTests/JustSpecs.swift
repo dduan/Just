@@ -348,7 +348,7 @@ class JustSpec: QuickSpec {
                     }
                     expect(data["form"]).toNot(beNil())
                     if let form = data["form"] as? [String:String] {
-                        expect(form).to(equal(["a":"1", "b":2]))
+                        expect(form).to(equal(["a":"1", "b":"2"]))
                     }
                 }
             }
@@ -371,7 +371,7 @@ class JustSpec: QuickSpec {
                         }
                         expect(data["form"]).toNot(beNil())
                         if let form = data["form"] as? [String:String] {
-                            expect(form).to(equal(["a":"1", "b":2]))
+                            expect(form).to(equal(["a":"1", "b":"2"]))
                         }
                     }
                 } else {
