@@ -278,31 +278,33 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             var body:NSData?
             if let urlComponent = NSURLComponents(string: URLString) {
                 var queryString = query(params)
-                if count(queryString) == 0 { // try json just in case
-                    queryString = json == nil ? "" : query(json!)
-                }
+
                 if count(queryString) > 0 {
                     urlComponent.percentEncodedQuery = queryString
                 }
 
                 var finalHeaders = headers
+                var contentType:String? = nil
 
                 if let requestData = requestBody {
                     body = requestData
                 } else {
                     if let requestJSON = json {
+                        contentType = "application/json"
                         body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: NSJSONWritingOptions(0), error: nil)
-                        finalHeaders["Content-Type"] = "application/json"
                     } else {
                         if data.count > 0 {
                             if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
                                 body = NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions(0), error: nil)
                             } else {
-                                finalHeaders["Content-Type"] = "application/x-www-form-urlencoded"
+                                contentType = "application/x-www-form-urlencoded"
                                 body = query(data).dataUsingEncoding(NSUTF8StringEncoding)
                             }
                         }
                     }
+                }
+                if let contentTypeValue = contentType {
+                    finalHeaders["Content-Type"] = contentTypeValue
                 }
 
                 if let URL = urlComponent.URL {
