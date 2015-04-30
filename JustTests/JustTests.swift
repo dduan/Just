@@ -214,23 +214,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
-            it("should include a multipart header when empty files were specified") {
-                if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
-                    let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL,nil)])
-                    expect(r.json).toNot(beNil())
-                    if let data = r.json as? [String:AnyObject] {
-                        expect(data["headers"]).toNot(beNil())
-                        if let headersInData = data["headers"] as? [String:String] {
-                            expect(headersInData["Content-Type"]).toNot(beNil())
-                            if let contentType = headersInData["Content-Type"] {
-                                expect(contentType).to(beginWith("multipart/form-data; boundary="))
-                            }
-                        }
-                    }
-                } else {
-                    fail("resource needed for this test can't be found")
-                }
-            }
+
             it("should be able to send a single file specified by URL without mimetype") {
                 if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
                     let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL,nil)])
