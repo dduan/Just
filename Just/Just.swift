@@ -401,7 +401,17 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
             let config = TaskConfiguration(credential:auth, redirects:redirects)
             let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
-            if let request = synthesizeRequest(method, URLString: URLString, params: params, data: data, json: json, headers: caseInsensitiveHeaders, files: files, requestBody:requestBody, URLQuery: URLQuery) {
+            if let request = synthesizeRequest(
+                method,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: caseInsensitiveHeaders,
+                files: files,
+                requestBody:requestBody,
+                URLQuery: URLQuery
+            ) {
                 addCookies(request.URL!, newCookies: cookies)
                 let task = makeTask(request, configuration:config) { (result) in
                     if let handler = asyncCompletionHandler {
@@ -508,7 +518,12 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     }
 
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+    public func URLSession(
+        session: NSURLSession,
+        task: NSURLSessionTask,
+        didReceiveChallenge challenge: NSURLAuthenticationChallenge,
+        completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void
+    ) {
         var endCredential:NSURLCredential? = nil
 
         if let credential = taskConfigs[task.taskIdentifier]?.credential {
@@ -521,7 +536,12 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         completionHandler(.UseCredential, endCredential)
     }
 
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, willPerformHTTPRedirection response: NSHTTPURLResponse, newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void) {
+    public func URLSession(
+        session: NSURLSession,
+        task: NSURLSessionTask,
+        willPerformHTTPRedirection response: NSHTTPURLResponse,
+        newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void
+    ) {
         if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
             if !allowRedirects {
                 completionHandler(nil)
