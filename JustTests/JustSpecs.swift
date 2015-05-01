@@ -426,7 +426,6 @@ class JustSpec: QuickSpec {
             it("should be ok with non-error status codes") {
                 expect(Just.get("http://httpbin.org/status/200").ok).to(beTrue())
                 expect(Just.get("http://httpbin.org/status/299").ok).to(beTrue())
-                expect(Just.get("http://httpbin.org/status/301", allowRedirects:false).ok).to(beTrue())
                 expect(Just.get("http://httpbin.org/status/302", allowRedirects:false).ok).to(beTrue())
             }
 
