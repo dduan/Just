@@ -1,5 +1,5 @@
 test : clean
-	@xcodebuild test -project Just.xcodeproj -scheme Just -destination 'platform=iOS Simulator,name=iPhone 6' | xcpretty
+	@xcodebuild test -project Just.xcodeproj -scheme Just-OSX -destination 'platform=OS X' | xcpretty
 
 clean :
 	@xcodebuild clean

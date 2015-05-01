@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		940C09D71AF41B1200E6F7B9 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		940C09D81AF41B1200E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		940C09DA1AF41B4E00E6F7B9 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; };
+		94481BE81AF4155D00C34129 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; };
 		948CA8221AF3FF43001E0FD3 /* Just-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA8211AF3FF43001E0FD3 /* Just-iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA81D1AF3FF43001E0FD3 /* Just.framework */; };
 		948CA8401AF3FF55001E0FD3 /* Just-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -21,8 +27,6 @@
 		948CA85F1AF40091001E0FD3 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
 		948CA8601AF400B7001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		948CA8611AF400B8001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
-		948CA86A1AF402B3001E0FD3 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA8681AF402B3001E0FD3 /* Nimble.framework */; };
-		948CA86B1AF402B3001E0FD3 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA8691AF402B3001E0FD3 /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,20 +46,45 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		940C09D61AF41AFD00E6F7B9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				940C09D71AF41B1200E6F7B9 /* Nimble.framework in CopyFiles */,
+				940C09D81AF41B1200E6F7B9 /* Quick.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		940C09D91AF41B4300E6F7B9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				940C09DA1AF41B4E00E6F7B9 /* Nimble.framework in CopyFiles */,
+				940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		94481BE31AF4142F00C34129 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = SOURCE_ROOT; };
+		94481BE41AF4142F00C34129 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = SOURCE_ROOT; };
 		948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveDictionarySpecs.swift; sourceTree = "<group>"; };
 		948CA81D1AF3FF43001E0FD3 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		948CA8201AF3FF43001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just-iOS/Info.plist"; sourceTree = "<group>"; };
-		948CA8211AF3FF43001E0FD3 /* Just-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Just-iOS.h"; sourceTree = "<group>"; };
+		948CA8201AF3FF43001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../Just/Just-iOS/Info.plist"; sourceTree = "<group>"; };
+		948CA8211AF3FF43001E0FD3 /* Just-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Just-iOS.h"; path = "../Just/Just-iOS/Just-iOS.h"; sourceTree = "<group>"; };
 		948CA8271AF3FF43001E0FD3 /* Just-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		948CA82D1AF3FF43001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just-iOSTests/Info.plist"; sourceTree = "<group>"; };
+		948CA82D1AF3FF43001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../JustTests/Just-iOSTests/Info.plist"; sourceTree = "<group>"; };
 		948CA83B1AF3FF55001E0FD3 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		948CA83E1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just-OSX/Info.plist"; sourceTree = "<group>"; };
-		948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Just-OSX.h"; sourceTree = "<group>"; };
+		948CA83E1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../Just/Just-OSX/Info.plist"; sourceTree = "<group>"; };
+		948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Just-OSX.h"; path = "../Just/Just-OSX/Just-OSX.h"; sourceTree = "<group>"; };
 		948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		948CA84B1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just-OSXTests/Info.plist"; sourceTree = "<group>"; };
-		948CA8681AF402B3001E0FD3 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = SOURCE_ROOT; };
-		948CA8691AF402B3001E0FD3 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = SOURCE_ROOT; };
+		948CA84B1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "../JustTests/Just-OSXTests/Info.plist"; sourceTree = "<group>"; };
 		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94DA2B791AE642FB0082DC6D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
@@ -93,8 +122,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */,
-				948CA86A1AF402B3001E0FD3 /* Nimble.framework in Frameworks */,
-				948CA86B1AF402B3001E0FD3 /* Quick.framework in Frameworks */,
+				94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */,
+				94481BE81AF4155D00C34129 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +137,7 @@
 				948CA81F1AF3FF43001E0FD3 /* Supporting Files */,
 			);
 			path = "Just-iOS";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		948CA81F1AF3FF43001E0FD3 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -123,7 +152,8 @@
 			children = (
 				948CA82C1AF3FF43001E0FD3 /* Supporting Files */,
 			);
-			path = "Just-iOSTests";
+			name = "Just-iOSTests";
+			path = "../Just-iOSTests";
 			sourceTree = "<group>";
 		};
 		948CA82C1AF3FF43001E0FD3 /* Supporting Files */ = {
@@ -143,7 +173,7 @@
 				948CA83D1AF3FF55001E0FD3 /* Supporting Files */,
 			);
 			path = "Just-OSX";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		948CA83D1AF3FF55001E0FD3 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -158,14 +188,15 @@
 			children = (
 				948CA84A1AF3FF55001E0FD3 /* Supporting Files */,
 			);
-			path = "Just-OSXTests";
+			name = "Just-OSXTests";
+			path = "../Just-OSXTests";
 			sourceTree = "<group>";
 		};
 		948CA84A1AF3FF55001E0FD3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				948CA8681AF402B3001E0FD3 /* Nimble.framework */,
-				948CA8691AF402B3001E0FD3 /* Quick.framework */,
+				94481BE31AF4142F00C34129 /* Nimble.framework */,
+				94481BE41AF4142F00C34129 /* Quick.framework */,
 				948CA84B1AF3FF55001E0FD3 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -176,10 +207,6 @@
 			children = (
 				94DA2B561AE640390082DC6D /* Just */,
 				94DA2B631AE640390082DC6D /* JustTests */,
-				948CA81E1AF3FF43001E0FD3 /* Just-iOS */,
-				948CA82B1AF3FF43001E0FD3 /* Just-iOSTests */,
-				948CA83C1AF3FF55001E0FD3 /* Just-OSX */,
-				948CA8491AF3FF55001E0FD3 /* Just-OSXTests */,
 				94DA2B551AE640390082DC6D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -198,6 +225,8 @@
 		94DA2B561AE640390082DC6D /* Just */ = {
 			isa = PBXGroup;
 			children = (
+				948CA81E1AF3FF43001E0FD3 /* Just-iOS */,
+				948CA83C1AF3FF55001E0FD3 /* Just-OSX */,
 				94DA2B721AE640980082DC6D /* Just.swift */,
 			);
 			path = Just;
@@ -206,6 +235,8 @@
 		94DA2B631AE640390082DC6D /* JustTests */ = {
 			isa = PBXGroup;
 			children = (
+				948CA82B1AF3FF43001E0FD3 /* Just-iOSTests */,
+				948CA8491AF3FF55001E0FD3 /* Just-OSXTests */,
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
 				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
 				948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */,
@@ -260,6 +291,7 @@
 				948CA8231AF3FF43001E0FD3 /* Sources */,
 				948CA8241AF3FF43001E0FD3 /* Frameworks */,
 				948CA8251AF3FF43001E0FD3 /* Resources */,
+				940C09D91AF41B4300E6F7B9 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -296,6 +328,7 @@
 				948CA8411AF3FF55001E0FD3 /* Sources */,
 				948CA8421AF3FF55001E0FD3 /* Frameworks */,
 				948CA8431AF3FF55001E0FD3 /* Resources */,
+				940C09D61AF41AFD00E6F7B9 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -445,7 +478,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Just-iOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = Just;
@@ -460,7 +493,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Just-iOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = Just;
@@ -480,7 +513,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Just-iOSTests/Info.plist";
+				INFOPLIST_FILE = "JustTests/Just-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -494,7 +527,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Just-iOSTests/Info.plist";
+				INFOPLIST_FILE = "JustTests/Just-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -514,7 +547,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Just-OSX/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-OSX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -533,7 +566,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "Just-OSX/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-OSX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -558,7 +591,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Just-OSXTests/Info.plist";
+				INFOPLIST_FILE = "JustTests/Just-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -576,7 +609,7 @@
 					"$(PROJECT_DIR)/Just-OSXTests",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = "Just-OSXTests/Info.plist";
+				INFOPLIST_FILE = "JustTests/Just-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
