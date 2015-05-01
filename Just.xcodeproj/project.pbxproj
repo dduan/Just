@@ -752,7 +752,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Just-OSXTests",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
@@ -775,7 +774,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Just-OSXTests",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
@@ -957,6 +955,7 @@
 				948CA8311AF3FF43001E0FD3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		948CA8351AF3FF43001E0FD3 /* Build configuration list for PBXNativeTarget "Just-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -965,6 +964,7 @@
 				948CA8331AF3FF43001E0FD3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		948CA84E1AF3FF55001E0FD3 /* Build configuration list for PBXNativeTarget "Just-OSX" */ = {
 			isa = XCConfigurationList;
@@ -973,6 +973,7 @@
 				948CA8501AF3FF55001E0FD3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		948CA8511AF3FF55001E0FD3 /* Build configuration list for PBXNativeTarget "Just-OSXTests" */ = {
 			isa = XCConfigurationList;
@@ -981,6 +982,7 @@
 				948CA8531AF3FF55001E0FD3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		94DA2B4E1AE640390082DC6D /* Build configuration list for PBXProject "Just" */ = {
 			isa = XCConfigurationList;
