@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		940C09D71AF41B1200E6F7B9 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		940C09D81AF41B1200E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		940C09D71AF41B1200E6F7B9 /* Nimble.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		940C09D81AF41B1200E6F7B9 /* Quick.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		940C09DA1AF41B4E00E6F7B9 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; };
@@ -47,15 +47,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		940C09D61AF41AFD00E6F7B9 /* CopyFiles */ = {
+		940C09D61AF41AFD00E6F7B9 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				940C09D71AF41B1200E6F7B9 /* Nimble.framework in CopyFiles */,
-				940C09D81AF41B1200E6F7B9 /* Quick.framework in CopyFiles */,
+				940C09D71AF41B1200E6F7B9 /* Nimble.framework in Copy Frameworks */,
+				940C09D81AF41B1200E6F7B9 /* Quick.framework in Copy Frameworks */,
 			);
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		940C09D91AF41B4300E6F7B9 /* CopyFiles */ = {
@@ -273,7 +274,6 @@
 				948CA8181AF3FF43001E0FD3 /* Sources */,
 				948CA8191AF3FF43001E0FD3 /* Frameworks */,
 				948CA81A1AF3FF43001E0FD3 /* Headers */,
-				948CA81B1AF3FF43001E0FD3 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -310,7 +310,6 @@
 				948CA8361AF3FF55001E0FD3 /* Sources */,
 				948CA8371AF3FF55001E0FD3 /* Frameworks */,
 				948CA8381AF3FF55001E0FD3 /* Headers */,
-				948CA8391AF3FF55001E0FD3 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -328,7 +327,7 @@
 				948CA8411AF3FF55001E0FD3 /* Sources */,
 				948CA8421AF3FF55001E0FD3 /* Frameworks */,
 				948CA8431AF3FF55001E0FD3 /* Resources */,
-				940C09D61AF41AFD00E6F7B9 /* CopyFiles */,
+				940C09D61AF41AFD00E6F7B9 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -384,25 +383,11 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		948CA81B1AF3FF43001E0FD3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		948CA8251AF3FF43001E0FD3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				948CA85E1AF40091001E0FD3 /* elon.jpg in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		948CA8391AF3FF55001E0FD3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
