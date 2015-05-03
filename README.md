@@ -72,7 +72,9 @@ Just.post(
 
 ```
 
-More examples can be found in `JustTests/JustSpecs.swift`.
+You can learn more and play with Just in this [Playground][JustStarting]
+
+[JustStarting]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
 
 #  Contribute
 
