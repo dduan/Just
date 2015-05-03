@@ -35,7 +35,7 @@ enum HTTPMethod: String {
 }
 
 public class HTTPResult : NSObject, Printable, DebugPrintable {
-    public var data:NSData?
+    public var content:NSData?
     public var response:NSURLResponse?
     public var error:NSError?
     public var request:NSURLRequest?
@@ -57,14 +57,14 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     }
 
     init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
-        self.data = data
+        self.content = data
         self.response = response
         self.error = error
         self.request = request
     }
 
     public var json:AnyObject? {
-        if let theData = self.data {
+        if let theData = self.content {
             return NSJSONSerialization.JSONObjectWithData(theData, options: NSJSONReadingOptions(0), error: nil)
         }
         return nil
@@ -77,7 +77,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     }
 
     public var text:String? {
-        if let theData = self.data {
+        if let theData = self.content {
             return NSString(data:theData, encoding:encoding) as? String
         }
         return nil
@@ -553,3 +553,4 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         }
     }
 }
+
