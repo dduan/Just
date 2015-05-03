@@ -553,5 +553,31 @@ class JustSpec: QuickSpec {
                 }
             }
         }
+        describe("supported request types") {
+            it("should include OPTIONS") {
+                expect(Just.options("http://httpbin.org/get").ok).to(beTrue())
+            }
+            it("should include HEAD") {
+                expect(Just.head("http://httpbin.org/get").ok).to(beTrue())
+            }
+            it("should include GET") {
+                expect(Just.get("http://httpbin.org/get").ok).to(beTrue())
+            }
+            it("should include HEAD") {
+                expect(Just.head("http://httpbin.org/get").ok).to(beTrue())
+            }
+            it("should include POST") {
+                expect(Just.post("http://httpbin.org/post").ok).to(beTrue())
+            }
+            it("should include PUT") {
+                expect(Just.put("http://httpbin.org/post").ok).to(beTrue())
+            }
+            it("should include PATCH") {
+                expect(Just.patch("http://httpbin.org/patch").ok).to(beTrue())
+            }
+            it("should include DELETE") {
+                expect(Just.delete("http://httpbin.org/delete").ok).to(beTrue())
+            }
+        }
     }
 }
