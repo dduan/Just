@@ -8,6 +8,240 @@
 
 import Foundation
 
+extension Just {
+    public class func delete(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .DELETE,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func get(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        allowRedirects:Bool = true,
+        cookies:[String:String] = [:],
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .GET,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func head(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .HEAD,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func options(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .OPTIONS,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func patch(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .OPTIONS,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func post(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .POST,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+    public class func put(
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        requestBody:NSData? = nil,
+        URLQuery:String? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+
+            return Just.shared.request(
+                .PUT,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: headers,
+                files:files,
+                auth: auth,
+                cookies: cookies,
+                requestBody: requestBody,
+                URLQuery: URLQuery,
+                redirects: allowRedirects,
+                asyncCompletionHandler: asyncCompletionHandler
+            )
+
+    }
+
+
+}
 
 struct JustSessionConfig {
     var JSONReadingOptions: NSJSONReadingOptions? = nil
@@ -22,16 +256,15 @@ public enum HTTPFile {
     case Text(String,String,String?) // filename, text, mimetype
 }
 
+// Supported request types
 enum HTTPMethod: String {
-    case OPTIONS = "OPTIONS"
+    case DELETE = "DELETE"
     case GET = "GET"
     case HEAD = "HEAD"
+    case OPTIONS = "OPTIONS"
+    case PATCH = "PATCH"
     case POST = "POST"
     case PUT = "PUT"
-    case PATCH = "PATCH"
-    case DELETE = "DELETE"
-    case TRACE = "TRACE"
-    case CONNECT = "CONNECT"
 }
 
 public class HTTPResult : NSObject, Printable, DebugPrintable {
@@ -450,72 +683,6 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                     session.configuration.HTTPCookieStorage?.setCookie(cookie)
             }
         }
-    }
-
-    public class func get(
-        URLString:String,
-        params:[String:AnyObject] = [:],
-        data:[String:AnyObject] = [:],
-        json:[String:AnyObject]? = nil,
-        headers:[String:String] = [:],
-        files:[String:HTTPFile] = [:],
-        auth:(String,String)? = nil,
-        allowRedirects:Bool = true,
-        cookies:[String:String] = [:],
-        requestBody:NSData? = nil,
-        URLQuery:String? = nil,
-        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
-        ) -> HTTPResult {
-
-            return Just.shared.request(
-                .GET,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
-                redirects: allowRedirects,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
-
-    }
-
-    public class func post(
-        URLString:String,
-        params:[String:AnyObject] = [:],
-        data:[String:AnyObject] = [:],
-        json:[String:AnyObject]? = nil,
-        headers:[String:String] = [:],
-        files:[String:HTTPFile] = [:],
-        auth:(String,String)? = nil,
-        cookies:[String:String] = [:],
-        allowRedirects:Bool = true,
-        requestBody:NSData? = nil,
-        URLQuery:String? = nil,
-        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
-        ) -> HTTPResult {
-
-            return Just.shared.request(
-                .POST,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
-                redirects: allowRedirects,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
-
     }
 
     public func URLSession(

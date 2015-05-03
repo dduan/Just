@@ -553,6 +553,7 @@ class JustSpec: QuickSpec {
                 }
             }
         }
+
         describe("supported request types") {
             it("should include OPTIONS") {
                 expect(Just.options("http://httpbin.org/get").ok).to(beTrue())
@@ -570,7 +571,7 @@ class JustSpec: QuickSpec {
                 expect(Just.post("http://httpbin.org/post").ok).to(beTrue())
             }
             it("should include PUT") {
-                expect(Just.put("http://httpbin.org/post").ok).to(beTrue())
+                expect(Just.put("http://httpbin.org/put").ok).to(beTrue())
             }
             it("should include PATCH") {
                 expect(Just.patch("http://httpbin.org/patch").ok).to(beTrue())
