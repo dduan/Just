@@ -243,13 +243,6 @@ extension Just {
 
 }
 
-struct JustSessionConfig {
-    var JSONReadingOptions: NSJSONReadingOptions? = nil
-    var JSONWritingOptions: NSJSONWritingOptions? = nil
-    var defaultHeaders:[String:String] = [:]
-    var multipartBoundary:String
-}
-
 public enum HTTPFile {
     case URL(NSURL,String?) // URL to a file, mimetype
     case Data(String,NSData,String?) // filename, data, mimetype
@@ -272,7 +265,8 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var response:NSURLResponse?
     public var error:NSError?
     public var request:NSURLRequest?
-    public var encoding:NSStringEncoding = NSUTF8StringEncoding
+    public var encoding = NSUTF8StringEncoding
+    public var JSONReadingOptions = NSJSONReadingOptions(0)
 
     public override var description:String {
         if let status = statusCode,
@@ -298,7 +292,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public var json:AnyObject? {
         if let theData = self.content {
-            return NSJSONSerialization.JSONObjectWithData(theData, options: NSJSONReadingOptions(0), error: nil)
+            return NSJSONSerialization.JSONObjectWithData(theData, options: JSONReadingOptions, error: nil)
         }
         return nil
     }
@@ -318,7 +312,7 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-        }()
+    }()
 
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
@@ -422,7 +416,15 @@ struct TaskConfiguration {
     var redirects:Bool
 }
 
-public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+public struct JustSessionDefaults {
+    public var JSONReadingOptions = NSJSONReadingOptions(0)
+    public var JSONWritingOptions = NSJSONWritingOptions(0)
+    public var headers:[String:String] = [:]
+    public var multipartBoundary = "Ju5tH77P15Aw350m3"
+    public var encoding = NSUTF8StringEncoding
+}
+
+public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     class var shared: Just {
         struct Singleton {
@@ -433,18 +435,23 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
     var credentials:[Int:(String,String)]=[:]
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
-
+    var defaults:JustSessionDefaults!
     var session: NSURLSession!
     var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
     var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
     let errorDomain = "net.justhttp.Just"
 
-    init(session:NSURLSession? = nil) {
+    init(session:NSURLSession? = nil, defaults:JustSessionDefaults? = nil) {
         super.init()
         if let initialSession = session {
             self.session = initialSession
         } else {
             self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate:self, delegateQueue:nil)
+        }
+        if let initialDefaults = defaults {
+            self.defaults = initialDefaults
+        } else {
+            self.defaults = JustSessionDefaults()
         }
     }
 
@@ -490,6 +497,8 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         if let handler = completionHandler {
             task = session.dataTaskWithRequest(request) { (data, response, error) in
                 let result = HTTPResult(data: data, response: response, error: error, request: request)
+                result.JSONReadingOptions = self.defaults.JSONReadingOptions
+                result.encoding = self.defaults.encoding
                 handler(result)
             }
         } else {
@@ -499,16 +508,14 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         return task
     }
 
-    let kHTTPMultipartBodyBoundary = "Ju5tH77P15Aw350m3"
-
     func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
         var body = NSMutableData()
-        let boundary = "--\(kHTTPMultipartBodyBoundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!
+        let boundary = "--\(self.defaults.multipartBoundary)\r\n".dataUsingEncoding(defaults.encoding)!
         for (k,v) in data {
             let valueToSend:AnyObject = v is NSNull ? "null" : v
             body.appendData(boundary)
-            body.appendData("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-            body.appendData("\(valueToSend)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
+            body.appendData("\(valueToSend)\r\n".dataUsingEncoding(defaults.encoding)!)
         }
 
         for (k,v) in files {
@@ -527,7 +534,7 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 partMimetype = mimetype
             case let .Text(filename, text, mimetype):
                 partFilename = filename
-                if let textData = text.dataUsingEncoding(NSUTF8StringEncoding) {
+                if let textData = text.dataUsingEncoding(defaults.encoding) {
                     partContent = textData
                 }
                 partMimetype = mimetype
@@ -537,18 +544,18 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 partMimetype = mimetype
             }
             if let content = partContent, let filename = partFilename {
-                body.appendData(NSData(data: "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding)!))
+                body.appendData(NSData(data: "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(defaults.encoding)!))
                 if let type = partMimetype {
-                    body.appendData("Content-Type: \(type)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+                    body.appendData("Content-Type: \(type)\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
                 } else {
-                    body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+                    body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
                 }
                 body.appendData(content)
-                body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+                body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
             }
         }
         if body.length > 0 {
-            body.appendData("--\(kHTTPMultipartBodyBoundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("--\(self.defaults.multipartBoundary)--\r\n".dataUsingEncoding(defaults.encoding)!)
         }
         return body
     }
@@ -578,18 +585,18 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                     body = requestData
                 } else if files.count > 0 {
                     body = synthesizeMultipartBody(data, files:files)
-                    contentType = "multipart/form-data; boundary=\(kHTTPMultipartBodyBoundary)"
+                    contentType = "multipart/form-data; boundary=\(self.defaults.multipartBoundary)"
                 } else {
                     if let requestJSON = json {
                         contentType = "application/json"
-                        body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: NSJSONWritingOptions(0), error: nil)
+                        body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions, error: nil)
                     } else {
                         if data.count > 0 {
                             if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
-                                body = NSJSONSerialization.dataWithJSONObject(data, options: NSJSONWritingOptions(0), error: nil)
+                                body = NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions, error: nil)
                             } else {
                                 contentType = "application/x-www-form-urlencoded"
-                                body = query(data).dataUsingEncoding(NSUTF8StringEncoding)
+                                body = query(data).dataUsingEncoding(defaults.encoding)
                             }
                         }
                     }
@@ -602,6 +609,9 @@ public class Just:NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                     let request = NSMutableURLRequest(URL: URL)
                     request.HTTPBody = body
                     request.HTTPMethod = method.rawValue
+                    for (k,v) in defaults.headers {
+                        request.addValue(v, forHTTPHeaderField: k)
+                    }
 
                     for (k,v) in finalHeaders {
                         request.addValue(v, forHTTPHeaderField: k)
