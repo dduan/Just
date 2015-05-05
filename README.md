@@ -53,7 +53,7 @@ let r = Just.post(
     files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
 )
 
-if (r.ok) { // success! }
+if (r.ok) { /* success! */ }
 ```
 
 Here's the same example done asyncronously:
@@ -67,7 +67,7 @@ Just.post(
     data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
     files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
 ) { (r)
-    if (r.ok) { // success! }
+    if (r.ok) { /* success! */ }
 }
 
 ```
