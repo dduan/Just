@@ -31,16 +31,16 @@
     // … "r" becomes available here
 
 //: However, Just doesn't force you to choose. The same request can be made
-//: asynchronusly like this
+//: asynchronously like this
 
     Just.get("http://httpbin.org/get", params:["page": 3]) { (r) in
-        // the same "r" is available asynchronouly here
+        // the same "r" is available asynchronously here
     }
 
 //: That is, you can switch between the two paradigm by adding/removing a
 //: callback. When such callback is present, the result of the request becomes
 //: available asynchronously as an arugment to the callback. Otherwise,
-//: Just will return the very same result synchronouly.
+//: Just will return the very same result synchronously.
 //:
 //: The examples in the rest of this document will be synchronous. Keep in
 //: mind that all of them can easily become asynchronous.
@@ -54,7 +54,7 @@
     r.statusCode
     r.error
 
-//: Hopefully, that's self explainatory. `ok` is `true` if a respose is
+//: Hopefully, that's self explainatory. `ok` is `true` if a response is
 //: received and the `statusCode` is not `4xx` or `5xx`. When `ok` is `false`,
 //: `error` may contain an `NSError` object from the underlying `NSURLSession`.
 //:
@@ -85,7 +85,7 @@
     r.request?.HTTPMethod
 
 //: ## More Complicated Requests
-
+//:
 //: To send form values, use the `data` parameter:
 
     // body of this request will be `firstName=Barry&lastName=Allen`
@@ -98,7 +98,7 @@
     // a `Content-Type` header will be added as `application/json`
     Just.post("http://httpbin.org/post", json:["firstName":"Barry","lastName":"Allen"])
 
-//: By default, Just follows server's redirect instrution. You can supply a
+//: By default, Just follows server's redirect instrution. You can supply an
 //: `allowRedirects` argument to control this behavior.
 
     // redirects
@@ -117,10 +117,13 @@
         }
     }
 
-//: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a file is needed.
+//: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
 
     if let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) {
-        if let text = Just.post("http://httpbin.org/post", files:["a":.Data("marco.text", someData, nil), "b":.Text("polo.txt", "Polo", nil)]).text {
+        if let text = Just.post(
+            "http://httpbin.org/post",
+            files:["a":.Data("marco.text", someData, nil), "b":.Text("polo.txt", "Polo", nil)]
+        ).text {
             print(text)
         }
     }
@@ -133,8 +136,8 @@
 
     if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"), let photoURL = NSURL(fileURLWithPath: photoPath) {
         if let json = Just.post("http://httpbin.org/post", data:["lastName":"Musk"], files:["elon":.URL(photoURL, nil)]).json as? [String:AnyObject] {
-            print(json["form"])
-            print(json["files"])
+            print(json["form"] ?? [:])
+            print(json["files"] ?? [:])
         }
     }
 
@@ -150,6 +153,6 @@
 
 //: ## Authentication
 //:
-//: If a request is to be challenged by basic or digest authentication, an `auth` parameter can be used to provide a tuple for username and password
+//: If a request is to be challenged by basic or digest authentication, use the `auth` parameter to provide a tuple for username and password
 
     Just.get("http://httpbin.org/basic-auth/flash/allen", auth:("flash", "allen"))
