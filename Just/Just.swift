@@ -616,6 +616,7 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
 
                 if let URL = urlComponent.URL {
                     let request = NSMutableURLRequest(URL: URL)
+                    request.cachePolicy = .ReloadIgnoringLocalCacheData
                     request.HTTPBody = body
                     request.HTTPMethod = method.rawValue
                     for (k,v) in defaults.headers {
