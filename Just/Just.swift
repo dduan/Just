@@ -239,8 +239,6 @@ extension Just {
             )
 
     }
-
-
 }
 
 public enum HTTPFile {
@@ -267,6 +265,16 @@ public class HTTPResult : NSObject, Printable, DebugPrintable {
     public var request:NSURLRequest?
     public var encoding = NSUTF8StringEncoding
     public var JSONReadingOptions = NSJSONReadingOptions(0)
+    public var isRedirect:Bool {
+        if let code = self.statusCode {
+            return code >= 300 && code < 400
+        }
+        return false
+    }
+
+    public var isPermanentRedirect:Bool {
+        return self.statusCode == 301
+    }
 
     public override var description:String {
         if let status = statusCode,
@@ -559,6 +567,7 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         }
         return body
     }
+
     func synthesizeRequest(
         method:HTTPMethod,
         URLString:String,
