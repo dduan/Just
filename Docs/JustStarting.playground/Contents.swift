@@ -61,11 +61,12 @@
 //: Moving on:
 
     // what did the server return?
-    r.headers   // response headers
-    r.content   // response body as NSData?
-    r.text      // response body as text?
-    r.json      // response body parsed by NSJSONSerielization
-    r.url       // the URL, as `NSURL`
+    r.headers       // response headers
+    r.content       // response body as NSData?
+    r.text          // response body as text?
+    r.json          // response body parsed by NSJSONSerielization
+    r.url           // the URL, as `NSURL`
+    r.isRedirect    // is this a redirect response
 
 //: The `headers` property is a Swift-dictionary-like object:
 
@@ -102,10 +103,17 @@
 //: `allowRedirects` argument to control this behavior.
 
     // redirects
-    Just.get("http://httpbin.org/redirect/2").url
+    Just.get("http://httpbin.org/redirect/2").isRedirect
 
     // no redirects
-    Just.get("http://httpbin.org/redirect/2", allowRedirects:false).url
+    Just.get("http://httpbin.org/redirect/2", allowRedirects:false).isRedirect
+
+//: In addition, a permanent redirect can be detected this way:
+    // permanent redirect
+    Just.get("http://httpbin.org/status/301", allowRedirects:false).isPermanentRedirect
+
+    // non permanent redirect
+    Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedirect
 
 //: ## Files
 //: Uploading files is easy with Just:

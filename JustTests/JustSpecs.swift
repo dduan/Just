@@ -173,6 +173,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should send flat JSON data in JSON format") {
                 let r = Just.post("http://httpbin.org/post", json:["a":1])
                 expect(r.json).toNot(beNil())
@@ -183,6 +184,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should send compound JSON data in JSON format") {
                 let r = Just.post("http://httpbin.org/post", json:["a":[1, "b"]])
                 expect(r.json).toNot(beNil())
@@ -248,6 +250,7 @@ class JustSpec: QuickSpec {
                     fail("resource needed for this test can't be found")
                 }
             }
+
             it("should be able to send a single file specified by URL and mimetype") {
                 if let elonPhotoURL = NSBundle(forClass: JustSpec.self).URLForResource("elon",  withExtension:"jpg") {
                     let r = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, "image/jpeg")])
@@ -262,6 +265,7 @@ class JustSpec: QuickSpec {
                     fail("resource needed for this test can't be found")
                 }
             }
+
             it("should be able to send a single file specified by data without mimetype") {
                 if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
                     let r = Just.post("http://httpbin.org/post", files:["elon":.Data("JustTests.swift", dataToSend, nil)])
@@ -291,6 +295,7 @@ class JustSpec: QuickSpec {
                     fail("can't encode text as data")
                 }
             }
+
             it("should be able to send a single file specified by text without mimetype") {
                 let r = Just.post("http://httpbin.org/post", files:["test":.Text("JustTests.swift", "haha not really", nil)])
                 expect(r.json).toNot(beNil())
@@ -301,6 +306,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should be able to send a single file specified by text and mimetype") {
                 let r = Just.post("http://httpbin.org/post", files:["test":.Text("JustTests.swift", "haha not really", "text/plain")])
                 expect(r.json).toNot(beNil())
@@ -311,6 +317,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should be able to send multiple files specified the same way") {
                 let r = Just.post(
                     "http://httpbin.org/post",
@@ -330,6 +337,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should be able to send multiple files specified in different ways") {
                 if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
                     let r = Just.post(
@@ -351,6 +359,7 @@ class JustSpec: QuickSpec {
                     fail("can't encode text as data")
                 }
             }
+
             it("should be able to send a file along with some data") {
                 let r = Just.post(
                     "http://httpbin.org/post",
@@ -371,6 +380,7 @@ class JustSpec: QuickSpec {
                     }
                 }
             }
+
             it("should be able to send multiple files along with some data") {
                 if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
                     let r = Just.post(
@@ -397,6 +407,7 @@ class JustSpec: QuickSpec {
                     fail("can't encode text as data")
                 }
             }
+
             it("should override JSON when files are specified") {
                 if let dataToSend = "haha not really".dataUsingEncoding(NSUTF8StringEncoding) {
                     let r = Just.post(
@@ -535,12 +546,14 @@ class JustSpec: QuickSpec {
                 let r = Just.get("http://httpbin.org/digest-auth/auth/dan/pass")
                 expect(r.ok).to(beFalse())
             }
+
             it("should succeed at a challenge when auth info is correct") {
                 let username = "dan"
                 let password = "password"
                 let r = Just.get("http://httpbin.org/digest-auth/auth/\(username)/\(password)", auth:(username, password))
                 expect(r.ok).to(beTrue())
             }
+
             it("should fail a challenge when auth contains wrong value") {
                 let username = "dan"
                 let password = "password"
@@ -559,6 +572,7 @@ class JustSpec: QuickSpec {
                     expect(cookie.value).to(equal("just"))
                 }
             }
+
             it("sends cookies in specified in requests") {
                 Just.get("http://httpbin.org/cookies/delete?test")
                 let r = Just.get("http://httpbin.org/cookies", cookies:["test":"just"])
@@ -577,24 +591,31 @@ class JustSpec: QuickSpec {
             it("should include OPTIONS") {
                 expect(Just.options("http://httpbin.org/get").ok).to(beTrue())
             }
+
             it("should include HEAD") {
                 expect(Just.head("http://httpbin.org/get").ok).to(beTrue())
             }
+
             it("should include GET") {
                 expect(Just.get("http://httpbin.org/get").ok).to(beTrue())
             }
+
             it("should include HEAD") {
                 expect(Just.head("http://httpbin.org/get").ok).to(beTrue())
             }
+
             it("should include POST") {
                 expect(Just.post("http://httpbin.org/post").ok).to(beTrue())
             }
+
             it("should include PUT") {
                 expect(Just.put("http://httpbin.org/put").ok).to(beTrue())
             }
+
             it("should include PATCH") {
                 expect(Just.patch("http://httpbin.org/patch").ok).to(beTrue())
             }
+
             it("should include DELETE") {
                 expect(Just.delete("http://httpbin.org/delete").ok).to(beTrue())
             }
