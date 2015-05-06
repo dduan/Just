@@ -124,6 +124,25 @@ class JustSpec: QuickSpec {
                 expect(r.statusCode).toNot(equal(200))
                 expect(r.statusCode).to(equal(302))
             }
+            it("should report isRedirect as false when it performs redirect") {
+                expect(Just.get("http://httpbin.org/redirect/2").isRedirect).to(beFalse())
+            }
+            it("should report isRedirect as true when it encounters redirect") {
+                expect(Just.get("http://httpbin.org/redirect/2", allowRedirects:false).isRedirect).to(beTrue())
+            }
+            it("should report isPermanentRedirect as false when it performs redirect") {
+                expect(Just.get("http://httpbin.org/redirect/2").isPermanentRedirect).to(beFalse())
+            }
+            it("should report isPermanentRedirect as false when it encounters non permanent redirect") {
+                let r = Just.get("http://httpbin.org/status/302", allowRedirects:false)
+                expect(r.isRedirect).to(beTrue())
+                expect(r.isPermanentRedirect).to(beFalse())
+            }
+            it("should report isPermanentRedirect as true when it encounters permanent redirect") {
+                let r = Just.get("http://httpbin.org/status/301", allowRedirects:false)
+                expect(r.isRedirect).to(beTrue())
+                expect(r.isPermanentRedirect).to(beTrue())
+            }
         }
 
         describe("JSON sending") {
