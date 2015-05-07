@@ -13,7 +13,7 @@
 
     Just.get("http://httpbin.org/get", params:["page": 3])
 
-//: Just supports these methods `DELETE/GET/HEAD/OPTIONS/PATCH/POST/PUT`
+//: Just supports these methods *DELETE/GET/HEAD/OPTIONS/PATCH/POST/PUT*
 //:
 //: As you will find out throughout this tutorial, with Just, making network
 //: requests takes minimal amount of effort.
@@ -43,20 +43,18 @@
 //: Just will return the very same result synchronously.
 //:
 //: The examples in the rest of this document will be synchronous. Keep in
-//: mind that all of them can easily become asynchronous.
+//: mind that all of them can easily be asynchronous.
 
 //: ## HTTP Result
 //: The result of a HTTP request is captured in a single object.
-//: Let's take a look at `r` from the previous example.
+//: Let's take a look at *r* from the previous example.
 
     // is the request successful?
     r.ok
     r.statusCode
-    r.error
 
-//: Hopefully, that's self explainatory. `ok` is `true` if a response is
-//: received and the `statusCode` is not `4xx` or `5xx`. When `ok` is `false`,
-//: `error` may contain an `NSError` object from the underlying `NSURLSession`.
+//: Hopefully, that's self explainatory. **ok** is *true* if a response is
+//: received and the **statusCode** is not *4xx* or *5xx*.
 //:
 //: Moving on:
 
@@ -65,10 +63,10 @@
     r.content       // response body as NSData?
     r.text          // response body as text?
     r.json          // response body parsed by NSJSONSerielization
-    r.url           // the URL, as `NSURL`
+    r.url           // the URL, as *NSURL*
     r.isRedirect    // is this a redirect response
 
-//: The `headers` property is a Swift-dictionary-like object:
+//: The **headers** property is a Swift-dictionary-like object:
 
     for (k,v) in r.headers {
         println("\(k):\(v)")
@@ -80,27 +78,33 @@
     r.headers["Content-Length"]
     r.headers["cOnTeNt-LeNgTh"]
 
-//: The original request is preserved as a `NSURLRequest`:
+//: The original request is preserved as a *NSURLRequest*:
 
     r.request
     r.request?.HTTPMethod
 
+//: When things aren't going so well:
+    let erronous = Just.get("http://httpbin.org/does/not/exist") // oops
+    erronous.ok         // nope
+    erronous.reason     // text description of the failure
+    erronous.error      // NSError from NSURLSession, if any
+
 //: ## More Complicated Requests
 //:
-//: To send form values, use the `data` parameter:
+//: To send form values, use the **data** parameter:
 
-    // body of this request will be `firstName=Barry&lastName=Allen`
-    // a `Content-Type` header will be added as `application/x-form-www-encoded`
+    // body of this request will be *firstName=Barry&lastName=Allen*
+    // a *Content-Type* header will be added as *application/x-form-www-encoded*
     Just.post("http://httpbin.org/post", data:["firstName":"Barry","lastName":"Allen"])
 
 //: JSON values are similar:
 
     // body of this request will be in JSON
-    // a `Content-Type` header will be added as `application/json`
+    // a *Content-Type* header will be added as *application/json*
     Just.post("http://httpbin.org/post", json:["firstName":"Barry","lastName":"Allen"])
 
 //: By default, Just follows server's redirect instrution. You can supply an
-//: `allowRedirects` argument to control this behavior.
+//: **allowRedirects** argument to control this behavior.
 
     // redirects
     Just.get("http://httpbin.org/redirect/2").isRedirect
@@ -120,9 +124,8 @@
 
     import Foundation
     if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"), let photoURL = NSURL(fileURLWithPath: photoPath) {
-        if let text = Just.post("http://httpbin.org/post", files:["elon":.URL(photoURL, nil)]).text {
-            print(text)
-        }
+        let uploadResult =  Just.post("http://httpbin.org/post", files:["elon":.URL(photoURL, nil)]) // <== that's it
+        print(uploadResult.text ?? "")
     }
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
@@ -130,7 +133,7 @@
     if let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) {
         if let text = Just.post(
             "http://httpbin.org/post",
-            files:["a":.Data("marco.text", someData, nil), "b":.Text("polo.txt", "Polo", nil)]
+            files:["a":.Data("marco.text", someData, nil), "b":.Text("polo.txt", "Polo", nil)] // <== two files
         ).text {
             print(text)
         }
@@ -138,9 +141,9 @@
 
 //: Two files are being uploaded here.
 //:
-//: The `nil` part of the argument in both examples is an optional String that can be used to specify the MIMEType of the files.
+//: The *nil* part of the argument in both examples is an optional String that can be used to specify the MIMEType of the files.
 //:
-//: `data` parametor can be used in conjuction with `files`. When that happens, though, the `Content-Type` of the request will be `multipart/form-data; ...`.
+//: **data** parameter can be used in conjuction with **files**. When that happens, though, the *Content-Type* of the request will be *multipart/form-data; ...*.
 
     if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"), let photoURL = NSURL(fileURLWithPath: photoPath) {
         if let json = Just.post("http://httpbin.org/post", data:["lastName":"Musk"], files:["elon":.URL(photoURL, nil)]).json as? [String:AnyObject] {
@@ -161,6 +164,7 @@
 
 //: ## Authentication
 //:
-//: If a request is to be challenged by basic or digest authentication, use the `auth` parameter to provide a tuple for username and password
+//: If a request is to be challenged by basic or digest authentication, use the **auth** parameter to provide a tuple for username and password
 
     Just.get("http://httpbin.org/basic-auth/flash/allen", auth:("flash", "allen"))
+
