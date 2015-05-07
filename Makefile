@@ -5,7 +5,7 @@ test :
 
 playground :
 	cp Just/Just.swift Docs/JustStarting.playground/Sources/Just.swift
-	zip Docs/JustStarting.zip Docs/JustStarting.playground
+	zip -r -X Docs/JustStarting.zip Docs/JustStarting.playground/*
 
 clean :
 	@xcodebuild clean
