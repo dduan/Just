@@ -20,7 +20,7 @@ Just lets you to the following effortlessly:
 -   basic/digest authentication
 -   cookies
 -   synchrounous / asyncrounous requests
--   friendly accessible eesults
+-   friendly accessible results
 
 #   Install
 
@@ -89,4 +89,4 @@ For those who use editors other than Xcode, `make` command requires
 
 #  License
 
-MIT, see License.md.
+MIT, see [LICENSE.md](https://github.com/JustHTTP/Just/blob/master/LICENSE.md).
