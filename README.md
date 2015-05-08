@@ -22,6 +22,39 @@ Just lets you to the following effortlessly:
 -   synchrounous / asyncrounous requests
 -   friendly accessible results
 
+#  Use
+
+An examle of making a request with Just:
+
+```swift
+//  talk to registration end point
+let r = Just.post(
+    "http://justiceleauge.org/member/register",
+    data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
+    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
+)
+
+if (r.ok) { /* success! */ }
+```
+
+Here's the same example done asyncronously:
+
+```swift
+//  talk to registration end point
+Just.post(
+    "http://justiceleauge.org/member/register",
+    data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
+    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
+) { (r)
+    if (r.ok) { /* success! */ }
+}
+
+```
+
+You can learn more and play with Just in this [Playground][JustStarting]
+
+[JustStarting]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
+
 #   Install
 
 Here are some ways to leverage Just.
@@ -38,43 +71,6 @@ Here are some ways to leverage Just.
 
 [Carthage]: https://github.com/Carthage/Carthage "Carthage"
 
-
-#  Use
-
-An examle of making a request with Just:
-
-```swift
-//Swift
-
-//  talk to registration end point
-let r = Just.post(
-    "http://justiceleauge.org/member/register",
-    data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
-    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
-)
-
-if (r.ok) { /* success! */ }
-```
-
-Here's the same example done asyncronously:
-
-```swift
-//Swift
-
-//  talk to registration end point
-Just.post(
-    "http://justiceleauge.org/member/register",
-    data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
-    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
-) { (r)
-    if (r.ok) { /* success! */ }
-}
-
-```
-
-You can learn more and play with Just in this [Playground][JustStarting]
-
-[JustStarting]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
 
 #  Contribute
 
