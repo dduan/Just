@@ -3,7 +3,7 @@ Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Hu
 *Caution: Just is still in development and is subject to breaking changes before version 1.0.*
 
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Platform](http://img.shields.io/cocoapods/p/Timepiece.svg?style=flat)
 
 
 [python-requests]: http://python-requests.org "python-requests"
