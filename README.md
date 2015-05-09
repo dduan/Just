@@ -55,7 +55,7 @@ You can learn more and play with Just in this [Playground][JustStarting]
 
 [JustStarting]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
 
-#   Install
+#  Install
 
 Here are some ways to leverage Just.
 
@@ -77,8 +77,7 @@ Here are some ways to leverage Just.
 Pull requests are welcome. Here are some tips for code contributors:
 
 [Carthage][] is needed to install [Quick][], before you can run the tests.
-For those who use editors other than Xcode, `make` command requires
-[xcpretty][].
+For Xcode rebels, checkout `Makefile` (you'll need [xcpretty][]).
 
 [Quick]: https://github.com/Quick/Quick "Quick"
 [xcpretty]: https://github.com/supermarin/xcpretty "xcpretty"
