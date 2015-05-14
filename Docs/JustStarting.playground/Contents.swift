@@ -1,4 +1,4 @@
-//: # Just: Getting Started
+//: # Getting Started With Just
 //: This is an introduction to the basics of donig HTTP via Just.
 //: It's available both on the
 //: [web](http://docs.justhttp.net/JustStarting.html)
@@ -6,6 +6,7 @@
 //: [playground](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip).
 //: Readers are assumed to understand of the HTTP protocal.
 //:
+//: ## Simple Requests
 //: Just's API is heavily influenced by [python-requests](http://python-requests.org),
 //: HTTP for Humans in Python.
 //:
