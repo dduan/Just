@@ -5,8 +5,10 @@ Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Hu
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Platform](http://img.shields.io/cocoapods/p/Timepiece.svg?style=flat)
 
+Follow [@JustHTTP](twitter) for updates. Questions/comments/concerns are also welcome!
 
 [python-requests]: http://python-requests.org "python-requests"
+[twitter]: https://twitter.com/JustHTTP
 
 #   Features
 
@@ -79,6 +81,7 @@ Pull requests are welcome. Here are some tips for code contributors:
 
 [Carthage][] is needed to install [Quick][], before you can run the tests.
 For Xcode rebels, checkout `Makefile` (you'll need [xcpretty][]).
+
 
 [Quick]: https://github.com/Quick/Quick "Quick"
 [xcpretty]: https://github.com/supermarin/xcpretty "xcpretty"
