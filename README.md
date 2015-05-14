@@ -54,9 +54,11 @@ Just.post(
 
 ```
 
-You can learn more and play with Just in this [Playground][JustStarting]
+To learn more, read *Getting Started* [on the web][starting link] or
+[in this playground][starting playground]
 
-[JustStarting]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
+[starting playground]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
+[starting link]: http://docs.justhttp.net/JustStarting.html
 
 #  Install
 

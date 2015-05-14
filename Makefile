@@ -6,6 +6,7 @@ test :
 	@xcodebuild test -project Just.xcodeproj -scheme Just-OSX -destination 'platform=OS X' | xcpretty
 
 playground :
+	@mkdir -p Docs/JustStarting.playground/Sources
 	@cp Just/Just.swift Docs/JustStarting.playground/Sources/Just.swift
 	@zip -r -X Docs/JustStarting.zip Docs/JustStarting.playground/*
 

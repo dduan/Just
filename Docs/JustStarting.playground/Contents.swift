@@ -1,9 +1,13 @@
-//: # Just: HTTP for Humans
-//: This document is an introduction to the basics of donig HTTP via Just.
+//: # Just: Getting Started
+//: This is an introduction to the basics of donig HTTP via Just.
+//: It's available both on the
+//: [web](http://docs.justhttp.net/JustStarting.html)
+//: and as a
+//: [playground](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip).
 //: Readers are assumed to understand of the HTTP protocal.
 //:
 //: Just's API is heavily influenced by [python-requests](http://python-requests.org),
-//: a popular client-side HTTP library in the Python community.
+//: HTTP for Humans in Python.
 //:
 //: Here's a simple POST request via Just:
 
