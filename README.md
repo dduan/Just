@@ -19,6 +19,7 @@ Just lets you to the following effortlessly:
 -   multpart file upload along with form values.
 -   basic/digest authentication
 -   cookies
+-   timeouts
 -   synchrounous / asyncrounous requests
 -   friendly accessible results
 

@@ -167,3 +167,9 @@
 
     Just.get("http://httpbin.org/basic-auth/flash/allen", auth:("flash", "allen"))
 
+//: ## Timeout
+//:
+//: You can tell Just to stop waiting for a response after a given number of seconds with the timeout parameter:
+
+    // this request won't finish
+    Just.get("http://httpbin.org/delay/5", timeout:0.2).reason
