@@ -54,8 +54,8 @@ extension Just {
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
         timeout:Double? = nil,
-        requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        requestBody:NSData? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -69,9 +69,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout:timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -103,9 +104,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout:timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -137,9 +139,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout: timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -171,9 +174,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout: timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -205,9 +209,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout: timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -239,9 +244,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout: timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -273,9 +279,10 @@ extension Just {
                 files:files,
                 auth: auth,
                 cookies: cookies,
-                requestBody: requestBody,
-                URLQuery: URLQuery,
                 redirects: allowRedirects,
+                timeout: timeout,
+                URLQuery: URLQuery,
+                requestBody: requestBody,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -628,6 +635,7 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         json:[String:AnyObject]?,
         headers:CaseInsensitiveDictionary<String,String>,
         files:[String:HTTPFile],
+        timeout:Double?,
         requestBody:NSData?,
         URLQuery:String?
         ) -> NSURLRequest? {
@@ -662,6 +670,7 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                         }
                     }
                 }
+
                 if let contentTypeValue = contentType {
                     finalHeaders["Content-Type"] = contentTypeValue
                 }
@@ -671,6 +680,10 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                     request.cachePolicy = .ReloadIgnoringLocalCacheData
                     request.HTTPBody = body
                     request.HTTPMethod = method.rawValue
+                    if let requestTimeout = timeout {
+                        request.timeoutInterval = requestTimeout
+                    }
+
                     for (k,v) in defaults.headers {
                         request.addValue(v, forHTTPHeaderField: k)
                     }
@@ -695,9 +708,10 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         files:[String:HTTPFile],
         auth:(String, String)?,
         cookies: [String:String],
-        requestBody:NSData?,
-        URLQuery:String?,
         redirects:Bool,
+        timeout:Double?,
+        URLQuery:String?,
+        requestBody:NSData?,
         asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
             let isSync = asyncCompletionHandler == nil
@@ -714,6 +728,7 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
                 json: json,
                 headers: caseInsensitiveHeaders,
                 files: files,
+                timeout:timeout,
                 requestBody:requestBody,
                 URLQuery: URLQuery
             ) {
