@@ -620,5 +620,17 @@ class JustSpec: QuickSpec {
                 expect(Just.delete("http://httpbin.org/delete").ok).to(beTrue())
             }
         }
+
+        describe("timeout") {
+            it("should timeout when response is taking longer than specified") {
+                let r = Just.get("http://httpbin.org/delay/10", timeout:0.5)
+                expect(r.ok).to(beFalse())
+            }
+
+            it("should not timeout when response is taking shorter than specified") {
+                let r = Just.get("http://httpbin.org/delay/1", timeout:2)
+                expect(r.ok).to(beTrue())
+            }
+        }
     }
 }

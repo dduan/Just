@@ -53,6 +53,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -86,6 +87,7 @@ extension Just {
         auth:(String,String)? = nil,
         allowRedirects:Bool = true,
         cookies:[String:String] = [:],
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -119,6 +121,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -152,6 +155,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -185,6 +189,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -218,6 +223,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
@@ -251,6 +257,7 @@ extension Just {
         auth:(String,String)? = nil,
         cookies:[String:String] = [:],
         allowRedirects:Bool = true,
+        timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
