@@ -1,10 +1,10 @@
-#   Just: HTTP for Humans In Swift [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+#   Just: Swift HTTP for Humans [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 <img src="https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/IconMasked.png" width="512" height="512">
 
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
-If you use Twitter, consider following [@JustHTTP](twitter) for updates!
+*Follow [@JustHTTP](twitter) for updates, if you are into that kind of things 😉*
 
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
