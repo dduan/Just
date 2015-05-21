@@ -1,11 +1,9 @@
+![Just Icon](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/IconMasked.png)
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
-*Caution: Just is still in development and is subject to breaking changes before version 1.0.*
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Platform](http://img.shields.io/cocoapods/p/Timepiece.svg?style=flat)
-
-Follow [@JustHTTP](twitter) for updates. Questions/comments/concerns are also welcome!
+If you use Twitter, consider following [@JustHTTP](twitter) for updates!
 
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
