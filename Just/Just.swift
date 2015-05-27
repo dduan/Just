@@ -306,8 +306,12 @@ enum HTTPMethod: String {
     case PUT = "PUT"
 }
 
-public class HTTPResult : NSObject, Printable, DebugPrintable {
-    public var content:NSData?
+/// The only reason this is not a struct is the requirements for
+/// lazy evaluation of `headers` and `cookies`, which is mutating the
+/// struct. This would make those properties unusable with `HTTPResult`s
+/// declared with `let`
+public final class HTTPResult : NSObject, Printable, DebugPrintable {
+    public final var content:NSData?
     public var response:NSURLResponse?
     public var error:NSError?
     public var request:NSURLRequest?
