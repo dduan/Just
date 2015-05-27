@@ -788,8 +788,7 @@ extension Just: NSURLSessionTaskDelegate {
         var endCredential:NSURLCredential? = nil
 
         if let credential = taskConfigs[task.taskIdentifier]?.credential {
-            if challenge.previousFailureCount > 0 {
-            } else {
+            if !(challenge.previousFailureCount > 0) {
                 endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
             }
         }
