@@ -495,7 +495,7 @@ public struct JustSessionDefaults {
     public var encoding = NSUTF8StringEncoding
 }
 
-public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+public class Just: NSObject {
 
     class var shared: Just {
         struct Singleton {
@@ -776,6 +776,9 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
         }
     }
 
+}
+
+extension Just: NSURLSessionTaskDelegate {
     public func URLSession(
         session: NSURLSession,
         task: NSURLSessionTask,
@@ -810,5 +813,5 @@ public class Just: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
             completionHandler(request)
         }
     }
-}
 
+}
