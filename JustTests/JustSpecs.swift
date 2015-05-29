@@ -13,6 +13,15 @@ import Nimble
 class JustSpec: QuickSpec {
     override func spec() {
         describe("URL query string") {
+            it("should download a photo ok") {
+                var count: Int = 0
+                let r = Just.get("http://www.math.mcgill.ca/triples/Barr-Wells-ctcs.pdf", asyncProgressHandler:{(p) in
+                    count += 1
+                })
+                expect(r.ok).to(beTrue())
+                println(count)
+                expect(count).toEventuallyNot(equal(0))
+            }
             it("should sends simple query string specified for GET") {
                 let r = Just.get("http://httpbin.org/get", params:["a":1])
                 expect(r.json).toNot(beNil())

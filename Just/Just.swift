@@ -8,40 +8,6 @@
 
 import Foundation
 
-// stolen from python-requests
-let statusCodeDescriptions = [
-    // Informational.
-    100: "continue"                      , 101: "switching protocols"             , 102: "processing"                           ,
-    103: "checkpoint"                    , 122: "uri too long"                    , 200: "ok"                                   ,
-    201: "created"                       , 202: "accepted"                        , 203: "non authoritative info"               ,
-    204: "no content"                    , 205: "reset content"                   , 206: "partial content"                      ,
-    207: "multi status"                  , 208: "already reported"                , 226: "im used"                              ,
-
-    // Redirection.
-    300: "multiple choices"              , 301: "moved permanently"               , 302: "found"                                ,
-    303: "see other"                     , 304: "not modified"                    , 305: "use proxy"                            ,
-    306: "switch proxy"                  , 307: "temporary redirect"              , 308: "permanent redirect"                   ,
-
-    // Client Error.
-    400: "bad request"                   , 401: "unauthorized"                    , 402: "payment required"                     ,
-    403: "forbidden"                     , 404: "not found"                       , 405: "method not allowed"                   ,
-    406: "not acceptable"                , 407: "proxy authentication required"   , 408: "request timeout"                      ,
-    409: "conflict"                      , 410: "gone"                            , 411: "length required"                      ,
-    412: "precondition failed"           , 413: "request entity too large"        , 414: "request uri too large"                ,
-    415: "unsupported media type"        , 416: "requested range not satisfiable" , 417: "expectation failed"                   ,
-    418: "im a teapot"                   , 422: "unprocessable entity"            , 423: "locked"                               ,
-    424: "failed dependency"             , 425: "unordered collection"            , 426: "upgrade required"                     ,
-    428: "precondition required"         , 429: "too many requests"               , 431: "header fields too large"              ,
-    444: "no response"                   , 449: "retry with"                      , 450: "blocked by windows parental controls" ,
-    451: "unavailable for legal reasons" , 499: "client closed request"           ,
-
-    // Server Error.
-    500: "internal server error"         , 501: "not implemented"                 , 502: "bad gateway"                          ,
-    503: "service unavailable"           , 504: "gateway timeout"                 , 505: "http version not supported"           ,
-    506: "variant also negotiates"       , 507: "insufficient storage"            , 509: "bandwidth limit exceeded"             ,
-    510: "not extended"                  ,
-]
-
 extension Just {
     public class func delete(
         URLString:String,
@@ -432,16 +398,16 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
     public var startIndex: Index
     public var endIndex: Index
 
-    var count: Int {
+    public var count: Int {
         assert(_data.count == _keyMap.count, "internal keys out of sync")
         return _data.count
     }
 
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         return _data.isEmpty
     }
 
-    init() {
+    public init() {
         startIndex = _data.startIndex
         endIndex = _data.endIndex
     }
@@ -488,10 +454,10 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
         return _data.generate()
     }
 
-    var keys: LazyForwardCollection<MapCollectionView<[Key : Value], Key>> {
+    public var keys: LazyForwardCollection<MapCollectionView<[Key : Value], Key>> {
         return _data.keys
     }
-    var values: LazyForwardCollection<MapCollectionView<[Key : Value], Value>> {
+    public var values: LazyForwardCollection<MapCollectionView<[Key : Value], Value>> {
         return _data.values
     }
 }
@@ -517,7 +483,23 @@ public struct JustSessionDefaults {
     public var encoding = NSUTF8StringEncoding
 }
 
+
+public struct HTTPProgress {
+    public enum Type {
+        case Upload
+        case Download
+    }
+
+    public let type:Type
+    public let bytesProcessed:Int64
+    public let bytesExpectedToProcess:Int64
+    public var percent: Float {
+        return Float(bytesProcessed) / Float(bytesExpectedToProcess)
+    }
+}
+
 let errorDomain = "net.justhttp.Just"
+
 public class Just: NSObject {
 
     class var shared: Just {
@@ -549,6 +531,7 @@ public class Just: NSObject {
         code: 0,
         userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"]
     )
+
     var syncResultAccessError = NSError(
         domain: errorDomain,
         code: 1,
@@ -811,20 +794,6 @@ public class Just: NSObject {
 
 }
 
-public struct HTTPProgress {
-    public enum Type {
-        case Upload
-        case Download
-    }
-
-    public let type:Type
-    public let bytesProcessed:Int64
-    public let bytesExpectedToProcess:Int64
-    public var percent: Float {
-        return Float(bytesProcessed) / Float(bytesExpectedToProcess)
-    }
-}
-
 extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     public func URLSession(
         session: NSURLSession,
@@ -848,16 +817,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         task: NSURLSessionTask,
         willPerformHTTPRedirection response: NSHTTPURLResponse,
         newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void
-        ) {
-            if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
-                if !allowRedirects {
-                    completionHandler(nil)
-                    return
-                }
-                completionHandler(request)
-            } else {
-                completionHandler(request)
+    ) {
+        if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
+            if !allowRedirects {
+                completionHandler(nil)
+                return
             }
+            completionHandler(request)
+        } else {
+            completionHandler(request)
+        }
     }
 
     public func URLSession(
@@ -866,16 +835,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         didSendBodyData bytesSent: Int64,
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64
-        ) {
-            if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
-                handler(
-                    HTTPProgress(
-                        type: .Upload,
-                        bytesProcessed: totalBytesSent,
-                        bytesExpectedToProcess: totalBytesExpectedToSend
-                    )
+    ) {
+        if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
+            handler(
+                HTTPProgress(
+                    type: .Upload,
+                    bytesProcessed: totalBytesSent,
+                    bytesExpectedToProcess: totalBytesExpectedToSend
                 )
-            }
+            )
+        }
     }
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
@@ -904,10 +873,42 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
             result.JSONReadingOptions = self.defaults.JSONReadingOptions
             result.encoding = self.defaults.encoding
             handler(result)
-
         }
         taskConfigs.removeValueForKey(task.taskIdentifier)
     }
 
 }
 
+// stolen from python-requests
+let statusCodeDescriptions = [
+    // Informational.
+    100: "continue"                      , 101: "switching protocols"             , 102: "processing"                           ,
+    103: "checkpoint"                    , 122: "uri too long"                    , 200: "ok"                                   ,
+    201: "created"                       , 202: "accepted"                        , 203: "non authoritative info"               ,
+    204: "no content"                    , 205: "reset content"                   , 206: "partial content"                      ,
+    207: "multi status"                  , 208: "already reported"                , 226: "im used"                              ,
+
+    // Redirection.
+    300: "multiple choices"              , 301: "moved permanently"               , 302: "found"                                ,
+    303: "see other"                     , 304: "not modified"                    , 305: "use proxy"                            ,
+    306: "switch proxy"                  , 307: "temporary redirect"              , 308: "permanent redirect"                   ,
+
+    // Client Error.
+    400: "bad request"                   , 401: "unauthorized"                    , 402: "payment required"                     ,
+    403: "forbidden"                     , 404: "not found"                       , 405: "method not allowed"                   ,
+    406: "not acceptable"                , 407: "proxy authentication required"   , 408: "request timeout"                      ,
+    409: "conflict"                      , 410: "gone"                            , 411: "length required"                      ,
+    412: "precondition failed"           , 413: "request entity too large"        , 414: "request uri too large"                ,
+    415: "unsupported media type"        , 416: "requested range not satisfiable" , 417: "expectation failed"                   ,
+    418: "im a teapot"                   , 422: "unprocessable entity"            , 423: "locked"                               ,
+    424: "failed dependency"             , 425: "unordered collection"            , 426: "upgrade required"                     ,
+    428: "precondition required"         , 429: "too many requests"               , 431: "header fields too large"              ,
+    444: "no response"                   , 449: "retry with"                      , 450: "blocked by windows parental controls" ,
+    451: "unavailable for legal reasons" , 499: "client closed request"           ,
+
+    // Server Error.
+    500: "internal server error"         , 501: "not implemented"                 , 502: "bad gateway"                          ,
+    503: "service unavailable"           , 504: "gateway timeout"                 , 505: "http version not supported"           ,
+    506: "variant also negotiates"       , 507: "insufficient storage"            , 509: "bandwidth limit exceeded"             ,
+    510: "not extended"                  ,
+]
