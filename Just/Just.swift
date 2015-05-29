@@ -335,7 +335,7 @@ public final class HTTPResult : NSObject, Printable, DebugPrintable {
     public var reason:String {
         if let code = self.statusCode,
             let text = statusCodeDescriptions[code] {
-                return text
+            return text
         }
         if let error = self.error {
             return error.localizedDescription
@@ -517,6 +517,7 @@ public struct JustSessionDefaults {
     public var encoding = NSUTF8StringEncoding
 }
 
+let errorDomain = "net.justhttp.Just"
 public class Just: NSObject {
 
     class var shared: Just {
@@ -543,9 +544,16 @@ public class Just: NSObject {
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
     var defaults:JustSessionDefaults!
     var session: NSURLSession!
-    var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
-    var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
-    let errorDomain = "net.justhttp.Just"
+    var invalidURLError = NSError(
+        domain: errorDomain,
+        code: 0,
+        userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"]
+    )
+    var syncResultAccessError = NSError(
+        domain: errorDomain,
+        code: 1,
+        userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."]
+    )
 
     func queryComponents(key: String, _ value: AnyObject) -> [(String, String)] {
         var components: [(String, String)] = []
@@ -579,7 +587,13 @@ public class Just: NSObject {
             return "null"
         } else {
             let legalURLCharactersToBeEscaped: CFStringRef = ":&=;+!@#$()',*"
-            return CFURLCreateStringByAddingPercentEscapes(nil, "\(originalObject)", nil, legalURLCharactersToBeEscaped, CFStringBuiltInEncodings.UTF8.rawValue) as String
+            return CFURLCreateStringByAddingPercentEscapes(
+                nil,
+                "\(originalObject)",
+                nil,
+                legalURLCharactersToBeEscaped,
+                CFStringBuiltInEncodings.UTF8.rawValue
+            ) as String
         }
     }
 
@@ -748,7 +762,13 @@ public class Just: NSObject {
                 URLQuery: URLQuery
                 ) {
                     addCookies(request.URL!, newCookies: cookies)
-                    let config = TaskConfiguration(credential:auth, redirects:redirects, originalRequest:request, data:NSMutableData(), progressHandler: asyncProgressHandler) { (result) in
+                    let config = TaskConfiguration(
+                        credential:auth,
+                        redirects:redirects,
+                        originalRequest:request,
+                        data:NSMutableData(),
+                        progressHandler: asyncProgressHandler
+                    ) { (result) in
                         if let handler = asyncCompletionHandler {
                             handler(result)
                         }
@@ -811,16 +831,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         task: NSURLSessionTask,
         didReceiveChallenge challenge: NSURLAuthenticationChallenge,
         completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void
-        ) {
-            var endCredential:NSURLCredential? = nil
+    ) {
+        var endCredential:NSURLCredential? = nil
 
-            if let credential = taskConfigs[task.taskIdentifier]?.credential {
-                if !(challenge.previousFailureCount > 0) {
-                    endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
-                }
+        if let credential = taskConfigs[task.taskIdentifier]?.credential {
+            if !(challenge.previousFailureCount > 0) {
+                endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
             }
+        }
 
-            completionHandler(.UseCredential, endCredential)
+        completionHandler(.UseCredential, endCredential)
     }
 
     public func URLSession(
@@ -848,13 +868,25 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         totalBytesExpectedToSend: Int64
         ) {
             if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
-                handler(HTTPProgress(type: .Upload, bytesProcessed: totalBytesSent, bytesExpectedToProcess: totalBytesExpectedToSend))
+                handler(
+                    HTTPProgress(
+                        type: .Upload,
+                        bytesProcessed: totalBytesSent,
+                        bytesExpectedToProcess: totalBytesExpectedToSend
+                    )
+                )
             }
     }
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
         if let handler = taskConfigs[dataTask.taskIdentifier]?.progressHandler {
-            handler(HTTPProgress(type: .Download, bytesProcessed: dataTask.countOfBytesReceived, bytesExpectedToProcess: dataTask.countOfBytesExpectedToReceive))
+            handler(
+                HTTPProgress(
+                    type: .Download,
+                    bytesProcessed: dataTask.countOfBytesReceived,
+                    bytesExpectedToProcess: dataTask.countOfBytesExpectedToReceive
+                )
+            )
         }
         if taskConfigs[dataTask.taskIdentifier]?.data != nil {
             taskConfigs[dataTask.taskIdentifier]?.data.appendData(data)
@@ -863,7 +895,12 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         if let config = taskConfigs[task.taskIdentifier], let handler = config.completionHandler {
-            let result = HTTPResult(data: config.data, response: task.response, error: error, request: config.originalRequest ?? task.originalRequest)
+            let result = HTTPResult(
+                data: config.data,
+                response: task.response,
+                error: error,
+                request: config.originalRequest ?? task.originalRequest
+            )
             result.JSONReadingOptions = self.defaults.JSONReadingOptions
             result.encoding = self.defaults.encoding
             handler(result)
@@ -873,3 +910,4 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     }
 
 }
+
