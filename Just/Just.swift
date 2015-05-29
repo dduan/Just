@@ -820,8 +820,8 @@ public struct HTTPProgress {
     public let type:Type
     public let bytesProcessed:Int64
     public let bytesExpectedToProcess:Int64
-    public var prorgess: Double {
-        return Double(bytesProcessed) / Double(bytesExpectedToProcess)
+    public var percent: Float {
+        return Float(bytesProcessed) / Float(bytesExpectedToProcess)
     }
 }
 
