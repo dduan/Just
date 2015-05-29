@@ -506,14 +506,7 @@ public class Just: NSObject {
         return Singleton.instance
     }
 
-    var taskConfigs:[TaskID:TaskConfiguration]=[:]
-    var defaults:JustSessionDefaults!
-    var session: NSURLSession!
-    var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
-    var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
-    let errorDomain = "net.justhttp.Just"
-
-    init(session:NSURLSession? = nil, defaults:JustSessionDefaults? = nil) {
+    public init(session:NSURLSession? = nil, defaults:JustSessionDefaults? = nil) {
         super.init()
         if let initialSession = session {
             self.session = initialSession
@@ -526,6 +519,13 @@ public class Just: NSObject {
             self.defaults = JustSessionDefaults()
         }
     }
+
+    var taskConfigs:[TaskID:TaskConfiguration]=[:]
+    var defaults:JustSessionDefaults!
+    var session: NSURLSession!
+    var invalidURLError = NSError(domain: "net.justhttp", code: 0, userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"])
+    var syncResultAccessError = NSError(domain: "net.justhttp", code: 1, userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."])
+    let errorDomain = "net.justhttp.Just"
 
     func queryComponents(key: String, _ value: AnyObject) -> [(String, String)] {
         var components: [(String, String)] = []
