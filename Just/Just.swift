@@ -449,6 +449,7 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
         startIndex = _data.startIndex
         endIndex = _data.endIndex
     }
+
     public subscript (position: Index) -> Element {
         return _data[position]
     }
@@ -482,8 +483,9 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
 }
 
 typealias TaskID = Int
+typealias Credentials = (username:String, password:String)
 struct TaskConfiguration {
-    var credential:(String, String)?
+    var credential:Credentials?
     var redirects:Bool
 }
 
@@ -504,7 +506,6 @@ public class Just: NSObject {
         return Singleton.instance
     }
 
-    var credentials:[Int:(String,String)]=[:]
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
     var defaults:JustSessionDefaults!
     var session: NSURLSession!
@@ -710,7 +711,7 @@ public class Just: NSObject {
         json:[String:AnyObject]?,
         headers:[String:String],
         files:[String:HTTPFile],
-        auth:(String, String)?,
+        auth:Credentials?,
         cookies: [String:String],
         redirects:Bool,
         timeout:Double?,
