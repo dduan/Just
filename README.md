@@ -22,6 +22,7 @@ Just lets you to the following effortlessly:
 -   cookies
 -   timeouts
 -   synchrounous / asyncrounous requests
+-   upload / download progress tracking for asynchronous requests
 -   friendly accessible results
 
 #  Use

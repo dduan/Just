@@ -56,6 +56,7 @@ extension Just {
         timeout:Double? = nil,
         URLQuery:String? = nil,
         requestBody:NSData? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -73,6 +74,7 @@ extension Just {
                 timeout:timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -91,6 +93,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -108,6 +111,7 @@ extension Just {
                 timeout:timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -126,6 +130,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -143,6 +148,7 @@ extension Just {
                 timeout: timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -161,6 +167,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -178,6 +185,7 @@ extension Just {
                 timeout: timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -196,6 +204,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -213,6 +222,7 @@ extension Just {
                 timeout: timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -231,6 +241,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -248,6 +259,7 @@ extension Just {
                 timeout: timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -266,6 +278,7 @@ extension Just {
         timeout:Double? = nil,
         requestBody:NSData? = nil,
         URLQuery:String? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -283,6 +296,7 @@ extension Just {
                 timeout: timeout,
                 URLQuery: URLQuery,
                 requestBody: requestBody,
+                asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
 
@@ -321,7 +335,7 @@ public final class HTTPResult : NSObject, Printable, DebugPrintable {
     public var reason:String {
         if let code = self.statusCode,
             let text = statusCodeDescriptions[code] {
-            return text
+                return text
         }
         if let error = self.error {
             return error.localizedDescription
@@ -484,9 +498,15 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
 
 typealias TaskID = Int
 typealias Credentials = (username:String, password:String)
+typealias TaskProgressHandler = (HTTPProgress!) -> Void
+typealias TaskCompletionHandler = (HTTPResult) -> Void
 struct TaskConfiguration {
-    var credential:Credentials?
-    var redirects:Bool
+    let credential:Credentials?
+    let redirects:Bool
+    let originalRequest: NSURLRequest?
+    var data: NSMutableData
+    let progressHandler: TaskProgressHandler?
+    let completionHandler: TaskCompletionHandler?
 }
 
 public struct JustSessionDefaults {
@@ -564,18 +584,8 @@ public class Just: NSObject {
     }
 
 
-    func makeTask(request:NSURLRequest, configuration: TaskConfiguration, completionHandler:((HTTPResult) -> Void)? = nil) -> NSURLSessionDataTask {
-        let task:NSURLSessionDataTask
-        if let handler = completionHandler {
-            task = session.dataTaskWithRequest(request) { (data, response, error) in
-                let result = HTTPResult(data: data, response: response, error: error, request: request)
-                result.JSONReadingOptions = self.defaults.JSONReadingOptions
-                result.encoding = self.defaults.encoding
-                handler(result)
-            }
-        } else {
-            task = session.dataTaskWithRequest(request, completionHandler: nil)
-        }
+    func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask {
+        let task = session.dataTaskWithRequest(request)
         taskConfigs[task.taskIdentifier] = configuration
         return task
     }
@@ -717,13 +727,13 @@ public class Just: NSObject {
         timeout:Double?,
         URLQuery:String?,
         requestBody:NSData?,
+        asyncProgressHandler:TaskProgressHandler?,
         asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
             let isSync = asyncCompletionHandler == nil
             var semaphore = dispatch_semaphore_create(0)
             var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
-            let config = TaskConfiguration(credential:auth, redirects:redirects)
             let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
             if let request = synthesizeRequest(
                 method,
@@ -736,22 +746,24 @@ public class Just: NSObject {
                 timeout:timeout,
                 requestBody:requestBody,
                 URLQuery: URLQuery
-            ) {
-                addCookies(request.URL!, newCookies: cookies)
-                let task = makeTask(request, configuration:config) { (result) in
-                    if let handler = asyncCompletionHandler {
-                        handler(result)
+                ) {
+                    addCookies(request.URL!, newCookies: cookies)
+                    let config = TaskConfiguration(credential:auth, redirects:redirects, originalRequest:request, data:NSMutableData(), progressHandler: asyncProgressHandler) { (result) in
+                        if let handler = asyncCompletionHandler {
+                            handler(result)
+                        }
+                        if isSync {
+                            requestResult = result
+                            dispatch_semaphore_signal(semaphore)
+                        }
+
                     }
+                    let task = makeTask(request, configuration:config)
+                    task.resume()
                     if isSync {
-                        requestResult = result
-                        dispatch_semaphore_signal(semaphore)
+                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                        return requestResult
                     }
-                }
-                task.resume()
-                if isSync {
-                    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-                    return requestResult
-                }
             } else {
                 let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
                 if let handler = asyncCompletionHandler {
@@ -779,22 +791,36 @@ public class Just: NSObject {
 
 }
 
-extension Just: NSURLSessionTaskDelegate {
+public struct HTTPProgress {
+    public enum Type {
+        case Upload
+        case Download
+    }
+
+    public let type:Type
+    public let bytesProcessed:Int64
+    public let bytesExpectedToProcess:Int64
+    public var prorgess: Double {
+        return Double(bytesProcessed) / Double(bytesExpectedToProcess)
+    }
+}
+
+extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     public func URLSession(
         session: NSURLSession,
         task: NSURLSessionTask,
         didReceiveChallenge challenge: NSURLAuthenticationChallenge,
         completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void
-    ) {
-        var endCredential:NSURLCredential? = nil
+        ) {
+            var endCredential:NSURLCredential? = nil
 
-        if let credential = taskConfigs[task.taskIdentifier]?.credential {
-            if !(challenge.previousFailureCount > 0) {
-                endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+            if let credential = taskConfigs[task.taskIdentifier]?.credential {
+                if !(challenge.previousFailureCount > 0) {
+                    endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+                }
             }
-        }
 
-        completionHandler(.UseCredential, endCredential)
+            completionHandler(.UseCredential, endCredential)
     }
 
     public func URLSession(
@@ -802,16 +828,48 @@ extension Just: NSURLSessionTaskDelegate {
         task: NSURLSessionTask,
         willPerformHTTPRedirection response: NSHTTPURLResponse,
         newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void
-    ) {
-        if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
-            if !allowRedirects {
-                completionHandler(nil)
-                return
+        ) {
+            if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
+                if !allowRedirects {
+                    completionHandler(nil)
+                    return
+                }
+                completionHandler(request)
+            } else {
+                completionHandler(request)
             }
-            completionHandler(request)
-        } else {
-            completionHandler(request)
+    }
+
+    public func URLSession(
+        session: NSURLSession,
+        task: NSURLSessionTask,
+        didSendBodyData bytesSent: Int64,
+        totalBytesSent: Int64,
+        totalBytesExpectedToSend: Int64
+        ) {
+            if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
+                handler(HTTPProgress(type: .Upload, bytesProcessed: totalBytesSent, bytesExpectedToProcess: totalBytesExpectedToSend))
+            }
+    }
+
+    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
+        if let handler = taskConfigs[dataTask.taskIdentifier]?.progressHandler {
+            handler(HTTPProgress(type: .Download, bytesProcessed: dataTask.countOfBytesReceived, bytesExpectedToProcess: dataTask.countOfBytesExpectedToReceive))
         }
+        if taskConfigs[dataTask.taskIdentifier]?.data != nil {
+            taskConfigs[dataTask.taskIdentifier]?.data.appendData(data)
+        }
+    }
+
+    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        if let config = taskConfigs[task.taskIdentifier], let handler = config.completionHandler {
+            let result = HTTPResult(data: config.data, response: task.response, error: error, request: config.originalRequest ?? task.originalRequest)
+            result.JSONReadingOptions = self.defaults.JSONReadingOptions
+            result.encoding = self.defaults.encoding
+            handler(result)
+
+        }
+        taskConfigs.removeValueForKey(task.taskIdentifier)
     }
 
 }
