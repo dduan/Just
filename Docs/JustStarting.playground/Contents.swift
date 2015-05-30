@@ -186,3 +186,27 @@ Just.get("http://httpbin.org/basic-auth/flash/allen", auth:("flash", "allen")) /
 
 // this request won't finish
 Just.get("http://httpbin.org/delay/5", timeout:0.2).reason
+
+
+//: ## Upload and Download Progress
+//:
+//: When dealing with large files, you may be interested in knowing the progress
+//: of their uploading or downloading. You can do that by supplynig a call back
+//: to the parameter **asyncProgressHandler**.
+Just.post(
+    "http://httpbin.org/post",
+    files:["large file":.Text("or", "pretend this is a large file", nil)],
+    asyncProgressHandler: {(p) in
+        p.type // either .Upload or .Download
+        p.bytesProcessed
+        p.bytesExpectedToProcess
+        p.percent
+    }
+) { (r) in
+    // finished
+}
+
+//: The progress handler may be called during sending the request and receiving
+//: the response. You can tell them apart by checking the **type** property of the
+//: callback argument. In either cases, you can use **bytesProcessed**,
+//: **bytesExpectedToProcess** aned **percent** to check the actual progress.
