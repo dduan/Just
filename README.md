@@ -65,8 +65,8 @@ Just can do much, much more.
 Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
-[starting playground]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
-[starting link]: http://docs.justhttp.net/JustStarting.html
+[starting playground]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/QuickStart.zip
+[starting link]: http://docs.justhttp.net/QuickStart.html
 
 #  Install
 
