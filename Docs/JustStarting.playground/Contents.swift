@@ -18,9 +18,18 @@ Just.post("http://httpbin.org/post")
 
 Just.get("http://httpbin.org/get", params:["page": 3])
 
-//: Just supports these methods *DELETE/GET/HEAD/OPTIONS/PATCH/POST/PUT*
 //: The URL is the only required argument when making a request. Just strives
 //: for a minimum interface.
+//:
+//: The following methods can be done in similar ways:
+//:
+//: - DELETE
+//: - GET
+//: - HEAD
+//: - OPTIONS
+//: - PATCH
+//: - POST
+//: - PUT
 
 //: ## Synchronous v. Asynchronous
 //: When working with Swift, we tend to shun sychronous network requests because
