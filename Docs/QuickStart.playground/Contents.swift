@@ -1,5 +1,6 @@
-//: # Just Quick Start
-//: This is an introduction to the basics of donig HTTP via Just.
+//: # Just: A Quick Start
+//: This is an introduction to the basics of donig HTTP via
+//: [Just](http://JustHTTP.net).
 //: It's available both on the
 //: [web](http://docs.justhttp.net/QuickStart.html)
 //: and as a
