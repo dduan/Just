@@ -27,7 +27,14 @@ Just lets you to the following effortlessly:
 
 #  Use
 
-An examle of making a request with Just:
+The simplest request with Just looks like this:
+
+```swift
+//  A simple get request
+Just.get("http://httpbib.org/get")
+```
+
+The next example shows how to upload a file along with some data:
 
 ```swift
 //  talk to registration end point
@@ -54,8 +61,9 @@ Just.post(
 
 ```
 
-To learn more, read *Getting Started* [on the web][starting link] or
-[in this playground][starting playground]
+Just can do much, much more.
+Read *Getting Started* [on the web][starting link] or
+[in this playground][starting playground] to learn more!
 
 [starting playground]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/JustStarting.zip
 [starting link]: http://docs.justhttp.net/JustStarting.html
@@ -64,14 +72,32 @@ To learn more, read *Getting Started* [on the web][starting link] or
 
 Here are some ways to leverage Just.
 
--   **Source File**: There's only one. Drop it in a playground or, if so desired, directly into
-    your code base.
+## Carthage (recommended)
 
--   **Git Submodule**: Add this repository as a git submodule, drop `Just.xcodeproj` in to your
-    Xcode project so that you can make `Just.framework` a dependency and link to it.
+Include the following in your Cartfile:
 
--   **Dynamic Framework**: [Carthage][] can install Just because Just is a dynamic framework
-    for iOS and OS X. Other ways to use 3rd party dynamic framework should also work.
+    github "JustHTTP/Just"
+
+Just includes dynamic framework targets for both iOS and OS X.
+
+## Manual
+
+Drop `Just.xcodeproj` into your project navigator. Under the *General* tab of
+your project settings, use the plus sign to add `Just.framework` to
+*Linked Framework and Libraries*. Make sure to include the correct version
+for your target's platform.
+
+It's also common to add Just as a git submodule to your projects repository:
+
+    cd path/to/your/project
+    git add submodule add https://github.org/JustHTTP/Just.git
+
+
+## Source File
+
+Put `Just.swift` directly into your project. Alternately, put it in the
+*Sources* folder of a playground. (The latter makes a fun way to explore the
+web.)
 
 
 [Carthage]: https://github.com/Carthage/Carthage "Carthage"
