@@ -290,13 +290,13 @@ enum HTTPMethod: String {
 /// lazy evaluation of `headers` and `cookies`, which is mutating the
 /// struct. This would make those properties unusable with `HTTPResult`s
 /// declared with `let`
-public final class HTTPResult : NSObject, Printable, DebugPrintable {
+public final class HTTPResult : NSObject {
     public final var content:NSData?
     public var response:NSURLResponse?
     public var error:NSError?
     public var request:NSURLRequest?
     public var encoding = NSUTF8StringEncoding
-    public var JSONReadingOptions = NSJSONReadingOptions(0)
+    public var JSONReadingOptions = NSJSONReadingOptions(rawValue: 0)
 
     public var reason:String {
         if let code = self.statusCode,
@@ -330,10 +330,6 @@ public final class HTTPResult : NSObject, Printable, DebugPrintable {
         }
     }
 
-    public override var debugDescription:String {
-        return description
-    }
-
     init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
         self.content = data
         self.response = response
@@ -343,7 +339,11 @@ public final class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public var json:AnyObject? {
         if let theData = self.content {
-            return NSJSONSerialization.JSONObjectWithData(theData, options: JSONReadingOptions, error: nil)
+            do {
+                return try NSJSONSerialization.JSONObjectWithData(theData, options: JSONReadingOptions)
+            } catch _ {
+                return nil
+            }
         }
         return nil
     }
@@ -367,8 +367,8 @@ public final class HTTPResult : NSObject, Printable, DebugPrintable {
 
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
-        if let responseHeaders = (self.response as? NSHTTPURLResponse)?.allHeaderFields {
-            foundCookies = NSHTTPCookie.cookiesWithResponseHeaderFields(responseHeaders, forURL:NSURL(string:"")!) as! [NSHTTPCookie]
+        if let responseHeaders = (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String: String] {
+            foundCookies = NSHTTPCookie.cookiesWithResponseHeaderFields(responseHeaders, forURL:NSURL())
         } else {
             foundCookies = []
         }
@@ -476,8 +476,8 @@ struct TaskConfiguration {
 }
 
 public struct JustSessionDefaults {
-    public var JSONReadingOptions = NSJSONReadingOptions(0)
-    public var JSONWritingOptions = NSJSONWritingOptions(0)
+    public var JSONReadingOptions = NSJSONReadingOptions(rawValue: 0)
+    public var JSONWritingOptions = NSJSONWritingOptions(rawValue: 0)
     public var headers:[String:String] = [:]
     public var multipartBoundary = "Ju5tH77P15Aw350m3"
     public var encoding = NSUTF8StringEncoding
@@ -557,12 +557,12 @@ public class Just: NSObject {
 
     func query(parameters: [String: AnyObject]) -> String {
         var components: [(String, String)] = []
-        for key in sorted(Array(parameters.keys), <) {
+        for key in Array(parameters.keys).sort(<) {
             let value: AnyObject! = parameters[key]
             components += self.queryComponents(key, value)
         }
 
-        return join("&", components.map{"\($0)=\($1)"} as [String])
+        return "&".join(components.map{"\($0)=\($1)"} as [String])
     }
 
     func percentEncodeString(originalObject: AnyObject) -> String {
@@ -581,14 +581,16 @@ public class Just: NSObject {
     }
 
 
-    func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask {
-        let task = session.dataTaskWithRequest(request)
-        taskConfigs[task.taskIdentifier] = configuration
-        return task
+    func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask? {
+        if let task = session.dataTaskWithRequest(request) {
+            taskConfigs[task.taskIdentifier] = configuration
+            return task
+        }
+        return nil
     }
 
     func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
-        var body = NSMutableData()
+        let body = NSMutableData()
         let boundary = "--\(self.defaults.multipartBoundary)\r\n".dataUsingEncoding(defaults.encoding)!
         for (k,v) in data {
             let valueToSend:AnyObject = v is NSNull ? "null" : v
@@ -652,9 +654,9 @@ public class Just: NSObject {
         URLQuery:String?
         ) -> NSURLRequest? {
             if let urlComponent = NSURLComponents(string: URLString) {
-                var queryString = query(params)
+                let queryString = query(params)
 
-                if count(queryString) > 0 {
+                if queryString.characters.count > 0 {
                     urlComponent.percentEncodedQuery = queryString
                 }
 
@@ -670,11 +672,19 @@ public class Just: NSObject {
                 } else {
                     if let requestJSON = json {
                         contentType = "application/json"
-                        body = NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions, error: nil)
+                        do {
+                            body = try NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions)
+                        } catch _ {
+                            body = nil
+                        }
                     } else {
                         if data.count > 0 {
                             if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
-                                body = NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions, error: nil)
+                                do {
+                                    body = try NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions)
+                                } catch _ {
+                                    body = nil
+                                }
                             } else {
                                 contentType = "application/x-www-form-urlencoded"
                                 body = query(data).dataUsingEncoding(defaults.encoding)
@@ -728,7 +738,7 @@ public class Just: NSObject {
         asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
 
             let isSync = asyncCompletionHandler == nil
-            var semaphore = dispatch_semaphore_create(0)
+            let semaphore = dispatch_semaphore_create(0)
             var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
 
             let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
@@ -761,8 +771,9 @@ public class Just: NSObject {
                         }
 
                     }
-                    let task = makeTask(request, configuration:config)
-                    task.resume()
+                    if let task = makeTask(request, configuration:config) {
+                        task.resume()
+                    }
                     if isSync {
                         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                         return requestResult
@@ -799,7 +810,7 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         session: NSURLSession,
         task: NSURLSessionTask,
         didReceiveChallenge challenge: NSURLAuthenticationChallenge,
-        completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void
+        completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void
     ) {
         var endCredential:NSURLCredential? = nil
 
@@ -816,7 +827,7 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         session: NSURLSession,
         task: NSURLSessionTask,
         willPerformHTTPRedirection response: NSHTTPURLResponse,
-        newRequest request: NSURLRequest, completionHandler: (NSURLRequest!) -> Void
+        newRequest request: NSURLRequest, completionHandler: (NSURLRequest?) -> Void
     ) {
         if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
             if !allowRedirects {
