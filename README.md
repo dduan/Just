@@ -4,11 +4,13 @@
 
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
+Swift 2.0 support can be found on *[swift-2.0][]* branch.
+
 *Follow [@JustHTTP][twitter] for updates, if you are into that kind of things* 😉
 
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
-
+[swift-2.0]: https://github.com/JustHTTP/Just/tree/swift-2.0 "Just support for Swift 2.0"
 #   Features
 
 Just lets you to the following effortlessly:
