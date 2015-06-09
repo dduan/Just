@@ -265,7 +265,6 @@ extension Just {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 }
 
@@ -299,9 +298,9 @@ public final class HTTPResult : NSObject {
     public var JSONReadingOptions = NSJSONReadingOptions(rawValue: 0)
 
     public var reason:String {
-        if let code = self.statusCode,
+        if  let code = self.statusCode,
             let text = statusCodeDescriptions[code] {
-            return text
+                return text
         }
         if let error = self.error {
             return error.localizedDescription
@@ -368,7 +367,7 @@ public final class HTTPResult : NSObject {
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
         if let responseHeaders = (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String: String] {
-            foundCookies = NSHTTPCookie.cookiesWithResponseHeaderFields(responseHeaders, forURL:NSURL())
+            foundCookies = NSHTTPCookie.cookiesWithResponseHeaderFields(responseHeaders, forURL:NSURL(string:"")!) as [NSHTTPCookie]
         } else {
             foundCookies = []
         }
@@ -500,7 +499,7 @@ public struct HTTPProgress {
 
 let errorDomain = "net.justhttp.Just"
 
-public class Just: NSObject {
+public class Just: NSObject, NSURLSessionDelegate {
 
     class var shared: Just {
         struct Singleton {
@@ -761,14 +760,14 @@ public class Just: NSObject {
                         originalRequest:request,
                         data:NSMutableData(),
                         progressHandler: asyncProgressHandler
-                    ) { (result) in
-                        if let handler = asyncCompletionHandler {
-                            handler(result)
-                        }
-                        if isSync {
-                            requestResult = result
-                            dispatch_semaphore_signal(semaphore)
-                        }
+                        ) { (result) in
+                            if let handler = asyncCompletionHandler {
+                                handler(result)
+                            }
+                            if isSync {
+                                requestResult = result
+                                dispatch_semaphore_signal(semaphore)
+                            }
 
                     }
                     if let task = makeTask(request, configuration:config) {
@@ -802,8 +801,8 @@ public class Just: NSObject {
             }
         }
     }
-
 }
+
 
 extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     public func URLSession(
@@ -811,16 +810,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         task: NSURLSessionTask,
         didReceiveChallenge challenge: NSURLAuthenticationChallenge,
         completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void
-    ) {
-        var endCredential:NSURLCredential? = nil
+        ) {
+            var endCredential:NSURLCredential? = nil
 
-        if let credential = taskConfigs[task.taskIdentifier]?.credential {
-            if !(challenge.previousFailureCount > 0) {
-                endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+            if let credential = taskConfigs[task.taskIdentifier]?.credential {
+                if !(challenge.previousFailureCount > 0) {
+                    endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+                }
             }
-        }
 
-        completionHandler(.UseCredential, endCredential)
+            completionHandler(.UseCredential, endCredential)
     }
 
     public func URLSession(
@@ -828,16 +827,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         task: NSURLSessionTask,
         willPerformHTTPRedirection response: NSHTTPURLResponse,
         newRequest request: NSURLRequest, completionHandler: (NSURLRequest?) -> Void
-    ) {
-        if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
-            if !allowRedirects {
-                completionHandler(nil)
-                return
+        ) {
+            if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
+                if !allowRedirects {
+                    completionHandler(nil)
+                    return
+                }
+                completionHandler(request)
+            } else {
+                completionHandler(request)
             }
-            completionHandler(request)
-        } else {
-            completionHandler(request)
-        }
     }
 
     public func URLSession(
@@ -846,16 +845,16 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         didSendBodyData bytesSent: Int64,
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64
-    ) {
-        if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
-            handler(
-                HTTPProgress(
-                    type: .Upload,
-                    bytesProcessed: totalBytesSent,
-                    bytesExpectedToProcess: totalBytesExpectedToSend
+        ) {
+            if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
+                handler(
+                    HTTPProgress(
+                        type: .Upload,
+                        bytesProcessed: totalBytesSent,
+                        bytesExpectedToProcess: totalBytesExpectedToSend
+                    )
                 )
-            )
-        }
+            }
     }
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
@@ -887,7 +886,6 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         }
         taskConfigs.removeValueForKey(task.taskIdentifier)
     }
-
 }
 
 // stolen from python-requests
@@ -923,3 +921,4 @@ let statusCodeDescriptions = [
     506: "variant also negotiates"       , 507: "insufficient storage"            , 509: "bandwidth limit exceeded"             ,
     510: "not extended"                  ,
 ]
+
