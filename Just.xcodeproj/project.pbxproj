@@ -13,9 +13,7 @@
 		940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; };
 		94481BE81AF4155D00C34129 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; };
-		948CA8221AF3FF43001E0FD3 /* Just-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA8211AF3FF43001E0FD3 /* Just-iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA81D1AF3FF43001E0FD3 /* Just.framework */; };
-		948CA8401AF3FF55001E0FD3 /* Just-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA83B1AF3FF55001E0FD3 /* Just.framework */; };
 		948CA8541AF3FF7F001E0FD3 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		948CA8551AF3FF80001E0FD3 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
@@ -27,6 +25,8 @@
 		948CA85F1AF40091001E0FD3 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
 		948CA8601AF400B7001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		948CA8611AF400B8001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
+		94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA8211AF3FF43001E0FD3 /* Just-iOS.h */; };
+		94F060C91B27321600D44B84 /* Just-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,7 +252,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				948CA8221AF3FF43001E0FD3 /* Just-iOS.h in Headers */,
+				94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +260,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				948CA8401AF3FF55001E0FD3 /* Just-OSX.h in Headers */,
+				94F060C91B27321600D44B84 /* Just-OSX.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +345,7 @@
 		94DA2B4B1AE640390082DC6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = JustHTTP;
 				TargetAttributes = {
