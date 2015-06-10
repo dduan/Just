@@ -38,8 +38,7 @@ Just.get("http://httpbin.org/get", params:["page": 3])
 //: Cocoa/Cocoa Touch apps from smooth UI rendering. However, there's nothing
 //: inherantly wrong with synchronous requests. In fact, synchronous code is often
 //: easier to understand and, therefore, a better paradigm to explore HTTP
-//: resources with. In REPL or playgrounds, you can see the result of
-//: synchronous results.
+//: resources with. 
 
 var r = Just.get("http://httpbin.org/get", params:["page": 3])
 // … "r" becomes available here
@@ -83,7 +82,7 @@ r.isRedirect    // is this a redirect response
 //: The **headers** property is a Swift-dictionary-like object:
 
 for (k,v) in r.headers {
-    println("\(k):\(v)")
+    print("\(k):\(v)")
 }
 
 //: It's different from a normal dictionary in that its values can be accessed
@@ -136,44 +135,49 @@ Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedir
 //: Uploading files is easy with Just:
 
 import Foundation
-if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"),
-    let photoURL = NSURL(fileURLWithPath: photoPath) {
-    let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(photoURL, nil)]) // <== that's it
-    print(uploadResult.text ?? "")
+
+do {
+
+guard let elonPhotoURL = NSURL(string: NSBundle.mainBundle().pathForResource("elon", ofType: "jpg")!) else {
+    fatalError("demo resource elon.jpg is missing")
 }
+
+let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, nil)]) // <== that's it
+print(uploadResult.text ?? "")
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
 
-if let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) {
-    if let text = Just.post(
-        "http://httpbin.org/post",
-        files:[
-            "a":.Data("marco.text", someData, nil), // file #1, an NSData
-            "b":.Text("polo.txt", "Polo", nil)      // file #2, a String
-        ]
-    ).text {
-        print(text)
-    }
+guard let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) else {
+    fatalError("Something is terribly wrong")
 }
 
+if let text = Just.post(
+    "http://httpbin.org/post",
+    files:[
+        "a":.Data("marco.text", someData, nil), // file #1, an NSData
+        "b":.Text("polo.txt", "Polo", nil)      // file #2, a String
+    ]
+).text {
+    print(text)
+}
+
+}
 //: Two files are being uploaded here.
 //:
 //: The *nil* part of the argument in both examples is an optional String that can be used to specify the MIMEType of the files.
 //:
 //: **data** parameter can be used in conjuction with **files**. When that happens, though, the *Content-Type* of the request will be *multipart/form-data; ...*.
 
-if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"),
-    let photoURL = NSURL(fileURLWithPath: photoPath) {
-    if let json = Just.post(
-        "http://httpbin.org/post",
-        data:["lastName":"Musk"],
-        files:["elon":.URL(photoURL, nil)]
-    ).json as? [String:AnyObject] {
-        print(json["form"] ?? [:])      // lastName:Musk
-        print(json["files"] ?? [:])     // elon
-    }
+if let json = Just.post(
+    "http://httpbin.org/post",
+    data:["lastName":"Musk"],
+    files:["elon":.URL(elonPhotoURL, nil)]
+).json as? [String:AnyObject] {
+    print(json["form"] ?? [:])      // lastName:Musk
+    print(json["files"] ?? [:])     // elon
 }
 
+}
 //: ## Cookies
 //:
 //: If you expect the server to return some cookie, you can find them this way:
