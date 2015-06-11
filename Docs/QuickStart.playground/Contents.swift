@@ -136,20 +136,15 @@ Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedir
 
 import Foundation
 
-do {
 
-guard let elonPhotoURL = NSURL(string: NSBundle.mainBundle().pathForResource("elon", ofType: "jpg")!) else {
-    fatalError("demo resource elon.jpg is missing")
-}
 
+let elonPhotoURL = NSURL(string: NSBundle.mainBundle().pathForResource("elon", ofType: "jpg")!)! // assume the file exist
 let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, nil)]) // <== that's it
 print(uploadResult.text ?? "")
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
 
-guard let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) else {
-    fatalError("Something is terribly wrong")
-}
+let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding)! // this shouldn't fail
 
 if let text = Just.post(
     "http://httpbin.org/post",
@@ -161,7 +156,7 @@ if let text = Just.post(
     print(text)
 }
 
-}
+
 //: Two files are being uploaded here.
 //:
 //: The *nil* part of the argument in both examples is an optional String that can be used to specify the MIMEType of the files.
@@ -177,7 +172,7 @@ if let json = Just.post(
     print(json["files"] ?? [:])     // elon
 }
 
-}
+
 //: ## Cookies
 //:
 //: If you expect the server to return some cookie, you can find them this way:
