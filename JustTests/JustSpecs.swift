@@ -19,7 +19,6 @@ class JustSpec: QuickSpec {
                     count += 1
                 })
                 expect(r.ok).to(beTrue())
-                println(count)
                 expect(count).toEventuallyNot(equal(0))
             }
             it("should sends simple query string specified for GET") {
