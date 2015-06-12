@@ -138,7 +138,7 @@ import Foundation
 
 
 
-let elonPhotoURL = NSURL(string: NSBundle.mainBundle().pathForResource("elon", ofType: "jpg")!)! // assume the file exist
+let elonPhotoURL = NSBundle.mainBundle().URLForResource("elon", withExtension: "jpg")! // assume the file exist
 let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, nil)]) // <== that's it
 print(uploadResult.text ?? "")
 
