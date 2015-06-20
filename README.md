@@ -92,7 +92,7 @@ for your target's platform.
 It's also common to add Just as a git submodule to your projects repository:
 
     cd path/to/your/project
-    git add submodule add https://github.org/JustHTTP/Just.git
+    git submodule add https://github.org/JustHTTP/Just.git
 
 
 ## Source File
