@@ -38,7 +38,7 @@ Just.get("http://httpbin.org/get", params:["page": 3])
 //: Cocoa/Cocoa Touch apps from smooth UI rendering. However, there's nothing
 //: inherantly wrong with synchronous requests. In fact, synchronous code is often
 //: easier to understand and, therefore, a better paradigm to explore HTTP
-//: resources with. 
+//: resources with.
 
 var r = Just.get("http://httpbin.org/get", params:["page": 3])
 // … "r" becomes available here
@@ -54,6 +54,11 @@ Just.get("http://httpbin.org/get", params:["page": 3]) { (r) in
 //: callback. When such callback is present, the result of the request becomes
 //: available asynchronously as an arugment to the callback. Otherwise,
 //: Just will return the very same result synchronously.
+//:
+//: *Note: asynchronous callbacks does not run on main thread, which is a
+//: behavior inherited from NSURLSession. Be sure to dispatch code
+//: properly with NSOperationQueue or GCD if you need to update UI in the
+//: callback.*
 //:
 //: The examples in the rest of this document will be synchronous. Keep in
 //: mind that all of them can easily be asynchronous.
