@@ -453,10 +453,10 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
         return _data.generate()
     }
 
-    public var keys: LazyForwardCollection<MapCollectionView<[Key : Value], Key>> {
+    public var keys: LazyForwardCollection<MapCollection<[Key : Value], Key>> {
         return _data.keys
     }
-    public var values: LazyForwardCollection<MapCollectionView<[Key : Value], Value>> {
+    public var values: LazyForwardCollection<MapCollection<[Key : Value], Value>> {
         return _data.values
     }
 }
