@@ -1,11 +1,11 @@
 //: # Just: A Quick Start
-//: This is an introduction to the basics of donig HTTP via
+//: This is an introduction to the basics of doning HTTP via
 //: [Just](http://JustHTTP.net).
 //: It's available both on the
 //: [web](http://docs.justhttp.net/QuickStart.html)
 //: and as a
 //: [playground](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/QuickStart.zip).
-//: Readers are assumed to understand of the HTTP protocal.
+//: Readers are assumed to be familiar with the basics of HTTP.
 //:
 //: ## Simple Requests
 //: Just's API is heavily influenced by [python-requests](http://python-requests.org),
