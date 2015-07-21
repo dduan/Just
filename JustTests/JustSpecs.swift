@@ -7,8 +7,8 @@
 //
 
 import Just
-import Quick
 import Nimble
+import Quick
 
 class JustSpec: QuickSpec {
     override func spec() {

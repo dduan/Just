@@ -392,8 +392,8 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
     private var _data:[Key: Value] = [:]
     private var _keyMap: [String: Key] = [:]
 
-    typealias Element = (Key, Value)
-    typealias Index = DictionaryIndex<Key, Value>
+    public typealias Element = (Key, Value)
+    public typealias Index = DictionaryIndex<Key, Value>
     public var startIndex: Index
     public var endIndex: Index
 
@@ -572,11 +572,9 @@ public class Just: NSObject, NSURLSessionDelegate {
 
 
     func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask? {
-        if let task = session.dataTaskWithRequest(request) {
-            taskConfigs[task.taskIdentifier] = configuration
-            return task
-        }
-        return nil
+        let task = session.dataTaskWithRequest(request)
+        taskConfigs[task.taskIdentifier] = configuration
+        return task
     }
 
     func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
