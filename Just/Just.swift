@@ -8,6 +8,333 @@
 
 import Foundation
 
+// stolen from python-requests
+let statusCodeDescriptions = [
+    // Informational.
+    100: "continue"                      , 101: "switching protocols"             , 102: "processing"                           ,
+    103: "checkpoint"                    , 122: "uri too long"                    , 200: "ok"                                   ,
+    201: "created"                       , 202: "accepted"                        , 203: "non authoritative info"               ,
+    204: "no content"                    , 205: "reset content"                   , 206: "partial content"                      ,
+    207: "multi status"                  , 208: "already reported"                , 226: "im used"                              ,
+
+    // Redirection.
+    300: "multiple choices"              , 301: "moved permanently"               , 302: "found"                                ,
+    303: "see other"                     , 304: "not modified"                    , 305: "use proxy"                            ,
+    306: "switch proxy"                  , 307: "temporary redirect"              , 308: "permanent redirect"                   ,
+
+    // Client Error.
+    400: "bad request"                   , 401: "unauthorized"                    , 402: "payment required"                     ,
+    403: "forbidden"                     , 404: "not found"                       , 405: "method not allowed"                   ,
+    406: "not acceptable"                , 407: "proxy authentication required"   , 408: "request timeout"                      ,
+    409: "conflict"                      , 410: "gone"                            , 411: "length required"                      ,
+    412: "precondition failed"           , 413: "request entity too large"        , 414: "request uri too large"                ,
+    415: "unsupported media type"        , 416: "requested range not satisfiable" , 417: "expectation failed"                   ,
+    418: "im a teapot"                   , 422: "unprocessable entity"            , 423: "locked"                               ,
+    424: "failed dependency"             , 425: "unordered collection"            , 426: "upgrade required"                     ,
+    428: "precondition required"         , 429: "too many requests"               , 431: "header fields too large"              ,
+    444: "no response"                   , 449: "retry with"                      , 450: "blocked by windows parental controls" ,
+    451: "unavailable for legal reasons" , 499: "client closed request"           ,
+
+    // Server Error.
+    500: "internal server error"         , 501: "not implemented"                 , 502: "bad gateway"                          ,
+    503: "service unavailable"           , 504: "gateway timeout"                 , 505: "http version not supported"           ,
+    506: "variant also negotiates"       , 507: "insufficient storage"            , 509: "bandwidth limit exceeded"             ,
+    510: "not extended"                  ,
+]
+
+public class Just: NSObject, NSURLSessionDelegate {
+    private struct Shared {
+        static let instance = Just()
+    }
+
+    class var shared: Just { return Shared.instance }
+
+    public init(session:NSURLSession? = nil, defaults:JustSessionDefaults? = nil) {
+        super.init()
+        if let initialSession = session {
+            self.session = initialSession
+        } else {
+            self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate:self, delegateQueue:nil)
+        }
+        if let initialDefaults = defaults {
+            self.defaults = initialDefaults
+        } else {
+            self.defaults = JustSessionDefaults()
+        }
+    }
+
+    var taskConfigs:[TaskID:TaskConfiguration]=[:]
+    var defaults:JustSessionDefaults!
+    var session: NSURLSession!
+    var invalidURLError = NSError(
+        domain: errorDomain,
+        code: 0,
+        userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"]
+    )
+
+    var syncResultAccessError = NSError(
+        domain: errorDomain,
+        code: 1,
+        userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."]
+    )
+
+    func queryComponents(key: String, _ value: AnyObject) -> [(String, String)] {
+        var components: [(String, String)] = []
+        if let dictionary = value as? [String: AnyObject] {
+            for (nestedKey, value) in dictionary {
+                components += queryComponents("\(key)[\(nestedKey)]", value)
+            }
+        } else if let array = value as? [AnyObject] {
+            for value in array {
+                components += queryComponents("\(key)", value)
+            }
+        } else {
+            components.extend([(percentEncodeString(key), percentEncodeString("\(value)"))])
+        }
+
+        return components
+    }
+
+    func query(parameters: [String: AnyObject]) -> String {
+        var components: [(String, String)] = []
+        for key in Array(parameters.keys).sort(<) {
+            let value: AnyObject! = parameters[key]
+            components += self.queryComponents(key, value)
+        }
+
+        return "&".join(components.map{"\($0)=\($1)"} as [String])
+    }
+
+    func percentEncodeString(originalObject: AnyObject) -> String {
+        if originalObject is NSNull {
+            return "null"
+        } else {
+            return "\(originalObject)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? ""
+        }
+    }
+
+
+    func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask? {
+        let task = session.dataTaskWithRequest(request)
+        taskConfigs[task.taskIdentifier] = configuration
+        return task
+    }
+
+    func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
+        let body = NSMutableData()
+        let boundary = "--\(self.defaults.multipartBoundary)\r\n".dataUsingEncoding(defaults.encoding)!
+        for (k,v) in data {
+            let valueToSend:AnyObject = v is NSNull ? "null" : v
+            body.appendData(boundary)
+            body.appendData("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
+            body.appendData("\(valueToSend)\r\n".dataUsingEncoding(defaults.encoding)!)
+        }
+
+        for (k,v) in files {
+            body.appendData(boundary)
+            var partContent: NSData? = nil
+            var partFilename:String? = nil
+            var partMimetype:String? = nil
+            switch v {
+            case let .URL(URL, mimetype):
+                if let component = URL.lastPathComponent {
+                    partFilename = component
+                }
+                if let URLContent = NSData(contentsOfURL: URL) {
+                    partContent = URLContent
+                }
+                partMimetype = mimetype
+            case let .Text(filename, text, mimetype):
+                partFilename = filename
+                if let textData = text.dataUsingEncoding(defaults.encoding) {
+                    partContent = textData
+                }
+                partMimetype = mimetype
+            case let .Data(filename, data, mimetype):
+                partFilename = filename
+                partContent = data
+                partMimetype = mimetype
+            }
+            if let content = partContent, let filename = partFilename {
+                body.appendData(NSData(data: "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(defaults.encoding)!))
+                if let type = partMimetype {
+                    body.appendData("Content-Type: \(type)\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
+                } else {
+                    body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
+                }
+                body.appendData(content)
+                body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
+            }
+        }
+        if body.length > 0 {
+            body.appendData("--\(self.defaults.multipartBoundary)--\r\n".dataUsingEncoding(defaults.encoding)!)
+        }
+        return body
+    }
+
+    func synthesizeRequest(
+        method:HTTPMethod,
+        URLString:String,
+        params:[String:AnyObject],
+        data:[String:AnyObject],
+        json:[String:AnyObject]?,
+        headers:CaseInsensitiveDictionary<String,String>,
+        files:[String:HTTPFile],
+        timeout:Double?,
+        requestBody:NSData?,
+        URLQuery:String?
+        ) -> NSURLRequest? {
+            if let urlComponent = NSURLComponents(string: URLString) {
+                let queryString = query(params)
+
+                if queryString.characters.count > 0 {
+                    urlComponent.percentEncodedQuery = queryString
+                }
+
+                var finalHeaders = headers
+                var contentType:String? = nil
+                var body:NSData?
+
+                if let requestData = requestBody {
+                    body = requestData
+                } else if files.count > 0 {
+                    body = synthesizeMultipartBody(data, files:files)
+                    contentType = "multipart/form-data; boundary=\(self.defaults.multipartBoundary)"
+                } else {
+                    if let requestJSON = json {
+                        contentType = "application/json"
+                        do {
+                            body = try NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions)
+                        } catch _ {
+                            body = nil
+                        }
+                    } else {
+                        if data.count > 0 {
+                            if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
+                                do {
+                                    body = try NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions)
+                                } catch _ {
+                                    body = nil
+                                }
+                            } else {
+                                contentType = "application/x-www-form-urlencoded"
+                                body = query(data).dataUsingEncoding(defaults.encoding)
+                            }
+                        }
+                    }
+                }
+
+                if let contentTypeValue = contentType {
+                    finalHeaders["Content-Type"] = contentTypeValue
+                }
+
+                if let URL = urlComponent.URL {
+                    let request = NSMutableURLRequest(URL: URL)
+                    request.cachePolicy = .ReloadIgnoringLocalCacheData
+                    request.HTTPBody = body
+                    request.HTTPMethod = method.rawValue
+                    if let requestTimeout = timeout {
+                        request.timeoutInterval = requestTimeout
+                    }
+
+                    for (k,v) in defaults.headers {
+                        request.addValue(v, forHTTPHeaderField: k)
+                    }
+
+                    for (k,v) in finalHeaders {
+                        request.addValue(v, forHTTPHeaderField: k)
+                    }
+                    return request
+                }
+
+            }
+            return nil
+    }
+
+    func request(
+        method:HTTPMethod,
+        URLString:String,
+        params:[String:AnyObject],
+        data:[String:AnyObject],
+        json:[String:AnyObject]?,
+        headers:[String:String],
+        files:[String:HTTPFile],
+        auth:Credentials?,
+        cookies: [String:String],
+        redirects:Bool,
+        timeout:Double?,
+        URLQuery:String?,
+        requestBody:NSData?,
+        asyncProgressHandler:TaskProgressHandler?,
+        asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
+
+            let isSync = asyncCompletionHandler == nil
+            let semaphore = dispatch_semaphore_create(0)
+            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
+
+            let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
+            if let request = synthesizeRequest(
+                method,
+                URLString: URLString,
+                params: params,
+                data: data,
+                json: json,
+                headers: caseInsensitiveHeaders,
+                files: files,
+                timeout:timeout,
+                requestBody:requestBody,
+                URLQuery: URLQuery
+                ) {
+                    addCookies(request.URL!, newCookies: cookies)
+                    let config = TaskConfiguration(
+                        credential:auth,
+                        redirects:redirects,
+                        originalRequest:request,
+                        data:NSMutableData(),
+                        progressHandler: asyncProgressHandler
+                        ) { (result) in
+                            if let handler = asyncCompletionHandler {
+                                handler(result)
+                            }
+                            if isSync {
+                                requestResult = result
+                                dispatch_semaphore_signal(semaphore)
+                            }
+
+                    }
+                    if let task = makeTask(request, configuration:config) {
+                        task.resume()
+                    }
+                    if isSync {
+                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                        return requestResult
+                    }
+            } else {
+                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
+                if let handler = asyncCompletionHandler {
+                    handler(erronousResult)
+                } else {
+                    return erronousResult
+                }
+            }
+            return requestResult
+
+    }
+
+    func addCookies(URL:NSURL, newCookies:[String:String]) {
+        for (k,v) in newCookies {
+            if let cookie = NSHTTPCookie(properties: [
+                NSHTTPCookieName: k,
+                NSHTTPCookieValue: v,
+                NSHTTPCookieOriginURL: URL,
+                NSHTTPCookiePath: "/"
+                ]) {
+                    session.configuration.HTTPCookieStorage?.setCookie(cookie)
+            }
+        }
+    }
+}
+
 extension Just {
     public class func delete(
         URLString:String,
@@ -499,300 +826,6 @@ public struct HTTPProgress {
 
 let errorDomain = "net.justhttp.Just"
 
-public class Just: NSObject, NSURLSessionDelegate {
-    private struct Shared {
-        static let instance = Just()
-    }
-
-    class var shared: Just { return Shared.instance }
-
-    public init(session:NSURLSession? = nil, defaults:JustSessionDefaults? = nil) {
-        super.init()
-        if let initialSession = session {
-            self.session = initialSession
-        } else {
-            self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate:self, delegateQueue:nil)
-        }
-        if let initialDefaults = defaults {
-            self.defaults = initialDefaults
-        } else {
-            self.defaults = JustSessionDefaults()
-        }
-    }
-
-    var taskConfigs:[TaskID:TaskConfiguration]=[:]
-    var defaults:JustSessionDefaults!
-    var session: NSURLSession!
-    var invalidURLError = NSError(
-        domain: errorDomain,
-        code: 0,
-        userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"]
-    )
-
-    var syncResultAccessError = NSError(
-        domain: errorDomain,
-        code: 1,
-        userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."]
-    )
-
-    func queryComponents(key: String, _ value: AnyObject) -> [(String, String)] {
-        var components: [(String, String)] = []
-        if let dictionary = value as? [String: AnyObject] {
-            for (nestedKey, value) in dictionary {
-                components += queryComponents("\(key)[\(nestedKey)]", value)
-            }
-        } else if let array = value as? [AnyObject] {
-            for value in array {
-                components += queryComponents("\(key)", value)
-            }
-        } else {
-            components.extend([(percentEncodeString(key), percentEncodeString("\(value)"))])
-        }
-
-        return components
-    }
-
-    func query(parameters: [String: AnyObject]) -> String {
-        var components: [(String, String)] = []
-        for key in Array(parameters.keys).sort(<) {
-            let value: AnyObject! = parameters[key]
-            components += self.queryComponents(key, value)
-        }
-
-        return "&".join(components.map{"\($0)=\($1)"} as [String])
-    }
-
-    func percentEncodeString(originalObject: AnyObject) -> String {
-        if originalObject is NSNull {
-            return "null"
-        } else {
-            return "\(originalObject)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? ""
-        }
-    }
-
-
-    func makeTask(request:NSURLRequest, configuration: TaskConfiguration) -> NSURLSessionDataTask? {
-        let task = session.dataTaskWithRequest(request)
-        taskConfigs[task.taskIdentifier] = configuration
-        return task
-    }
-
-    func synthesizeMultipartBody(data:[String:AnyObject], files:[String:HTTPFile]) -> NSData? {
-        let body = NSMutableData()
-        let boundary = "--\(self.defaults.multipartBoundary)\r\n".dataUsingEncoding(defaults.encoding)!
-        for (k,v) in data {
-            let valueToSend:AnyObject = v is NSNull ? "null" : v
-            body.appendData(boundary)
-            body.appendData("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
-            body.appendData("\(valueToSend)\r\n".dataUsingEncoding(defaults.encoding)!)
-        }
-
-        for (k,v) in files {
-            body.appendData(boundary)
-            var partContent: NSData? = nil
-            var partFilename:String? = nil
-            var partMimetype:String? = nil
-            switch v {
-            case let .URL(URL, mimetype):
-                if let component = URL.lastPathComponent {
-                    partFilename = component
-                }
-                if let URLContent = NSData(contentsOfURL: URL) {
-                    partContent = URLContent
-                }
-                partMimetype = mimetype
-            case let .Text(filename, text, mimetype):
-                partFilename = filename
-                if let textData = text.dataUsingEncoding(defaults.encoding) {
-                    partContent = textData
-                }
-                partMimetype = mimetype
-            case let .Data(filename, data, mimetype):
-                partFilename = filename
-                partContent = data
-                partMimetype = mimetype
-            }
-            if let content = partContent, let filename = partFilename {
-                body.appendData(NSData(data: "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n".dataUsingEncoding(defaults.encoding)!))
-                if let type = partMimetype {
-                    body.appendData("Content-Type: \(type)\r\n\r\n".dataUsingEncoding(defaults.encoding)!)
-                } else {
-                    body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
-                }
-                body.appendData(content)
-                body.appendData("\r\n".dataUsingEncoding(defaults.encoding)!)
-            }
-        }
-        if body.length > 0 {
-            body.appendData("--\(self.defaults.multipartBoundary)--\r\n".dataUsingEncoding(defaults.encoding)!)
-        }
-        return body
-    }
-
-    func synthesizeRequest(
-        method:HTTPMethod,
-        URLString:String,
-        params:[String:AnyObject],
-        data:[String:AnyObject],
-        json:[String:AnyObject]?,
-        headers:CaseInsensitiveDictionary<String,String>,
-        files:[String:HTTPFile],
-        timeout:Double?,
-        requestBody:NSData?,
-        URLQuery:String?
-        ) -> NSURLRequest? {
-            if let urlComponent = NSURLComponents(string: URLString) {
-                let queryString = query(params)
-
-                if queryString.characters.count > 0 {
-                    urlComponent.percentEncodedQuery = queryString
-                }
-
-                var finalHeaders = headers
-                var contentType:String? = nil
-                var body:NSData?
-
-                if let requestData = requestBody {
-                    body = requestData
-                } else if files.count > 0 {
-                    body = synthesizeMultipartBody(data, files:files)
-                    contentType = "multipart/form-data; boundary=\(self.defaults.multipartBoundary)"
-                } else {
-                    if let requestJSON = json {
-                        contentType = "application/json"
-                        do {
-                            body = try NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions)
-                        } catch _ {
-                            body = nil
-                        }
-                    } else {
-                        if data.count > 0 {
-                            if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
-                                do {
-                                    body = try NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions)
-                                } catch _ {
-                                    body = nil
-                                }
-                            } else {
-                                contentType = "application/x-www-form-urlencoded"
-                                body = query(data).dataUsingEncoding(defaults.encoding)
-                            }
-                        }
-                    }
-                }
-
-                if let contentTypeValue = contentType {
-                    finalHeaders["Content-Type"] = contentTypeValue
-                }
-
-                if let URL = urlComponent.URL {
-                    let request = NSMutableURLRequest(URL: URL)
-                    request.cachePolicy = .ReloadIgnoringLocalCacheData
-                    request.HTTPBody = body
-                    request.HTTPMethod = method.rawValue
-                    if let requestTimeout = timeout {
-                        request.timeoutInterval = requestTimeout
-                    }
-
-                    for (k,v) in defaults.headers {
-                        request.addValue(v, forHTTPHeaderField: k)
-                    }
-
-                    for (k,v) in finalHeaders {
-                        request.addValue(v, forHTTPHeaderField: k)
-                    }
-                    return request
-                }
-
-            }
-            return nil
-    }
-
-    func request(
-        method:HTTPMethod,
-        URLString:String,
-        params:[String:AnyObject],
-        data:[String:AnyObject],
-        json:[String:AnyObject]?,
-        headers:[String:String],
-        files:[String:HTTPFile],
-        auth:Credentials?,
-        cookies: [String:String],
-        redirects:Bool,
-        timeout:Double?,
-        URLQuery:String?,
-        requestBody:NSData?,
-        asyncProgressHandler:TaskProgressHandler?,
-        asyncCompletionHandler:((HTTPResult!) -> Void)?) -> HTTPResult {
-
-            let isSync = asyncCompletionHandler == nil
-            let semaphore = dispatch_semaphore_create(0)
-            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
-
-            let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
-            if let request = synthesizeRequest(
-                method,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: caseInsensitiveHeaders,
-                files: files,
-                timeout:timeout,
-                requestBody:requestBody,
-                URLQuery: URLQuery
-                ) {
-                    addCookies(request.URL!, newCookies: cookies)
-                    let config = TaskConfiguration(
-                        credential:auth,
-                        redirects:redirects,
-                        originalRequest:request,
-                        data:NSMutableData(),
-                        progressHandler: asyncProgressHandler
-                        ) { (result) in
-                            if let handler = asyncCompletionHandler {
-                                handler(result)
-                            }
-                            if isSync {
-                                requestResult = result
-                                dispatch_semaphore_signal(semaphore)
-                            }
-
-                    }
-                    if let task = makeTask(request, configuration:config) {
-                        task.resume()
-                    }
-                    if isSync {
-                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-                        return requestResult
-                    }
-            } else {
-                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
-                if let handler = asyncCompletionHandler {
-                    handler(erronousResult)
-                } else {
-                    return erronousResult
-                }
-            }
-            return requestResult
-
-    }
-
-    func addCookies(URL:NSURL, newCookies:[String:String]) {
-        for (k,v) in newCookies {
-            if let cookie = NSHTTPCookie(properties: [
-                NSHTTPCookieName: k,
-                NSHTTPCookieValue: v,
-                NSHTTPCookieOriginURL: URL,
-                NSHTTPCookiePath: "/"
-                ]) {
-                    session.configuration.HTTPCookieStorage?.setCookie(cookie)
-            }
-        }
-    }
-}
-
-
 extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
     public func URLSession(
         session: NSURLSession,
@@ -876,38 +909,4 @@ extension Just: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         taskConfigs.removeValueForKey(task.taskIdentifier)
     }
 }
-
-// stolen from python-requests
-let statusCodeDescriptions = [
-    // Informational.
-    100: "continue"                      , 101: "switching protocols"             , 102: "processing"                           ,
-    103: "checkpoint"                    , 122: "uri too long"                    , 200: "ok"                                   ,
-    201: "created"                       , 202: "accepted"                        , 203: "non authoritative info"               ,
-    204: "no content"                    , 205: "reset content"                   , 206: "partial content"                      ,
-    207: "multi status"                  , 208: "already reported"                , 226: "im used"                              ,
-
-    // Redirection.
-    300: "multiple choices"              , 301: "moved permanently"               , 302: "found"                                ,
-    303: "see other"                     , 304: "not modified"                    , 305: "use proxy"                            ,
-    306: "switch proxy"                  , 307: "temporary redirect"              , 308: "permanent redirect"                   ,
-
-    // Client Error.
-    400: "bad request"                   , 401: "unauthorized"                    , 402: "payment required"                     ,
-    403: "forbidden"                     , 404: "not found"                       , 405: "method not allowed"                   ,
-    406: "not acceptable"                , 407: "proxy authentication required"   , 408: "request timeout"                      ,
-    409: "conflict"                      , 410: "gone"                            , 411: "length required"                      ,
-    412: "precondition failed"           , 413: "request entity too large"        , 414: "request uri too large"                ,
-    415: "unsupported media type"        , 416: "requested range not satisfiable" , 417: "expectation failed"                   ,
-    418: "im a teapot"                   , 422: "unprocessable entity"            , 423: "locked"                               ,
-    424: "failed dependency"             , 425: "unordered collection"            , 426: "upgrade required"                     ,
-    428: "precondition required"         , 429: "too many requests"               , 431: "header fields too large"              ,
-    444: "no response"                   , 449: "retry with"                      , 450: "blocked by windows parental controls" ,
-    451: "unavailable for legal reasons" , 499: "client closed request"           ,
-
-    // Server Error.
-    500: "internal server error"         , 501: "not implemented"                 , 502: "bad gateway"                          ,
-    503: "service unavailable"           , 504: "gateway timeout"                 , 505: "http version not supported"           ,
-    506: "variant also negotiates"       , 507: "insufficient storage"            , 509: "bandwidth limit exceeded"             ,
-    510: "not extended"                  ,
-]
 
