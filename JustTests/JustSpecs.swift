@@ -575,7 +575,7 @@ class JustSpec: QuickSpec {
             it("should get cookies contained in responses") {
                 let r = Just.get("http://httpbin.org/cookies/set/test/just", allowRedirects:false)
                 expect(r.cookies).toNot(beEmpty())
-                expect(r.cookies.keys.array).to(contain("test"))
+                expect(Array(r.cookies.keys)).to(contain("test"))
                 if let cookie = r.cookies["test"] {
                     expect(cookie.value).to(equal("just"))
                 }

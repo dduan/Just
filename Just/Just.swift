@@ -89,7 +89,7 @@ public class Just: NSObject, NSURLSessionDelegate {
                 components += queryComponents("\(key)", value)
             }
         } else {
-            components.extend([(percentEncodeString(key), percentEncodeString("\(value)"))])
+            components.appendContentsOf([(percentEncodeString(key), percentEncodeString("\(value)"))])
         }
 
         return components
@@ -102,7 +102,7 @@ public class Just: NSObject, NSURLSessionDelegate {
             components += self.queryComponents(key, value)
         }
 
-        return "&".join(components.map{"\($0)=\($1)"} as [String])
+        return (components.map{"\($0)=\($1)"} as [String]).joinWithSeparator("&")
     }
 
     func percentEncodeString(originalObject: AnyObject) -> String {
@@ -780,10 +780,10 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: CollectionType, D
         return _data.generate()
     }
 
-    public var keys: LazyForwardCollection<MapCollection<[Key : Value], Key>> {
+    public var keys: LazyMapCollection<[Key : Value], Key> {
         return _data.keys
     }
-    public var values: LazyForwardCollection<MapCollection<[Key : Value], Value>> {
+    public var values: LazyMapCollection<[Key : Value], Value> {
         return _data.values
     }
 }
