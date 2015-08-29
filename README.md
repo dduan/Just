@@ -82,6 +82,17 @@ Include the following in your Cartfile:
 
 Just includes dynamic framework targets for both iOS and OS X.
 
+## Cocoapods
+
+The usual way:
+
+    platform :ios, '8.0'
+    use_frameworks!
+
+    target 'MyApp' do
+      pod 'Just'
+    end
+
 ## Manual
 
 Drop `Just.xcodeproj` into your project navigator. Under the *General* tab of

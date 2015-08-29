@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/JustHTTP/Just.git", :tag => "v#{s.version}" }
 
-
+  s.framework = "Quick"
   s.source_files  = "Just", "Just/**/*.{swift}"
 
 end
