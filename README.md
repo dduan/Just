@@ -67,7 +67,7 @@ Just can do much, much more.
 Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
-[starting playground]: https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/QuickStart.zip
+[starting playground]: https://github.com/JustHTTP/Just/raw/swift-2.0/Docs/QuickStart.zip
 [starting link]: http://docs.justhttp.net/QuickStart.html
 
 #  Install
