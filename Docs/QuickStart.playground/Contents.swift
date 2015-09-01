@@ -224,4 +224,4 @@ Just.post(
 //: the response. You can tell them apart by checking the **type** property of the
 //: callback argument. In either cases, you can use **bytesProcessed**,
 //: **bytesExpectedToProcess** aned **percent** to check the actual progress.
-//
+
