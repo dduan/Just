@@ -224,8 +224,4 @@ Just.post(
 //: the response. You can tell them apart by checking the **type** property of the
 //: callback argument. In either cases, you can use **bytesProcessed**,
 //: **bytesExpectedToProcess** aned **percent** to check the actual progress.
-
-if let body = try? NSJSONSerialization.dataWithJSONObject([1,2,3], options: NSJSONWritingOptions(rawValue: 0)) {
-    Just.post("http://httpbin.org/post", headers:["content-type":"application/json"], requestBody: body).text
-}
-
+//
