@@ -203,19 +203,12 @@ public class Just: NSObject, NSURLSessionDelegate {
                 } else {
                     if let requestJSON = json {
                         contentType = "application/json"
-                        do {
-                            body = try NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions)
-                        } catch _ {
-                            body = nil
-                        }
+                        body = try? NSJSONSerialization.dataWithJSONObject(requestJSON, options: defaults.JSONWritingOptions)
+
                     } else {
                         if data.count > 0 {
                             if headers["content-type"]?.lowercaseString == "application/json" { // assume user wants JSON if she is using this header
-                                do {
-                                    body = try NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions)
-                                } catch _ {
-                                    body = nil
-                                }
+                                body = try? NSJSONSerialization.dataWithJSONObject(data, options: defaults.JSONWritingOptions)
                             } else {
                                 contentType = "application/x-www-form-urlencoded"
                                 body = query(data).dataUsingEncoding(defaults.encoding)
@@ -665,11 +658,7 @@ public final class HTTPResult : NSObject {
 
     public var json:AnyObject? {
         if let theData = self.content {
-            do {
-                return try NSJSONSerialization.JSONObjectWithData(theData, options: JSONReadingOptions)
-            } catch _ {
-                return nil
-            }
+            return try? NSJSONSerialization.JSONObjectWithData(theData, options: JSONReadingOptions)
         }
         return nil
     }
