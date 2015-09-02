@@ -178,6 +178,22 @@ if let json = Just.post(
 }
 
 
+//: ## Link Headers
+//: Many HTTP APIs feature Link headers. They make APIs more self describing
+//: and discoverable.
+//:
+//: Github uses these for pagination in their API, for example:
+
+let gh = Just.head("https://api.github.com/users/dduan/repos?page=1&per_page=5")
+gh.headers["link"] // <https://api.github.com/user/75067/repos?page=2&per_page=5>; rel="next", <https://api.github.com/user/75067/repos?page=9&per_page=5>; rel="last"
+
+//: Just will automatically parse these link headers and make them easily consumable:
+
+gh.links["next"] // ["rel": "next", "url":"https://api.github.com/user/75067/repos?page=2&per_page=5"]
+gh.links["last"] // ["rel": "last", "url":"https://api.github.com/user/75067/repos?page=9&per_page=5"]
+
+//: (be aware of Github's rate limits when you play with these)
+
 //: ## Cookies
 //:
 //: If you expect the server to return some cookie, you can find them this way:
