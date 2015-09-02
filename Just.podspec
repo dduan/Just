@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Just"
-  s.version      = "0.2.3"
+  s.version      = "0.3"
   s.summary      = "Swift HTTP for Humans"
 
   s.description  = <<-DESC
@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
                    -    timeouts
                    -    synchrounous / asyncrounous requests
                    -    upload / download progress tracking for asynchronous requests
+                   -    link headers
                    -    friendly accessible results
                    DESC
 
