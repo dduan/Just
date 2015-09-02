@@ -120,9 +120,10 @@ web.)
 
 Pull requests are welcome. Here are some tips for code contributors:
 
-[Carthage][] is needed to install [Quick][], before you can run the tests.
+Work in `Just.xcworkspace`.
+
 Tests requires [Quick][], which is a submodule to this repository. Make sure
-you run the following before attempting test:
+you run the following before attempting to test:
 
     git submodule update --init --recursive
 
