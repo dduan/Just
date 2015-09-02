@@ -640,5 +640,27 @@ class JustSpec: QuickSpec {
                 expect(r.ok).to(beTrue())
             }
         }
+
+        describe("link header support") {
+            it("should always have a value for .links") {
+                expect(Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10").links).toNot(beNil())
+            }
+            it("should contain key \"next\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.ok).to(beTrue())
+                expect(r.links["next"]).toNot(beNil())
+            }
+            it("should contain key \"last\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.ok).to(beTrue())
+                expect(r.links["last"]).toNot(beNil())
+            }
+            it("should contain key \"url\" in \"next\" and \"last\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.links["next"]?["url"]).toNot(beNil())
+                expect(r.links["last"]?["url"]).toNot(beNil())
+
+            }
+        }
     }
 }
