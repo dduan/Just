@@ -25,7 +25,7 @@ Just lets you to the following effortlessly:
 -   timeouts
 -   synchrounous / asyncrounous requests
 -   upload / download progress tracking for asynchronous requests
-    link headers
+-   link headers
 -   friendly accessible results
 
 #  Use
