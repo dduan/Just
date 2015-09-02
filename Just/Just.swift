@@ -117,6 +117,7 @@ public final class HTTPResult : NSObject {
         }
         return nil
     }
+
     public var statusCode: Int? {
         if let theResponse = self.response as? NSHTTPURLResponse {
             return theResponse.statusCode
@@ -133,7 +134,7 @@ public final class HTTPResult : NSObject {
 
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? NSHTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
-        }()
+    }()
 
     public lazy var cookies:[String:NSHTTPCookie] = {
         let foundCookies: [NSHTTPCookie]
@@ -156,6 +157,35 @@ public final class HTTPResult : NSObject {
     public var url:NSURL? {
         return response?.URL
     }
+    public lazy var links: [String:[String:String]] = {
+        var result = [String:[String:String]]()
+        if let content = self.headers["link"] {
+            content.componentsSeparatedByString(",").forEach { s in
+                let linkComponents = s.componentsSeparatedByString(";").map { ($0 as NSString).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) }
+                if linkComponents.count > 1 { // although a link without a rel is valid, there's no way to reference it
+                    let urlComponent = linkComponents.first!
+                    let urlRange = urlComponent.startIndex.advancedBy(1)..<urlComponent.endIndex.advancedBy(-1)
+                    var link: [String: String] = ["url": String(urlComponent.characters[urlRange])]
+                    linkComponents.dropFirst().forEach { s in
+                        if let equalIndex = s.characters.indexOf("=") {
+                            let componentKey = String(s.characters[s.startIndex..<equalIndex])
+                            let componentValueCharacters = s.characters[equalIndex.advancedBy(1)..<s.endIndex]
+                            if componentValueCharacters.first == "\"" && componentValueCharacters.last == "\"" {
+                                let unquotedValueRange = componentValueCharacters.startIndex.advancedBy(1)..<componentValueCharacters.endIndex.advancedBy(-1)
+                                link[componentKey] = String(componentValueCharacters[unquotedValueRange])
+                            } else {
+                                link[componentKey] = String(componentValueCharacters)
+                            }
+                        }
+                    }
+                    if let rel = link["rel"] {
+                        result[rel] = link
+                    }
+                }
+            }
+        }
+        return result
+    }()
 }
 
 
