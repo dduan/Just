@@ -64,7 +64,6 @@ Just.post(
 
 ```
 
-Just can do much, much more.
 Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
