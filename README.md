@@ -1,8 +1,8 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
 [![Build Status](https://travis-ci.org/JustHTTP/Just.svg?branch=swift-2.0)](https://travis-ci.org/JustHTTP/Just)
-![MIT License](https://img.shields.io/badge/license-MIT-grey.svg)
-![Supported Flatform](https://img.shields.io/badge/platform-iOS%20%7C%20OS%20X%20%7C%20watchOS-lightgrey.svg)
+![MIT License](https://img.shields.io/cocoapods/l/Just.svg)
+![Supported Flatform](https://img.shields.io/cocoapods/p/Just.svg)
 
 <img src="https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/IconMasked.png" width="280" height="280">
 
