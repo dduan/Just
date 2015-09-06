@@ -3,7 +3,7 @@ all : clean test
 docs : playground html
 
 test :
-	@xcodebuild test -project Just.xcodeproj -scheme Just-OSX -destination 'platform=OS X' | xcpretty
+	@xcodebuild test -workspace Just.xcworkspace -scheme Just-OSX -destination 'platform=OS X' | xcpretty
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
