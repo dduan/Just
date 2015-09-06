@@ -3,7 +3,10 @@ all : clean test
 docs : playground html
 
 test :
-	@xcodebuild test -workspace Just.xcworkspace -scheme Just-OSX -destination 'platform=OS X' | xcpretty
+	@set -o pipefail \
+	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-OSX -destination 'platform=OS X' | xcpretty \
+	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-iOS -destination 'OS=9.0,name=iPhone 6' | xcpretty \
+	&& pod lib lint
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
