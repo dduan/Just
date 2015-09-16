@@ -52,7 +52,7 @@ class CaseInsensitiveDictionarySpecs: QuickSpec {
                 expect(d["b"]).to(equal(2))
             }
             it("obeys value semantics, keeps a copy of assigned value") {
-                var d1:CaseInsensitiveDictionary<String,Int> = ["a":1]
+                let d1:CaseInsensitiveDictionary<String,Int> = ["a":1]
                 let d2 = d1
                 expect(d2["a"]).toNot(beNil())
                 expect(d2["a"]).to(equal(1))
@@ -86,7 +86,7 @@ class CaseInsensitiveDictionarySpecs: QuickSpec {
                 expect(d1["b"]).to(beNil())
             }
             it("obeys value semantics, retains muliple value from original after mutation") {
-                var d1:CaseInsensitiveDictionary<String,Int> = ["a":1, "b": 2]
+                let d1:CaseInsensitiveDictionary<String,Int> = ["a":1, "b": 2]
                 var d2 = d1
                 expect(d2["a"]).toNot(beNil())
                 expect(d2["a"]).to(equal(1))

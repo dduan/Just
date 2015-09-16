@@ -7,8 +7,8 @@
 //
 
 import Just
-import Quick
 import Nimble
+import Quick
 
 class JustSpec: QuickSpec {
     override func spec() {
@@ -19,7 +19,6 @@ class JustSpec: QuickSpec {
                     count += 1
                 })
                 expect(r.ok).to(beTrue())
-                println(count)
                 expect(count).toEventuallyNot(equal(0))
             }
             it("should sends simple query string specified for GET") {
@@ -576,7 +575,7 @@ class JustSpec: QuickSpec {
             it("should get cookies contained in responses") {
                 let r = Just.get("http://httpbin.org/cookies/set/test/just", allowRedirects:false)
                 expect(r.cookies).toNot(beEmpty())
-                expect(r.cookies.keys.array).to(contain("test"))
+                expect(Array(r.cookies.keys)).to(contain("test"))
                 if let cookie = r.cookies["test"] {
                     expect(cookie.value).to(equal("just"))
                 }
@@ -639,6 +638,28 @@ class JustSpec: QuickSpec {
             it("should not timeout when response is taking shorter than specified") {
                 let r = Just.get("http://httpbin.org/delay/1", timeout:2)
                 expect(r.ok).to(beTrue())
+            }
+        }
+
+        describe("link header support") {
+            it("should always have a value for .links") {
+                expect(Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10").links).toNot(beNil())
+            }
+            it("should contain key \"next\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.ok).to(beTrue())
+                expect(r.links["next"]).toNot(beNil())
+            }
+            it("should contain key \"last\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.ok).to(beTrue())
+                expect(r.links["last"]).toNot(beNil())
+            }
+            it("should contain key \"url\" in \"next\" and \"last\" for this specific github API") {
+                let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10")
+                expect(r.links["next"]?["url"]).toNot(beNil())
+                expect(r.links["last"]?["url"]).toNot(beNil())
+
             }
         }
     }

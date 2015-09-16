@@ -1,11 +1,11 @@
 //: # Just: A Quick Start
-//: This is an introduction to the basics of donig HTTP via
+//: This is an introduction to the basics of doning HTTP via
 //: [Just](http://JustHTTP.net).
 //: It's available both on the
 //: [web](http://docs.justhttp.net/QuickStart.html)
 //: and as a
 //: [playground](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/QuickStart.zip).
-//: Readers are assumed to understand of the HTTP protocal.
+//: Readers are assumed to be familiar with the basics of HTTP.
 //:
 //: ## Simple Requests
 //: Just's API is heavily influenced by [python-requests](http://python-requests.org),
@@ -38,8 +38,7 @@ Just.get("http://httpbin.org/get", params:["page": 3])
 //: Cocoa/Cocoa Touch apps from smooth UI rendering. However, there's nothing
 //: inherantly wrong with synchronous requests. In fact, synchronous code is often
 //: easier to understand and, therefore, a better paradigm to explore HTTP
-//: resources with. In REPL or playgrounds, you can see the result of
-//: synchronous results.
+//: resources with.
 
 var r = Just.get("http://httpbin.org/get", params:["page": 3])
 // … "r" becomes available here
@@ -55,6 +54,11 @@ Just.get("http://httpbin.org/get", params:["page": 3]) { (r) in
 //: callback. When such callback is present, the result of the request becomes
 //: available asynchronously as an arugment to the callback. Otherwise,
 //: Just will return the very same result synchronously.
+//:
+//: *Note: asynchronous callbacks does not run on main thread, which is a
+//: behavior inherited from NSURLSession. Be sure to dispatch code
+//: properly with NSOperationQueue or GCD if you need to update UI in the
+//: callback.*
 //:
 //: The examples in the rest of this document will be synchronous. Keep in
 //: mind that all of them can easily be asynchronous.
@@ -83,7 +87,7 @@ r.isRedirect    // is this a redirect response
 //: The **headers** property is a Swift-dictionary-like object:
 
 for (k,v) in r.headers {
-    println("\(k):\(v)")
+    print("\(k):\(v)")
 }
 
 //: It's different from a normal dictionary in that its values can be accessed
@@ -136,25 +140,27 @@ Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedir
 //: Uploading files is easy with Just:
 
 import Foundation
-if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"),
-    let photoURL = NSURL(fileURLWithPath: photoPath) {
-    let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(photoURL, nil)]) // <== that's it
-    print(uploadResult.text ?? "")
-}
+
+
+
+let elonPhotoURL = NSBundle.mainBundle().URLForResource("elon", withExtension: "jpg")! // assume the file exist
+let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, nil)]) // <== that's it
+print(uploadResult.text ?? "")
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
 
-if let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) {
-    if let text = Just.post(
-        "http://httpbin.org/post",
-        files:[
-            "a":.Data("marco.text", someData, nil), // file #1, an NSData
-            "b":.Text("polo.txt", "Polo", nil)      // file #2, a String
-        ]
-    ).text {
-        print(text)
-    }
+let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding)! // this shouldn't fail
+
+if let text = Just.post(
+    "http://httpbin.org/post",
+    files:[
+        "a":.Data("marco.text", someData, nil), // file #1, an NSData
+        "b":.Text("polo.txt", "Polo", nil)      // file #2, a String
+    ]
+).text {
+    print(text)
 }
+
 
 //: Two files are being uploaded here.
 //:
@@ -162,17 +168,31 @@ if let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding) {
 //:
 //: **data** parameter can be used in conjuction with **files**. When that happens, though, the *Content-Type* of the request will be *multipart/form-data; ...*.
 
-if let photoPath = NSBundle.mainBundle().pathForResource("elon", ofType:"jpg"),
-    let photoURL = NSURL(fileURLWithPath: photoPath) {
-    if let json = Just.post(
-        "http://httpbin.org/post",
-        data:["lastName":"Musk"],
-        files:["elon":.URL(photoURL, nil)]
-    ).json as? [String:AnyObject] {
-        print(json["form"] ?? [:])      // lastName:Musk
-        print(json["files"] ?? [:])     // elon
-    }
+if let json = Just.post(
+    "http://httpbin.org/post",
+    data:["lastName":"Musk"],
+    files:["elon":.URL(elonPhotoURL, nil)]
+).json as? [String:AnyObject] {
+    print(json["form"] ?? [:])      // lastName:Musk
+    print(json["files"] ?? [:])     // elon
 }
+
+
+//: ## Link Headers
+//: Many HTTP APIs feature Link headers. They make APIs more self describing
+//: and discoverable.
+//:
+//: Github uses these for pagination in their API, for example:
+
+let gh = Just.head("https://api.github.com/users/dduan/repos?page=1&per_page=5")
+gh.headers["link"] // <https://api.github.com/user/75067/repos?page=2&per_page=5>; rel="next", <https://api.github.com/user/75067/repos?page=9&per_page=5>; rel="last"
+
+//: Just will automatically parse these link headers and make them easily consumable:
+
+gh.links["next"] // ["rel": "next", "url":"https://api.github.com/user/75067/repos?page=2&per_page=5"]
+gh.links["last"] // ["rel": "last", "url":"https://api.github.com/user/75067/repos?page=9&per_page=5"]
+
+//: (be aware of Github's rate limits when you play with these)
 
 //: ## Cookies
 //:
@@ -220,3 +240,4 @@ Just.post(
 //: the response. You can tell them apart by checking the **type** property of the
 //: callback argument. In either cases, you can use **bytesProcessed**,
 //: **bytesExpectedToProcess** aned **percent** to check the actual progress.
+

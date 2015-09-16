@@ -7,24 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		940C09D71AF41B1200E6F7B9 /* Nimble.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		940C09D81AF41B1200E6F7B9 /* Quick.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		940C09DA1AF41B4E00E6F7B9 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE31AF4142F00C34129 /* Nimble.framework */; };
-		94481BE81AF4155D00C34129 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94481BE41AF4142F00C34129 /* Quick.framework */; };
 		948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA81D1AF3FF43001E0FD3 /* Just.framework */; };
 		948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA83B1AF3FF55001E0FD3 /* Just.framework */; };
 		948CA8541AF3FF7F001E0FD3 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		948CA8551AF3FF80001E0FD3 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
-		948CA8561AF3FFAF001E0FD3 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B791AE642FB0082DC6D /* Nimble.framework */; };
-		948CA8571AF3FFAF001E0FD3 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94DA2B7A1AE642FB0082DC6D /* Quick.framework */; };
 		948CA85A1AF3FFE1001E0FD3 /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
 		948CA85B1AF3FFE1001E0FD3 /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
 		948CA85E1AF40091001E0FD3 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
 		948CA85F1AF40091001E0FD3 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
 		948CA8601AF400B7001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		948CA8611AF400B8001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
+		94A9A56E1B96B332000D927C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
+		94A9A5701B96B336000D927C /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56F1B96B336000D927C /* Nimble.framework */; };
+		94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
+		94A9A5731B96B433000D927C /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A5721B96B433000D927C /* Nimble.framework */; };
+		94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA8211AF3FF43001E0FD3 /* Just-iOS.h */; };
+		94F060C91B27321600D44B84 /* Just-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,26 +43,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		940C09D61AF41AFD00E6F7B9 /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				940C09D71AF41B1200E6F7B9 /* Nimble.framework in Copy Frameworks */,
-				940C09D81AF41B1200E6F7B9 /* Quick.framework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		940C09D91AF41B4300E6F7B9 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				940C09DA1AF41B4E00E6F7B9 /* Nimble.framework in CopyFiles */,
-				940C09DB1AF41B4E00E6F7B9 /* Quick.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +66,9 @@
 		948CA83E1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-OSX/Info.plist"; sourceTree = "<group>"; };
 		948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		948CA84B1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-OSXTests/Info.plist"; sourceTree = "<group>"; };
+		94A9A56D1B96B332000D927C /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "../../Library/Developer/Xcode/DerivedData/Just-fwiujanyjkahqhhfkibwrcitoqlt/Build/Products/Debug/Quick.framework"; sourceTree = "<group>"; };
+		94A9A56F1B96B336000D927C /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Externals/Quick/Externals/Nimble/build/Debug/Nimble.framework; sourceTree = "<group>"; };
+		94A9A5721B96B433000D927C /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Externals/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
 		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94DA2B791AE642FB0082DC6D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
@@ -102,8 +89,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */,
-				948CA8561AF3FFAF001E0FD3 /* Nimble.framework in Frameworks */,
-				948CA8571AF3FFAF001E0FD3 /* Quick.framework in Frameworks */,
+				94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */,
+				94A9A5731B96B433000D927C /* Nimble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,14 +106,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */,
-				94481BE71AF4155A00C34129 /* Nimble.framework in Frameworks */,
-				94481BE81AF4155D00C34129 /* Quick.framework in Frameworks */,
+				94A9A56E1B96B332000D927C /* Quick.framework in Frameworks */,
+				94A9A5701B96B336000D927C /* Nimble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		940744441B96B00300A54F40 /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				94A9A5721B96B433000D927C /* Nimble.framework */,
+				94A9A56F1B96B336000D927C /* Nimble.framework */,
+				94A9A56D1B96B332000D927C /* Quick.framework */,
+			);
+			name = Externals;
+			sourceTree = "<group>";
+		};
 		948CA81E1AF3FF43001E0FD3 /* Just-iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +197,7 @@
 		94DA2B4A1AE640390082DC6D = {
 			isa = PBXGroup;
 			children = (
+				940744441B96B00300A54F40 /* Externals */,
 				94DA2B561AE640390082DC6D /* Just */,
 				94DA2B631AE640390082DC6D /* JustTests */,
 				94DA2B551AE640390082DC6D /* Products */,
@@ -246,6 +244,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +252,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94F060C91B27321600D44B84 /* Just-OSX.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +319,6 @@
 				948CA8411AF3FF55001E0FD3 /* Sources */,
 				948CA8421AF3FF55001E0FD3 /* Frameworks */,
 				948CA8431AF3FF55001E0FD3 /* Resources */,
-				940C09D61AF41AFD00E6F7B9 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,7 +336,8 @@
 		94DA2B4B1AE640390082DC6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = JustHTTP;
 				TargetAttributes = {
 					948CA81C1AF3FF43001E0FD3 = {
@@ -451,6 +451,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -458,6 +459,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Just;
 				SKIP_INSTALL = YES;
 			};
@@ -470,9 +472,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Just;
 				SKIP_INSTALL = YES;
 			};
@@ -481,17 +485,14 @@
 		948CA8321AF3FF43001E0FD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "JustTests/Just-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -499,13 +500,10 @@
 		948CA8331AF3FF43001E0FD3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "JustTests/Just-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -519,6 +517,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -528,6 +527,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Just;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -542,11 +542,13 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-OSX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Just;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -561,7 +563,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -570,6 +571,7 @@
 				INFOPLIST_FILE = "JustTests/Just-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -582,11 +584,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = "JustTests/Just-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -614,6 +616,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
