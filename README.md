@@ -8,7 +8,7 @@
 
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
-Just supports only Swift 2.
+Just requires Swift 2.
 
 *Follow [@JustHTTP][twitter] for updates, if you are into that kind of things* 😉
 
