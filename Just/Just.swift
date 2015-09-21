@@ -329,6 +329,42 @@ public struct JustOf<Adaptor: JustAdaptor> {
 }
 
 extension JustOf {
+    public func request(
+        method:HTTPMethod,
+        URLString:String,
+        params:[String:AnyObject] = [:],
+        data:[String:AnyObject] = [:],
+        json:[String:AnyObject]? = nil,
+        headers:[String:String] = [:],
+        files:[String:HTTPFile] = [:],
+        auth:(String,String)? = nil,
+        cookies:[String:String] = [:],
+        allowRedirects:Bool = true,
+        timeout:Double? = nil,
+        URLQuery:String? = nil,
+        requestBody:NSData? = nil,
+        asyncProgressHandler:((HTTPProgress!) -> Void)? = nil,
+        asyncCompletionHandler:((HTTPResult!) -> Void)? = nil
+        ) -> HTTPResult {
+        return adaptor.request(
+            method,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout:timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
+
+    }
     public func delete(
         URLString:String,
         params:[String:AnyObject] = [:],
