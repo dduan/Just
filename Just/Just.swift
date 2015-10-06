@@ -67,7 +67,10 @@ public final class HTTPResult : NSObject {
     public final var content:NSData?
     public var response:NSURLResponse?
     public var error:NSError?
-    public var request:NSURLRequest?
+    public var request:NSURLRequest? {
+        return task?.originalRequest
+    }
+    public var task:NSURLSessionTask?
     public var encoding = NSUTF8StringEncoding
     public var JSONReadingOptions = NSJSONReadingOptions(rawValue: 0)
 
@@ -104,11 +107,11 @@ public final class HTTPResult : NSObject {
         }
     }
 
-    public init(data:NSData?, response:NSURLResponse?, error:NSError?, request:NSURLRequest?) {
+    public init(data:NSData?, response:NSURLResponse?, error:NSError?, task:NSURLSessionTask?) {
         self.content = data
         self.response = response
         self.error = error
-        self.request = request
+        self.task = task
     }
 
     public var json:AnyObject? {
@@ -148,7 +151,7 @@ public final class HTTPResult : NSObject {
             result[cookie.name] = cookie
         }
         return result
-        }()
+    }()
 
     public var ok:Bool {
         return statusCode != nil && !(statusCode! >= 400 && statusCode! < 600)
@@ -841,7 +844,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
 
             let isSync = asyncCompletionHandler == nil
             let semaphore = dispatch_semaphore_create(0)
-            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, request: nil)
+            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, task: nil)
 
             let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
             if let request = synthesizeRequest(
@@ -863,7 +866,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                         originalRequest:request,
                         data:NSMutableData(),
                         progressHandler: asyncProgressHandler
-                        ) { (result) in
+                        ) { result in
                             if let handler = asyncCompletionHandler {
                                 handler(result)
                             }
@@ -881,7 +884,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                         return requestResult
                     }
             } else {
-                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, request: nil)
+                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, task: nil)
                 if let handler = asyncCompletionHandler {
                     handler(erronousResult)
                 } else {
@@ -979,7 +982,7 @@ extension HTTP: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
                 data: config.data,
                 response: task.response,
                 error: error,
-                request: config.originalRequest ?? task.originalRequest
+                task: task
             )
             result.JSONReadingOptions = self.defaults.JSONReadingOptions
             result.encoding = self.defaults.encoding
