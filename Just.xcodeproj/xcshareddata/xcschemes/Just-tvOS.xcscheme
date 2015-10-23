@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "94F2DF811BD9F339004820D5"
-               BuildableName = "Just-tvOS.framework"
+               BuildableName = "Just.framework"
                BlueprintName = "Just-tvOS"
                ReferencedContainer = "container:Just.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94F2DF811BD9F339004820D5"
-            BuildableName = "Just-tvOS.framework"
+            BuildableName = "Just.framework"
             BlueprintName = "Just-tvOS"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94F2DF811BD9F339004820D5"
-            BuildableName = "Just-tvOS.framework"
+            BuildableName = "Just.framework"
             BlueprintName = "Just-tvOS"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94F2DF811BD9F339004820D5"
-            BuildableName = "Just-tvOS.framework"
+            BuildableName = "Just.framework"
             BlueprintName = "Just-tvOS"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>

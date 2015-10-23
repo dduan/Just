@@ -27,7 +27,6 @@
 		94F2DF9A1BD9F369004820D5 /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
 		94F2DF9B1BD9F369004820D5 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		94F2DF9C1BD9F36E004820D5 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
-		94F2DFA51BD9F45B004820D5 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,18 +52,6 @@
 			remoteInfo = "Just-tvOS";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		940C09D91AF41B4300E6F7B9 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		94481BE31AF4142F00C34129 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = SOURCE_ROOT; };
@@ -130,7 +117,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94F2DFA51BD9F45B004820D5 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +338,6 @@
 				948CA8231AF3FF43001E0FD3 /* Sources */,
 				948CA8241AF3FF43001E0FD3 /* Frameworks */,
 				948CA8251AF3FF43001E0FD3 /* Resources */,
-				940C09D91AF41B4300E6F7B9 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -957,6 +942,7 @@
 				94F2DF951BD9F339004820D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		94F2DF961BD9F339004820D5 /* Build configuration list for PBXNativeTarget "Just-tvOSTests" */ = {
 			isa = XCConfigurationList;
@@ -965,6 +951,7 @@
 				94F2DF981BD9F339004820D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
