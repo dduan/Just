@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		940B65D31BDAAF2F00CAAE65 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940B65D21BDAAF2F00CAAE65 /* Nimble.framework */; };
+		940B65D51BDAAF4700CAAE65 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940B65D41BDAAF4700CAAE65 /* Nimble.framework */; };
+		940B65D61BDAAFD900CAAE65 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
+		940B65D81BDAAFE200CAAE65 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940B65D71BDAAFE200CAAE65 /* Nimble.framework */; };
 		948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA81D1AF3FF43001E0FD3 /* Just.framework */; };
 		948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948CA83B1AF3FF55001E0FD3 /* Just.framework */; };
 		948CA8541AF3FF7F001E0FD3 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
@@ -54,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		940B65D21BDAAF2F00CAAE65 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Externals/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
+		940B65D41BDAAF4700CAAE65 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Externals/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
+		940B65D71BDAAFE200CAAE65 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Externals/Quick/Externals/Nimble/build/Debug/Nimble.framework; sourceTree = "<group>"; };
 		94481BE31AF4142F00C34129 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = SOURCE_ROOT; };
 		94481BE41AF4142F00C34129 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = SOURCE_ROOT; };
 		948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveDictionarySpecs.swift; sourceTree = "<group>"; };
@@ -94,6 +101,7 @@
 			files = (
 				948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */,
 				94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */,
+				940B65D51BDAAF4700CAAE65 /* Nimble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +117,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */,
+				940B65D81BDAAFE200CAAE65 /* Nimble.framework in Frameworks */,
 				94A9A56E1B96B332000D927C /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,6 +134,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				94F2DF8C1BD9F339004820D5 /* Just.framework in Frameworks */,
+				940B65D61BDAAFD900CAAE65 /* Quick.framework in Frameworks */,
+				940B65D31BDAAF2F00CAAE65 /* Nimble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +145,9 @@
 		940744441B96B00300A54F40 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				940B65D71BDAAFE200CAAE65 /* Nimble.framework */,
+				940B65D41BDAAF4700CAAE65 /* Nimble.framework */,
+				940B65D21BDAAF2F00CAAE65 /* Nimble.framework */,
 				94A9A56D1B96B332000D927C /* Quick.framework */,
 			);
 			name = Externals;
@@ -620,7 +634,10 @@
 		948CA8321AF3FF43001E0FD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug-iphoneos",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -635,7 +652,10 @@
 		948CA8331AF3FF43001E0FD3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = "JustTests/Just-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.justHTTP.$(PRODUCT_NAME:rfc1034identifier)";
@@ -698,6 +718,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -719,6 +740,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug",
 				);
 				INFOPLIST_FILE = "JustTests/Just-OSXTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -866,6 +888,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = "Just-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Just-tvOSTests";
@@ -878,6 +904,10 @@
 		94F2DF981BD9F339004820D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/Quick/Externals/Nimble/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = "Just-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Just-tvOSTests";
