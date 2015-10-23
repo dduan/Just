@@ -18,11 +18,16 @@
 		948CA8601AF400B7001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		948CA8611AF400B8001E0FD3 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
 		94A9A56E1B96B332000D927C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
-		94A9A5701B96B336000D927C /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56F1B96B336000D927C /* Nimble.framework */; };
 		94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
-		94A9A5731B96B433000D927C /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A5721B96B433000D927C /* Nimble.framework */; };
-		94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA8211AF3FF43001E0FD3 /* Just-iOS.h */; };
-		94F060C91B27321600D44B84 /* Just-OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 948CA83F1AF3FF55001E0FD3 /* Just-OSX.h */; };
+		94F060C81B27320A00D44B84 /* (null) in Headers */ = {isa = PBXBuildFile; };
+		94F060C91B27321600D44B84 /* (null) in Headers */ = {isa = PBXBuildFile; };
+		94F2DF851BD9F339004820D5 /* Just-tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 94F2DF841BD9F339004820D5 /* Just-tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		94F2DF8C1BD9F339004820D5 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F2DF821BD9F339004820D5 /* Just.framework */; };
+		94F2DF991BD9F365004820D5 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
+		94F2DF9A1BD9F369004820D5 /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
+		94F2DF9B1BD9F369004820D5 /* CaseInsensitiveDictionarySpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */; };
+		94F2DF9C1BD9F36E004820D5 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
+		94F2DFA51BD9F45B004820D5 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +44,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 948CA83A1AF3FF55001E0FD3;
 			remoteInfo = "Just-OSX";
+		};
+		94F2DF8D1BD9F339004820D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 94DA2B4B1AE640390082DC6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 94F2DF811BD9F339004820D5;
+			remoteInfo = "Just-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -67,13 +79,18 @@
 		948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		948CA84B1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-OSXTests/Info.plist"; sourceTree = "<group>"; };
 		94A9A56D1B96B332000D927C /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "../../Library/Developer/Xcode/DerivedData/Just-fwiujanyjkahqhhfkibwrcitoqlt/Build/Products/Debug/Quick.framework"; sourceTree = "<group>"; };
-		94A9A56F1B96B336000D927C /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Externals/Quick/Externals/Nimble/build/Debug/Nimble.framework; sourceTree = "<group>"; };
-		94A9A5721B96B433000D927C /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Externals/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
 		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94DA2B791AE642FB0082DC6D /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = SOURCE_ROOT; };
 		94DA2B7A1AE642FB0082DC6D /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = SOURCE_ROOT; };
 		94EDF39B1AEEE38B007BF486 /* elon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elon.jpg; sourceTree = "<group>"; };
+		94F2DF771BD9F2CF004820D5 /* Just.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Just.h; sourceTree = "<group>"; };
+		94F2DF791BD9F2CF004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		94F2DF821BD9F339004820D5 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94F2DF841BD9F339004820D5 /* Just-tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Just-tvOS.h"; sourceTree = "<group>"; };
+		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +107,6 @@
 			files = (
 				948CA8281AF3FF43001E0FD3 /* Just.framework in Frameworks */,
 				94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */,
-				94A9A5731B96B433000D927C /* Nimble.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +123,22 @@
 			files = (
 				948CA8461AF3FF55001E0FD3 /* Just.framework in Frameworks */,
 				94A9A56E1B96B332000D927C /* Quick.framework in Frameworks */,
-				94A9A5701B96B336000D927C /* Nimble.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF7E1BD9F339004820D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DFA51BD9F45B004820D5 /* Quick.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF881BD9F339004820D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DF8C1BD9F339004820D5 /* Just.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,8 +148,6 @@
 		940744441B96B00300A54F40 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				94A9A5721B96B433000D927C /* Nimble.framework */,
-				94A9A56F1B96B336000D927C /* Nimble.framework */,
 				94A9A56D1B96B332000D927C /* Quick.framework */,
 			);
 			name = Externals;
@@ -200,6 +229,7 @@
 				940744441B96B00300A54F40 /* Externals */,
 				94DA2B561AE640390082DC6D /* Just */,
 				94DA2B631AE640390082DC6D /* JustTests */,
+				94F2DF761BD9F2CF004820D5 /* Just */,
 				94DA2B551AE640390082DC6D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -211,6 +241,8 @@
 				948CA8271AF3FF43001E0FD3 /* Just-iOSTests.xctest */,
 				948CA83B1AF3FF55001E0FD3 /* Just.framework */,
 				948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */,
+				94F2DF821BD9F339004820D5 /* Just.framework */,
+				94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -220,6 +252,7 @@
 			children = (
 				948CA81E1AF3FF43001E0FD3 /* Just-iOS */,
 				948CA83C1AF3FF55001E0FD3 /* Just-OSX */,
+				94F2DF831BD9F339004820D5 /* Just-tvOS */,
 				94DA2B721AE640980082DC6D /* Just.swift */,
 			);
 			path = Just;
@@ -230,11 +263,39 @@
 			children = (
 				948CA82B1AF3FF43001E0FD3 /* Just-iOSTests */,
 				948CA8491AF3FF55001E0FD3 /* Just-OSXTests */,
+				94F2DF8F1BD9F339004820D5 /* Just-tvOSTests */,
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
 				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
 				948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */,
 			);
 			path = JustTests;
+			sourceTree = "<group>";
+		};
+		94F2DF761BD9F2CF004820D5 /* Just */ = {
+			isa = PBXGroup;
+			children = (
+				94F2DF771BD9F2CF004820D5 /* Just.h */,
+				94F2DF791BD9F2CF004820D5 /* Info.plist */,
+			);
+			path = Just;
+			sourceTree = "<group>";
+		};
+		94F2DF831BD9F339004820D5 /* Just-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				94F2DF841BD9F339004820D5 /* Just-tvOS.h */,
+				94F2DF861BD9F339004820D5 /* Info.plist */,
+			);
+			path = "Just-tvOS";
+			sourceTree = SOURCE_ROOT;
+		};
+		94F2DF8F1BD9F339004820D5 /* Just-tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				94F2DF921BD9F339004820D5 /* Info.plist */,
+			);
+			name = "Just-tvOSTests";
+			path = "../Just-tvOSTests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,7 +305,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94F060C81B27320A00D44B84 /* Just-iOS.h in Headers */,
+				94F060C81B27320A00D44B84 /* (null) in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +313,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94F060C91B27321600D44B84 /* Just-OSX.h in Headers */,
+				94F060C91B27321600D44B84 /* (null) in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF7F1BD9F339004820D5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DF851BD9F339004820D5 /* Just-tvOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,13 +399,49 @@
 			productReference = 948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		94F2DF811BD9F339004820D5 /* Just-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94F2DF931BD9F339004820D5 /* Build configuration list for PBXNativeTarget "Just-tvOS" */;
+			buildPhases = (
+				94F2DF7D1BD9F339004820D5 /* Sources */,
+				94F2DF7E1BD9F339004820D5 /* Frameworks */,
+				94F2DF7F1BD9F339004820D5 /* Headers */,
+				94F2DF801BD9F339004820D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Just-tvOS";
+			productName = "Just-tvOS";
+			productReference = 94F2DF821BD9F339004820D5 /* Just.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		94F2DF8A1BD9F339004820D5 /* Just-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94F2DF961BD9F339004820D5 /* Build configuration list for PBXNativeTarget "Just-tvOSTests" */;
+			buildPhases = (
+				94F2DF871BD9F339004820D5 /* Sources */,
+				94F2DF881BD9F339004820D5 /* Frameworks */,
+				94F2DF891BD9F339004820D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				94F2DF8E1BD9F339004820D5 /* PBXTargetDependency */,
+			);
+			name = "Just-tvOSTests";
+			productName = "Just-tvOSTests";
+			productReference = 94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		94DA2B4B1AE640390082DC6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = JustHTTP;
 				TargetAttributes = {
@@ -351,6 +456,12 @@
 					};
 					948CA8441AF3FF55001E0FD3 = {
 						CreatedOnToolsVersion = 6.3.1;
+					};
+					94F2DF811BD9F339004820D5 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					94F2DF8A1BD9F339004820D5 = {
+						CreatedOnToolsVersion = 7.1;
 					};
 				};
 			};
@@ -370,6 +481,8 @@
 				948CA8261AF3FF43001E0FD3 /* Just-iOSTests */,
 				948CA83A1AF3FF55001E0FD3 /* Just-OSX */,
 				948CA8441AF3FF55001E0FD3 /* Just-OSXTests */,
+				94F2DF811BD9F339004820D5 /* Just-tvOS */,
+				94F2DF8A1BD9F339004820D5 /* Just-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -388,6 +501,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				948CA85F1AF40091001E0FD3 /* elon.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF801BD9F339004820D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF891BD9F339004820D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DF9C1BD9F36E004820D5 /* elon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +556,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		94F2DF7D1BD9F339004820D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DF991BD9F365004820D5 /* Just.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		94F2DF871BD9F339004820D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94F2DF9A1BD9F369004820D5 /* JustSpecs.swift in Sources */,
+				94F2DF9B1BD9F369004820D5 /* CaseInsensitiveDictionarySpecs.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -440,6 +585,11 @@
 			isa = PBXTargetDependency;
 			target = 948CA83A1AF3FF55001E0FD3 /* Just-OSX */;
 			targetProxy = 948CA8471AF3FF55001E0FD3 /* PBXContainerItemProxy */;
+		};
+		94F2DF8E1BD9F339004820D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 94F2DF811BD9F339004820D5 /* Just-tvOS */;
+			targetProxy = 94F2DF8D1BD9F339004820D5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -686,6 +836,72 @@
 			};
 			name = Release;
 		};
+		94F2DF941BD9F339004820D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "Just-tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.Just;
+				PRODUCT_NAME = Just;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		94F2DF951BD9F339004820D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "Just-tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.Just;
+				PRODUCT_NAME = Just;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		94F2DF971BD9F339004820D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = "Just-tvOSTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Just-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		94F2DF981BD9F339004820D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Just-tvOSTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Just-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -733,6 +949,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		94F2DF931BD9F339004820D5 /* Build configuration list for PBXNativeTarget "Just-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94F2DF941BD9F339004820D5 /* Debug */,
+				94F2DF951BD9F339004820D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		94F2DF961BD9F339004820D5 /* Build configuration list for PBXNativeTarget "Just-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94F2DF971BD9F339004820D5 /* Debug */,
+				94F2DF981BD9F339004820D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
