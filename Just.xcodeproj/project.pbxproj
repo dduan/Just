@@ -81,10 +81,10 @@
 		94F2DF771BD9F2CF004820D5 /* Just.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Just.h; sourceTree = "<group>"; };
 		94F2DF791BD9F2CF004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94F2DF821BD9F339004820D5 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		94F2DF841BD9F339004820D5 /* Just-tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Just-tvOS.h"; sourceTree = "<group>"; };
-		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		94F2DF841BD9F339004820D5 /* Just-tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Just-tvOS.h"; path = "Just/Just-tvOS/Just-tvOS.h"; sourceTree = "<group>"; };
+		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-tvOS/Info.plist"; sourceTree = "<group>"; };
 		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-tvOSTests/Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
