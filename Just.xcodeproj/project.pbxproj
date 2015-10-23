@@ -25,7 +25,6 @@
 		94A9A5711B96B42E000D927C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A9A56D1B96B332000D927C /* Quick.framework */; };
 		94F060C81B27320A00D44B84 /* (null) in Headers */ = {isa = PBXBuildFile; };
 		94F060C91B27321600D44B84 /* (null) in Headers */ = {isa = PBXBuildFile; };
-		94F2DF851BD9F339004820D5 /* Just-tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 94F2DF841BD9F339004820D5 /* Just-tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		94F2DF8C1BD9F339004820D5 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F2DF821BD9F339004820D5 /* Just.framework */; };
 		94F2DF991BD9F365004820D5 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		94F2DF9A1BD9F369004820D5 /* JustSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B661AE640390082DC6D /* JustSpecs.swift */; };
@@ -81,7 +80,6 @@
 		94F2DF771BD9F2CF004820D5 /* Just.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Just.h; sourceTree = "<group>"; };
 		94F2DF791BD9F2CF004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94F2DF821BD9F339004820D5 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		94F2DF841BD9F339004820D5 /* Just-tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Just-tvOS.h"; path = "Just/Just-tvOS/Just-tvOS.h"; sourceTree = "<group>"; };
 		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-tvOS/Info.plist"; sourceTree = "<group>"; };
 		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-tvOSTests/Info.plist"; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 		94F2DF831BD9F339004820D5 /* Just-tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				94F2DF841BD9F339004820D5 /* Just-tvOS.h */,
 				94F2DF861BD9F339004820D5 /* Info.plist */,
 			);
 			path = "Just-tvOS";
@@ -321,7 +318,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94F2DF851BD9F339004820D5 /* Just-tvOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -844,7 +840,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Just-tvOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.Just;
@@ -864,7 +860,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Just-tvOS/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-tvOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.Just;
@@ -881,7 +877,7 @@
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Just-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "JustTests/Just-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Just-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

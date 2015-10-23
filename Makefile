@@ -6,6 +6,7 @@ test :
 	@set -o pipefail \
 	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-OSX -destination 'platform=OS X' | xcpretty \
 	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-iOS -destination 'OS=9.1,name=iPhone 6 Plus' | xcpretty \
+	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-tvOS -destination 'OS=9.1,name=Apple TV 1080p' | xcpretty \
 	&& pod lib lint
 
 playground :
