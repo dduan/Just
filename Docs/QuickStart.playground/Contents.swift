@@ -106,6 +106,10 @@ erronous.ok         // nope
 erronous.reason     // text description of the failure
 erronous.error      // NSError from NSURLSession, if any
 
+//: The best way to "cancel" a request is to never send it. Once a request is
+//: made, however, you can express intent to cancel it like so:
+r.cancel()
+
 //: ## More Complicated Requests
 //:
 //: To send form values, use the **data** parameter:
@@ -116,8 +120,8 @@ Just.post("http://httpbin.org/post", data:["firstName":"Barry","lastName":"Allen
 
 //: JSON values are similar:
 
-// body of this request will be in JSON
-// a Content-Type header will be added as application/json
+// body of this request will be JSON encoded.
+// Its Content-Type header has value 'application/json'
 Just.post("http://httpbin.org/post", json:["firstName":"Barry","lastName":"Allen"])
 
 //: By default, Just follows server's redirect instrution. You can supply an
