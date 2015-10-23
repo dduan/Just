@@ -160,6 +160,7 @@ public final class HTTPResult : NSObject {
     public var url:NSURL? {
         return response?.URL
     }
+
     public lazy var links: [String:[String:String]] = {
         var result = [String:[String:String]]()
         if let content = self.headers["link"] {
@@ -189,6 +190,10 @@ public final class HTTPResult : NSObject {
         }
         return result
     }()
+
+    public func cancel() {
+        task?.cancel()
+    }
 }
 
 
