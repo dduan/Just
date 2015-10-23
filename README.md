@@ -82,7 +82,7 @@ Here are some ways to leverage Just.
 
 Include the following in your Cartfile:
 
-    github "JustHTTP/Just" ~> 0.1
+    github "JustHTTP/Just"
 
 Just includes dynamic framework targets for both iOS and OS X.
 
