@@ -14,7 +14,6 @@ Just requires Swift 2.
 
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
-[master]: https://github.com/JustHTTP/Just/tree/master "Just support for Swift 1.2"
 #   Features
 
 Just lets you to the following effortlessly:
@@ -71,7 +70,7 @@ Just.post(
 Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
-[starting playground]: https://github.com/JustHTTP/Just/raw/swift-2.0/Docs/QuickStart.zip
+[starting playground]: https://github.com/JustHTTP/Just/raw/master/Docs/QuickStart.zip
 [starting link]: http://docs.justhttp.net/QuickStart.html
 
 #  Install
