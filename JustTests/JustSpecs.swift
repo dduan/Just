@@ -662,5 +662,24 @@ class JustSpec: QuickSpec {
 
             }
         }
+
+        describe("default configurations") {
+            it("should send default headers when any is specified") {
+                let sessionDefaults = JustSessionDefaults(headers: ["Authorization": "WUT"])
+                let session = JustOf<HTTP>(defaults: sessionDefaults)
+                let r = session.post("http://httpbin.org/post")
+                expect(r.ok).to(beTrue())
+                expect(r.json).toNot(beNil())
+                if let data = r.json as? [String:AnyObject] {
+                    expect(data["headers"]).toNot(beNil())
+                    if let headersInData = data["headers"] as? [String:String] {
+                        expect(headersInData["Authorization"]).toNot(beNil())
+                        if let contentType = headersInData["Authorization"] {
+                            expect(contentType).to(equal("WUT"))
+                        }
+                    }
+                }
+            }
+        }
     }
 }

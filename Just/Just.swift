@@ -284,11 +284,24 @@ struct TaskConfiguration {
 }
 
 public struct JustSessionDefaults {
-    public var JSONReadingOptions = NSJSONReadingOptions(rawValue: 0)
-    public var JSONWritingOptions = NSJSONWritingOptions(rawValue: 0)
-    public var headers:[String:String] = [:]
-    public var multipartBoundary = "Ju5tH77P15Aw350m3"
-    public var encoding = NSUTF8StringEncoding
+    public var JSONReadingOptions: NSJSONReadingOptions
+    public var JSONWritingOptions: NSJSONWritingOptions
+    public var headers:[String:String]
+    public var multipartBoundary: String
+    public var encoding: UInt
+    public init(
+        JSONReadingOptions: NSJSONReadingOptions = NSJSONReadingOptions(rawValue: 0),
+        JSONWritingOptions: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0),
+        headers: [String: String] = [:],
+        multipartBoundary: String = "Ju5tH77P15Aw350m3",
+        encoding: UInt = NSUTF8StringEncoding
+    ) {
+        self.JSONReadingOptions = JSONReadingOptions
+        self.JSONWritingOptions = JSONWritingOptions
+        self.headers = headers
+        self.multipartBoundary = multipartBoundary
+        self.encoding = encoding
+    }
 }
 
 
