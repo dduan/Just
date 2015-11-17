@@ -276,6 +276,7 @@ public typealias TaskProgressHandler = (HTTPProgress!) -> Void
 typealias TaskCompletionHandler = (HTTPResult) -> Void
 struct TaskConfiguration {
     let credential:Credentials?
+    let credentialPersistence: NSURLCredentialPersistence
     let redirects:Bool
     let originalRequest: NSURLRequest?
     var data: NSMutableData
@@ -288,12 +289,14 @@ public struct JustSessionDefaults {
     public var JSONWritingOptions: NSJSONWritingOptions
     public var headers:[String:String]
     public var multipartBoundary: String
+    public var credentialPersistence: NSURLCredentialPersistence
     public var encoding: UInt
     public init(
         JSONReadingOptions: NSJSONReadingOptions = NSJSONReadingOptions(rawValue: 0),
         JSONWritingOptions: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0),
         headers: [String: String] = [:],
         multipartBoundary: String = "Ju5tH77P15Aw350m3",
+        credentialPersistence: NSURLCredentialPersistence = .ForSession,
         encoding: UInt = NSUTF8StringEncoding
     ) {
         self.JSONReadingOptions = JSONReadingOptions
@@ -301,6 +304,7 @@ public struct JustSessionDefaults {
         self.headers = headers
         self.multipartBoundary = multipartBoundary
         self.encoding = encoding
+        self.credentialPersistence = credentialPersistence
     }
 }
 
@@ -880,6 +884,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                     addCookies(request.URL!, newCookies: cookies)
                     let config = TaskConfiguration(
                         credential:auth,
+                        credentialPersistence: self.defaults.credentialPersistence,
                         redirects:redirects,
                         originalRequest:request,
                         data:NSMutableData(),
@@ -935,9 +940,13 @@ extension HTTP: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
         ) {
             var endCredential:NSURLCredential? = nil
 
-            if let credential = taskConfigs[task.taskIdentifier]?.credential {
+            if let taskConfig = taskConfigs[task.taskIdentifier], let credential = taskConfig.credential {
                 if !(challenge.previousFailureCount > 0) {
-                    endCredential = NSURLCredential(user: credential.0, password: credential.1, persistence: .ForSession)
+                    endCredential = NSURLCredential(
+                        user: credential.0,
+                        password: credential.1,
+                        persistence: taskConfig.credentialPersistence
+                    )
                 }
             }
 
