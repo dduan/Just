@@ -276,7 +276,6 @@ public typealias TaskProgressHandler = (HTTPProgress!) -> Void
 typealias TaskCompletionHandler = (HTTPResult) -> Void
 struct TaskConfiguration {
     let credential:Credentials?
-    let credentialPersistence: NSURLCredentialPersistence
     let redirects:Bool
     let originalRequest: NSURLRequest?
     var data: NSMutableData
@@ -884,7 +883,6 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                     addCookies(request.URL!, newCookies: cookies)
                     let config = TaskConfiguration(
                         credential:auth,
-                        credentialPersistence: self.defaults.credentialPersistence,
                         redirects:redirects,
                         originalRequest:request,
                         data:NSMutableData(),
@@ -945,7 +943,7 @@ extension HTTP: NSURLSessionTaskDelegate, NSURLSessionDataDelegate {
                     endCredential = NSURLCredential(
                         user: credential.0,
                         password: credential.1,
-                        persistence: taskConfig.credentialPersistence
+                        persistence: self.defaults.credentialPersistence
                     )
                 }
             }
