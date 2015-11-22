@@ -245,3 +245,26 @@ Just.post(
 //: callback argument. In either cases, you can use **bytesProcessed**,
 //: **bytesExpectedToProcess** aned **percent** to check the actual progress.
 
+
+//: ## Customization / Advanced Usage
+
+//: Just is a thin layer with some default settings atop
+//: [NSURLSession](https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/).
+//: To change these settings, one must create a separate instance of Just instead of using the
+//: default one. Doing so opens up the oppurtunity to customize NSURLSession in
+//: powerful ways. A `JustSessionDefaults` can be used to provide some customization points:
+
+let myJustDefaults = JustSessionDefaults(
+    JSONReadingOptions: .MutableContainers, // NSJSONSerialization reading options
+    JSONWritingOptions: .PrettyPrinted,     // NSJSONSerialization writing options
+    headers:  ["OH":"MY"],                  // headers to include in every request
+    multipartBoundary: "Ju5tH77P15Aw350m3", // multipart post request boundaries
+    credentialPersistence: .None,           // NSURLCredential persistence options
+    encoding: NSUTF8StringEncoding          // en(de)coding for HTTP body
+)
+
+//: Just initializer accepts an `defaults` argement. Use it like this:
+
+let just = JustOf<HTTP>(defaults: myJustDefaults)
+
+just.post("http://httpbin.org/post").request?.allHTTPHeaderFields?["OH"] ?? "" // MY
