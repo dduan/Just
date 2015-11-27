@@ -82,7 +82,7 @@ public final class HTTPResult : NSObject {
         if let error = self.error {
             return error.localizedDescription
         }
-        return "Unkown"
+        return "Unknown"
     }
 
     public var isRedirect:Bool {
