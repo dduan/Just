@@ -37,7 +37,7 @@ The simplest request with Just looks like this:
 
 ```swift
 //  A simple get request
-Just.get("http://httpbib.org/get")
+Just.get("http://httpbin.org/get")
 ```
 
 The next example shows how to upload a file along with some data:
