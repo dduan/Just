@@ -65,6 +65,38 @@ class JustSpec: QuickSpec {
             }
         }
 
+        describe("simple requests with different methods") {
+            it("should invoke NSURLSession with correct request method") {
+                var r = Just.delete("http://httpbin.org/delete")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("DELETE")))
+
+                r = Just.get("http://httpbin.org/get")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("GET")))
+
+                r = Just.head("http://httpbin.org/get")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("HEAD")))
+
+                r = Just.options("http://httpbin.org")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("OPTIONS")))
+
+                r = Just.patch("http://httpbin.org/patch")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("PATCH")))
+
+                r = Just.post("http://httpbin.org/post")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("POST")))
+
+                r = Just.put("http://httpbin.org/put")
+                expect(r.ok).to(beTrue())
+                expect(r.request?.HTTPMethod).to(equal(Optional("PUT")))
+            }
+        }
+
         describe("sending url query as http body") {
             it("should add x-www-form-urlencoded header automatically when body is in url format") {
                 let r = Just.post("http://httpbin.org/post", data:["a":1])

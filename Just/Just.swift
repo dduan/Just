@@ -555,7 +555,7 @@ extension JustOf {
         ) -> HTTPResult {
 
             return adaptor.request(
-                .OPTIONS,
+                .PATCH,
                 URLString: URLString,
                 params: params,
                 data: data,
