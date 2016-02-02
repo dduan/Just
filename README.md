@@ -22,11 +22,11 @@ Just lets you to the following effortlessly:
 -   custom headers
 -   form (`x-www-form-encoded`) / JSON HTTP body
 -   redirect control
--   multpart file upload along with form values.
+-   multipart file upload along with form values.
 -   basic/digest authentication
 -   cookies
 -   timeouts
--   synchrounous / asyncrounous requests
+-   synchronous / asynchronous requests
 -   upload / download progress tracking for asynchronous requests
 -   link headers
 -   friendly accessible results
@@ -53,7 +53,7 @@ let r = Just.post(
 if (r.ok) { /* success! */ }
 ```
 
-Here's the same example done asyncronously:
+Here's the same example done asynchronously:
 
 ```swift
 //  talk to registration end point
