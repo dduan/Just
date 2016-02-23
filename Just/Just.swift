@@ -901,17 +901,16 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                         task.resume()
                     }
                     if isSync {
-                        // Express one second in nanoseconds.
-                        let NSEC: Int64 = 1000000000
 
-                        if let tint = timeout {
-                            // See Issue #30 for an explanation of why this is needed.
-                            let how_long = dispatch_time(DISPATCH_TIME_NOW, Int64(tint) * NSEC)
-                            let timed_out = dispatch_semaphore_wait(semaphore, how_long)
-                            if timed_out != 0 {
-                                // TODO: should we log the error? the `requestResult` seems
-                                //    to return anyway the correct result, in case of timeouts.
-                            }
+                        // See Issue #30 for an explanation of why this is needed.
+                        if let timeout = timeout {
+                            // Need to multiply *before* downcasting, to avoid losing precision.
+                            let timeoutNanosecs: Int64 = Int64(timeout * Double(NSEC_PER_SEC))
+
+                            let howLong = dispatch_time(DISPATCH_TIME_NOW, timeoutNanosecs)
+
+                            // We are ignoring the error code for now.
+                            dispatch_semaphore_wait(semaphore, howLong)
                         } else {
                             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                         }
