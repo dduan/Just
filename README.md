@@ -1,5 +1,5 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Cocoapods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
 [![Build Status](https://travis-ci.org/JustHTTP/Just.svg?branch=swift-2.0)](https://travis-ci.org/JustHTTP/Just)
 ![MIT License](https://img.shields.io/cocoapods/l/Just.svg)
 ![Supported Flatform](https://img.shields.io/cocoapods/p/Just.svg)
@@ -22,11 +22,11 @@ Just lets you to the following effortlessly:
 -   custom headers
 -   form (`x-www-form-encoded`) / JSON HTTP body
 -   redirect control
--   multpart file upload along with form values.
+-   multipart file upload along with form values.
 -   basic/digest authentication
 -   cookies
 -   timeouts
--   synchrounous / asyncrounous requests
+-   synchronous / asynchronous requests
 -   upload / download progress tracking for asynchronous requests
 -   link headers
 -   friendly accessible results
@@ -53,7 +53,7 @@ let r = Just.post(
 if (r.ok) { /* success! */ }
 ```
 
-Here's the same example done asyncronously:
+Here's the same example done asynchronously:
 
 ```swift
 //  talk to registration end point
@@ -85,7 +85,7 @@ Include the following in your Cartfile:
 
 Just includes dynamic framework targets for both iOS and OS X.
 
-## Cocoapods
+## CocoaPods
 
 The usual way:
 

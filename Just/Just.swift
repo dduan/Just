@@ -901,7 +901,19 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                         task.resume()
                     }
                     if isSync {
-                        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+
+                        // See Issue #30 for an explanation of why this is needed.
+                        if let timeout = timeout {
+                            // Need to multiply *before* downcasting, to avoid losing precision.
+                            let timeoutNanosecs: Int64 = Int64(timeout * Double(NSEC_PER_SEC))
+
+                            let howLong = dispatch_time(DISPATCH_TIME_NOW, timeoutNanosecs)
+
+                            // We are ignoring the error code for now.
+                            dispatch_semaphore_wait(semaphore, howLong)
+                        } else {
+                            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                        }
                         return requestResult
                     }
             } else {
