@@ -290,13 +290,15 @@ public struct JustSessionDefaults {
     public var multipartBoundary: String
     public var credentialPersistence: NSURLCredentialPersistence
     public var encoding: UInt
+    public var cachePolicy: NSURLRequestCachePolicy
     public init(
         JSONReadingOptions: NSJSONReadingOptions = NSJSONReadingOptions(rawValue: 0),
         JSONWritingOptions: NSJSONWritingOptions = NSJSONWritingOptions(rawValue: 0),
         headers: [String: String] = [:],
         multipartBoundary: String = "Ju5tH77P15Aw350m3",
         credentialPersistence: NSURLCredentialPersistence = .ForSession,
-        encoding: UInt = NSUTF8StringEncoding
+        encoding: UInt = NSUTF8StringEncoding,
+        cachePolicy: NSURLRequestCachePolicy = .ReloadIgnoringLocalCacheData
     ) {
         self.JSONReadingOptions = JSONReadingOptions
         self.JSONWritingOptions = JSONWritingOptions
@@ -304,6 +306,7 @@ public struct JustSessionDefaults {
         self.multipartBoundary = multipartBoundary
         self.encoding = encoding
         self.credentialPersistence = credentialPersistence
+        self.cachePolicy = cachePolicy
     }
 }
 
@@ -825,7 +828,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
 
                 if let URL = urlComponent.URL {
                     let request = NSMutableURLRequest(URL: URL)
-                    request.cachePolicy = .ReloadIgnoringLocalCacheData
+                    request.cachePolicy = defaults.cachePolicy
                     request.HTTPBody = body
                     request.HTTPMethod = method.rawValue
                     if let requestTimeout = timeout {
