@@ -18,6 +18,9 @@
 		94F2DF8C1BD9F339004820D5 /* Just.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94F2DF821BD9F339004820D5 /* Just.framework */; };
 		94F2DF991BD9F365004820D5 /* Just.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DA2B721AE640980082DC6D /* Just.swift */; };
 		94F2DF9C1BD9F36E004820D5 /* elon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 94EDF39B1AEEE38B007BF486 /* elon.jpg */; };
+		E3E267371D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
+		E3E267381D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
+		E3E267391D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,7 @@
 		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-tvOS/Info.plist"; sourceTree = "<group>"; };
 		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-tvOSTests/Info.plist"; sourceTree = "<group>"; };
+		E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveDictionaryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,7 +237,7 @@
 				94F2DF8F1BD9F339004820D5 /* Just-tvOSTests */,
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
 				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
-				948444A21AF29B000013B998 /* CaseInsensitiveDictionarySpecs.swift */,
+				E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */,
 			);
 			path = JustTests;
 			sourceTree = "<group>";
@@ -499,6 +503,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E267371D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E267381D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +535,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E267391D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
