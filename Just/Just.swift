@@ -43,7 +43,7 @@ let statusCodeDescriptions = [
 ]
 
 public enum HTTPFile {
-    case url(Foundation.URL,String?) // URL to a file, mimetype
+    case url(URL,String?) // URL to a file, mimetype
     case data(String,Foundation.Data,String?) // filename, data, mimetype
     case text(String,String,String?) // filename, text, mimetype
 }
@@ -423,7 +423,6 @@ extension JustOf {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 
     public func get(
@@ -460,7 +459,6 @@ extension JustOf {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 
     public func head(
@@ -497,7 +495,6 @@ extension JustOf {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 
     public func options(
@@ -516,7 +513,6 @@ extension JustOf {
         asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
             return adaptor.request(
                 .OPTIONS,
                 URLString: URLString,
@@ -534,7 +530,6 @@ extension JustOf {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 
     public func patch(
@@ -608,7 +603,6 @@ extension JustOf {
                 asyncProgressHandler: asyncProgressHandler,
                 asyncCompletionHandler: asyncCompletionHandler
             )
-
     }
 
     public func put(
@@ -656,7 +650,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         if let initialSession = session {
             self.session = initialSession
         } else {
-            self.session = Foundation.URLSession(configuration: URLSessionConfiguration.default(), delegate:self, delegateQueue:nil)
+            self.session = URLSession(configuration: URLSessionConfiguration.default(), delegate:self, delegateQueue:nil)
         }
         if let initialDefaults = defaults {
             self.defaults = initialDefaults
@@ -667,7 +661,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
     var defaults:JustSessionDefaults!
-    var session: Foundation.URLSession!
+    var session: URLSession!
     var invalidURLError = NSError(
         domain: errorDomain,
         code: 0,
@@ -946,7 +940,7 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
         _ session: URLSession,
         task: URLSessionTask,
         didReceive challenge: URLAuthenticationChallenge,
-        completionHandler: (Foundation.URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+        completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
         ) {
             var endCredential:URLCredential? = nil
 

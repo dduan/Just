@@ -48,8 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		942C7A901C6129DA00C72425 /* test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		942C7A921C6129DA00C72425 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		948CA81D1AF3FF43001E0FD3 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		948CA8201AF3FF43001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-iOS/Info.plist"; sourceTree = "<group>"; };
 		948CA8271AF3FF43001E0FD3 /* Just-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,8 +59,6 @@
 		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94EDF39B1AEEE38B007BF486 /* elon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elon.jpg; sourceTree = "<group>"; };
-		94F2DF771BD9F2CF004820D5 /* Just.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Just.h; sourceTree = "<group>"; };
-		94F2DF791BD9F2CF004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		94F2DF821BD9F339004820D5 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F2DF861BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-tvOS/Info.plist"; sourceTree = "<group>"; };
 		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,79 +115,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		942C7A8F1C6129DA00C72425 /* test */ = {
-			isa = PBXGroup;
-			children = (
-				942C7A901C6129DA00C72425 /* test.h */,
-				942C7A921C6129DA00C72425 /* Info.plist */,
-			);
-			path = test;
-			sourceTree = "<group>";
-		};
 		948CA81E1AF3FF43001E0FD3 /* Just-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				948CA81F1AF3FF43001E0FD3 /* Supporting Files */,
-			);
-			path = "Just-iOS";
-			sourceTree = SOURCE_ROOT;
-		};
-		948CA81F1AF3FF43001E0FD3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				948CA8201AF3FF43001E0FD3 /* Info.plist */,
 			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
+			path = "Just-iOS";
+			sourceTree = SOURCE_ROOT;
 		};
 		948CA82B1AF3FF43001E0FD3 /* Just-iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				948CA82C1AF3FF43001E0FD3 /* Supporting Files */,
+				948CA82D1AF3FF43001E0FD3 /* Info.plist */,
 			);
 			name = "Just-iOSTests";
 			path = "../Just-iOSTests";
 			sourceTree = "<group>";
 		};
-		948CA82C1AF3FF43001E0FD3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				948CA82D1AF3FF43001E0FD3 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		948CA83C1AF3FF55001E0FD3 /* Just-OSX */ = {
-			isa = PBXGroup;
-			children = (
-				948CA83D1AF3FF55001E0FD3 /* Supporting Files */,
-			);
-			path = "Just-OSX";
-			sourceTree = SOURCE_ROOT;
-		};
-		948CA83D1AF3FF55001E0FD3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				948CA83E1AF3FF55001E0FD3 /* Info.plist */,
 			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
+			path = "Just-OSX";
+			sourceTree = SOURCE_ROOT;
 		};
 		948CA8491AF3FF55001E0FD3 /* Just-OSXTests */ = {
 			isa = PBXGroup;
 			children = (
-				948CA84A1AF3FF55001E0FD3 /* Supporting Files */,
+				948CA84B1AF3FF55001E0FD3 /* Info.plist */,
 			);
 			name = "Just-OSXTests";
 			path = "../Just-OSXTests";
-			sourceTree = "<group>";
-		};
-		948CA84A1AF3FF55001E0FD3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				948CA84B1AF3FF55001E0FD3 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		94DA2B4A1AE640390082DC6D = {
@@ -199,8 +154,6 @@
 			children = (
 				94DA2B561AE640390082DC6D /* Just */,
 				94DA2B631AE640390082DC6D /* JustTests */,
-				94F2DF761BD9F2CF004820D5 /* Just */,
-				942C7A8F1C6129DA00C72425 /* test */,
 				94DA2B551AE640390082DC6D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -240,15 +193,6 @@
 				E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */,
 			);
 			path = JustTests;
-			sourceTree = "<group>";
-		};
-		94F2DF761BD9F2CF004820D5 /* Just */ = {
-			isa = PBXGroup;
-			children = (
-				94F2DF771BD9F2CF004820D5 /* Just.h */,
-				94F2DF791BD9F2CF004820D5 /* Info.plist */,
-			);
-			path = Just;
 			sourceTree = "<group>";
 		};
 		94F2DF831BD9F339004820D5 /* Just-tvOS */ = {
