@@ -303,7 +303,8 @@ final class JustSendingFiles: XCTestCase {
 
     func testSendingAFileSpecifiedByDataWithoutMimetype() {
         if let dataToSend = "haha not really".data(using: String.Encoding.utf8) {
-            let r = Just.post("http://httpbin.org/post", files:["elon":.data("JustTests.swift", dataToSend, nil)])
+            let r = Just.post("http://httpbin.org/post",
+                              files:["elon":.data("JustTests.swift", dataToSend, nil)])
             XCTAssertNotNil(r.json)
             if let data = r.json as? [String: AnyObject] {
                 XCTAssertNotNil(data["files"])
@@ -318,7 +319,8 @@ final class JustSendingFiles: XCTestCase {
 
     func testSendingAFileSpecifiedByDataWithMimetype() {
         if let dataToSend = "haha not really".data(using: String.Encoding.utf8) {
-            let r = Just.post("http://httpbin.org/post", files:["elon":.data("JustTests.swift", dataToSend, "text/plain")])
+            let r = Just.post("http://httpbin.org/post",
+                              files:["elon":.data("JustTests.swift", dataToSend, "text/plain")])
             XCTAssertNotNil(r.json)
             if let data = r.json as? [String: AnyObject] {
                 XCTAssertNotNil(data["files"])
@@ -332,7 +334,8 @@ final class JustSendingFiles: XCTestCase {
     }
 
     func testSendAFileSpecifiedByTextWithoutMimetype() {
-        let r = Just.post("http://httpbin.org/post", files:["test":.text("JustTests.swift", "haha not really", nil)])
+        let r = Just.post("http://httpbin.org/post",
+                          files:["test":.text("JustTests.swift", "haha not really", nil)])
         XCTAssertNotNil(r.json)
         if let data = r.json as? [String: AnyObject] {
             XCTAssertNotNil(data["files"])
@@ -343,7 +346,8 @@ final class JustSendingFiles: XCTestCase {
     }
 
     func testSendAFileSpecifiedByTextWithMimetype() {
-        let r = Just.post("http://httpbin.org/post", files:["test":.text("JustTests.swift", "haha not really", "text/plain")])
+        let r = Just.post("http://httpbin.org/post",
+                          files:["test":.text("JustTests.swift", "haha not really", "text/plain")])
         XCTAssertNotNil(r.json)
         if let data = r.json as? [String: AnyObject] {
             XCTAssertNotNil(data["files"])
@@ -470,4 +474,233 @@ final class JustSendingFiles: XCTestCase {
             XCTFail("can't encode text as data")
         }
     }
+}
+
+final class Result: XCTestCase {
+    func testResultShouldContainURLFromResponse() {
+        let targetURLString = "http://httpbin.org/get"
+        let r = Just.get(targetURLString)
+        XCTAssertNotNil(r.url)
+        if let urlString = r.url?.absoluteString {
+            XCTAssertEqual(urlString, targetURLString)
+        }
+    }
+
+    func testOkayWithNonErrorStatusCode() {
+      XCTAssertTrue(Just.get("http://httpbin.org/status/200").ok)
+      XCTAssertTrue(Just.get("http://httpbin.org/status/299").ok)
+      XCTAssertTrue(Just.get("http://httpbin.org/status/302", allowRedirects:false).ok)
+    }
+
+    func testNotOkayWith4xxCodes() {
+      XCTAssertFalse(Just.get("http://httpbin.org/status/400").ok)
+      XCTAssertFalse(Just.get("http://httpbin.org/status/401").ok)
+      XCTAssertFalse(Just.get("http://httpbin.org/status/404").ok)
+      XCTAssertFalse(Just.get("http://httpbin.org/status/499").ok)
+    }
+
+    func testNotOkayWith5xxCodes() {
+      XCTAssertFalse(Just.get("http://httpbin.org/status/500").ok)
+      XCTAssertFalse(Just.get("http://httpbin.org/status/501").ok)
+      XCTAssertFalse(Just.get("http://httpbin.org/status/599").ok)
+    }
+
+    func testStatusCodeMatching() {
+      XCTAssertEqual(Just.get("http://httpbin.org/status/200").statusCode, 200)
+      XCTAssertEqual(Just.get("http://httpbin.org/status/302", allowRedirects:false).statusCode, 302)
+      XCTAssertEqual(Just.get("http://httpbin.org/status/404").statusCode, 404)
+      XCTAssertEqual(Just.get("http://httpbin.org/status/501").statusCode, 501)
+    }
+}
+
+final class SendingHeader: XCTestCase {
+  func testAcceptingEmptyHeaders() {
+    XCTAssertTrue(Just.get("http://httpbin.org/get", headers:[:]).ok)
+  }
+
+  func testSendingSingleConventionalHeaderAsProvided() {
+    let r = Just.get("http://httpbin.org/get", headers:["Content-Type":"application/json"])
+    XCTAssertNotNil(r.json)
+    if let responseData = r.json as? [String: AnyObject] {
+      XCTAssertNotNil(responseData["headers"])
+      if let receivedHeaders = responseData["headers"] as? [String:String] {
+        XCTAssertEqual(receivedHeaders["Content-Type"], "application/json")
+      }
+    }
+  }
+
+  func testSendingMultipleConventionalHeaderAsProvided() {
+    let r = Just.get("http://httpbin.org/get",
+                     headers:["Accept-Language":"*", "Content-Type":"application/json"])
+    XCTAssertNotNil(r.json)
+    if let responseData = r.json as? [String: AnyObject] {
+      XCTAssertNotNil(responseData["headers"])
+      if let receivedHeaders = responseData["headers"] as? [String:String] {
+        XCTAssertEqual(receivedHeaders["Content-Type"], "application/json")
+        XCTAssertEqual(receivedHeaders["Accept-Language"], "*")
+      }
+    }
+  }
+
+  func testSendingMultipleUnconventionalHeaderAsProvided() {
+    let r = Just.get("http://httpbin.org/get",
+                     headers:["Winter-is":"coming", "things-know-by-Jon-Snow":"Just42awesome"])
+    XCTAssertNotNil(r.json)
+    if let responseData = r.json as? [String: AnyObject] {
+      XCTAssertNotNil(responseData["headers"])
+      if let receivedHeaders = responseData["headers"] as? [String:String] {
+        XCTAssertEqual(receivedHeaders["Winter-Is"], "coming")
+        XCTAssertEqual(receivedHeaders["Things-Know-By-Jon-Snow"], "Just42awesome")
+      }
+    }
+  }
+}
+
+final class BasicAuthentication: XCTestCase {
+  func testFailingAtAChallengeWhenAuthIsMissing() {
+    let r = Just.get("http://httpbin.org/basic-auth/dan/pass")
+    XCTAssertFalse(r.ok)
+  }
+
+  func testSucceedingWithCorrectAuthInfo() {
+    let username = "dan"
+    let password = "password"
+    let r = Just.get("http://httpbin.org/basic-auth/\(username)/\(password)", auth:(username, password))
+    XCTAssertTrue(r.ok)
+  }
+
+  func testFailingWithWrongAuthInfo() {
+    let username = "dan"
+    let password = "password"
+    let r = Just.get("http://httpbin.org/basic-auth/\(username)/\(password)x", auth:(username, password))
+    XCTAssertFalse(r.ok)
+    XCTAssertEqual(r.statusCode, 401)
+  }
+}
+
+class DigestAuthentication: XCTestCase {
+  func testFailingAtAChallengeWhenAuthIsMissing() {
+    let r = Just.get("http://httpbin.org/digest-auth/auth/dan/pass")
+    XCTAssertFalse(r.ok)
+  }
+
+  func testSucceedingWithCorrectAuthInfo() {
+    let username = "dan"
+    let password = "password"
+    let r = Just.get("http://httpbin.org/digest-auth/auth/\(username)/\(password)",
+                     auth: (username, password))
+    XCTAssertTrue(r.ok)
+  }
+
+  func testFailingWithWrongAuthInfo() {
+    let username = "dan"
+    let password = "password"
+    let r = Just.get("http://httpbin.org/digest-auth/auth/\(username)/\(password)x",
+                     auth: (username, password))
+    XCTAssertFalse(r.ok)
+    XCTAssertEqual(r.statusCode, 401)
+  }
+}
+
+final class Cookies: XCTestCase {
+  func testCookiesFromResponse() {
+    let r = Just.get("http://httpbin.org/cookies/set/test/just", allowRedirects:false)
+    XCTAssertFalse(r.cookies.isEmpty)
+    XCTAssertTrue(Array(r.cookies.keys).contains("test"))
+    if let cookie = r.cookies["test"] {
+      XCTAssertEqual(cookie.value, "just")
+    }
+  }
+
+  func testCookiesSpecifiedInRequest() {
+    _ = Just.get("http://httpbin.org/cookies/delete?test")
+    let r = Just.get("http://httpbin.org/cookies", cookies:["test":"just"])
+
+    XCTAssertNotNil(r.json)
+    if let jsonData = r.json as? [String: AnyObject] {
+      XCTAssertNotNil(jsonData["cookies"] as? [String:String])
+      if let cookieValue = (jsonData["cookies"] as? [String:String])?["test"] {
+        XCTAssertEqual(cookieValue, "just")
+      }
+    }
+  }
+}
+
+final class RequestMethods: XCTestCase {
+  func testOPTIONS() {
+    XCTAssertTrue(Just.options("http://httpbin.org/get").ok)
+  }
+
+  func testHEAD() {
+    XCTAssertTrue(Just.head("http://httpbin.org/get").ok)
+  }
+
+  func testGET() {
+    XCTAssertTrue(Just.get("http://httpbin.org/get").ok)
+  }
+
+  func testPOST() {
+    XCTAssertTrue(Just.post("http://httpbin.org/post").ok)
+  }
+
+  func testPUT() {
+    XCTAssertTrue(Just.put("http://httpbin.org/put").ok)
+  }
+
+  func testPATCH() {
+    XCTAssertTrue(Just.patch("http://httpbin.org/patch").ok)
+  }
+
+  func testDELETE() {
+    XCTAssertTrue(Just.delete("http://httpbin.org/delete").ok)
+  }
+}
+
+final class Timeout: XCTestCase {
+  func testTimeoutWhenRequestTakesLonger() {
+    XCTAssertFalse(Just.get("http://httpbin.org/delay/10", timeout:0.2).ok)
+  }
+
+  func testShouldNotTimeoutWhenResponseComesInSooner() {
+    XCTAssertTrue(Just.get("http://httpbin.org/", timeout:2).ok)
+  }
+}
+
+
+final class LinkHeader: XCTestCase {
+  func testShouldContainLinkInfoForAppropriateEndPoint() {
+    var auth: (String, String)? = nil
+    if let username = ProcessInfo.processInfo().environment["GITHUB_USERNAME"],
+        token = ProcessInfo.processInfo().environment["GITHUB_TOKEN"]
+    {
+        auth = (username, token)
+    }
+    let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10", auth: auth)
+    XCTAssertTrue(r.ok)
+    XCTAssertNotNil(r.links)
+    XCTAssertNotNil(r.links["next"])
+    XCTAssertNotNil(r.links["last"])
+    XCTAssertNotNil(r.links["next"]?["url"])
+    XCTAssertNotNil(r.links["last"]?["url"])
+  }
+}
+
+
+final class Configurations: XCTestCase {
+  func testSendingDefaultHeadersWhenAnyIsSpecified() {
+    let sessionDefaults = JustSessionDefaults(headers: ["Authorization": "WUT"])
+    let session = JustOf<HTTP>(defaults: sessionDefaults)
+    let r = session.post("http://httpbin.org/post")
+    XCTAssertTrue(r.ok)
+    XCTAssertNotNil(r.json)
+    if let data = r.json as? [String: AnyObject] {
+      XCTAssertNotNil(data["headers"])
+      if let headersInData = data["headers"] as? [String: String] {
+        XCTAssertNotNil(headersInData["Authorization"])
+        if let authorization = headersInData["Authorization"] {
+          XCTAssertEqual(authorization, "WUT")
+        }
+      }
+    }
+  }
 }

@@ -59,7 +59,6 @@
 		948CA83E1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "Just/Just-OSX/Info.plist"; sourceTree = "<group>"; };
 		948CA8451AF3FF55001E0FD3 /* Just-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		948CA84B1AF3FF55001E0FD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-OSXTests/Info.plist"; sourceTree = "<group>"; };
-		94DA2B661AE640390082DC6D /* JustSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustSpecs.swift; sourceTree = "<group>"; };
 		94DA2B721AE640980082DC6D /* Just.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Just.swift; sourceTree = "<group>"; };
 		94EDF39B1AEEE38B007BF486 /* elon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = elon.jpg; sourceTree = "<group>"; };
 		94F2DF821BD9F339004820D5 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,7 +192,6 @@
 				948CA8491AF3FF55001E0FD3 /* Just-OSXTests */,
 				94F2DF8F1BD9F339004820D5 /* Just-tvOSTests */,
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
-				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
 				E3E2673A1D14A2BA001BDA58 /* JustTests.swift */,
 				E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */,
 			);
