@@ -9,7 +9,7 @@
 import XCTest
 import Just
 
-class CaseInsensitiveDictionaryTests: XCTestCase {
+final class CaseInsensitiveDictionaryTests: XCTestCase {
     func testInitWithDictionaryLiteral() {
         let d: CaseInsensitiveDictionary = ["a": 1]
         XCTAssertNotNil(d["a"])

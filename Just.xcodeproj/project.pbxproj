@@ -21,6 +21,9 @@
 		E3E267371D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
 		E3E267381D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
 		E3E267391D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */; };
+		E3E2673B1D14A2BA001BDA58 /* JustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2673A1D14A2BA001BDA58 /* JustTests.swift */; };
+		E3E2673C1D14A2BA001BDA58 /* JustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2673A1D14A2BA001BDA58 /* JustTests.swift */; };
+		E3E2673D1D14A2BA001BDA58 /* JustTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2673A1D14A2BA001BDA58 /* JustTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,7 @@
 		94F2DF8B1BD9F339004820D5 /* Just-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Just-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94F2DF921BD9F339004820D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "JustTests/Just-tvOSTests/Info.plist"; sourceTree = "<group>"; };
 		E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveDictionaryTests.swift; sourceTree = "<group>"; };
+		E3E2673A1D14A2BA001BDA58 /* JustTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JustTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +194,7 @@
 				94F2DF8F1BD9F339004820D5 /* Just-tvOSTests */,
 				94EDF39B1AEEE38B007BF486 /* elon.jpg */,
 				94DA2B661AE640390082DC6D /* JustSpecs.swift */,
+				E3E2673A1D14A2BA001BDA58 /* JustTests.swift */,
 				E3E267361D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift */,
 			);
 			path = JustTests;
@@ -448,6 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3E267371D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
+				E3E2673B1D14A2BA001BDA58 /* JustTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3E267381D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
+				E3E2673C1D14A2BA001BDA58 /* JustTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +487,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3E267391D13686F001BDA58 /* CaseInsensitiveDictionaryTests.swift in Sources */,
+				E3E2673D1D14A2BA001BDA58 /* JustTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,10 +520,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-iOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -584,10 +589,7 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Just/Just-OSX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";

@@ -99,7 +99,7 @@ class JustSpec: QuickSpec {
 
         describe("sending url query as http body") {
             it("should add x-www-form-urlencoded header automatically when body is in url format") {
-                let r = Just.post("http://httpbin.org/post", data:["a":1])
+                let r = Just.post("http://httpbin.org/post", data:["a": 1])
                 expect(r.json).toNot(beNil())
                 if let jsonData = r.json as? [String:AnyObject] {
                     expect(jsonData["headers"]).toNot(beNil())
@@ -109,7 +109,6 @@ class JustSpec: QuickSpec {
                             expect(contentType).to(equal("application/x-www-form-urlencoded"))
                         }
                     }
-
                 }
             }
 
