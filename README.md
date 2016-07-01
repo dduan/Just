@@ -52,7 +52,7 @@ let r = Just.post(
     files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
 )
 
-if (r.ok) { /* success! */ }
+if r.ok { /* success! */ }
 ```
 
 Here's the same example done asynchronously:
@@ -63,8 +63,8 @@ Just.post(
     "http://justiceleauge.org/member/register",
     data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
     files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
-) { (r)
-    if (r.ok) { /* success! */ }
+) { r in
+    if r.ok { /* success! */ }
 }
 
 ```
@@ -129,7 +129,7 @@ Work in `Just.xcworkspace`.
 
 The tests for link headers relies on Github APIs, which has a low per-hour
 limit. To overcome this, you can edit the Xcode build schemes and add
-[environment variables][XcodeEvnVar] `GITHUB_USERNAME` and `GITHUB_TOKEN`.
+[environment variables][XcodeEnvVar] `GITHUB_USERNAME` and `GITHUB_TOKEN`.
 Learn more about personal tokens [here][GithubToken].
 
 For Xcode rebels, checkout `Makefile` (you'll need [xcpretty][]).
