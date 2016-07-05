@@ -269,7 +269,7 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection, Dicti
 
 typealias TaskID = Int
 public typealias Credentials = (username:String, password:String)
-public typealias TaskProgressHandler = (HTTPProgress!) -> Void
+public typealias TaskProgressHandler = (HTTPProgress) -> Void
 typealias TaskCompletionHandler = (HTTPResult) -> Void
 struct TaskConfiguration {
     let credential:Credentials?
@@ -367,7 +367,7 @@ extension JustOf {
         timeout:Double? = nil,
         URLQuery:String? = nil,
         requestBody:Data? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
         return adaptor.request(
@@ -402,7 +402,7 @@ extension JustOf {
         timeout:Double? = nil,
         URLQuery:String? = nil,
         requestBody:Data? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -438,7 +438,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -474,7 +474,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -510,7 +510,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
             return adaptor.request(
@@ -545,7 +545,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -582,7 +582,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
@@ -618,7 +618,7 @@ extension JustOf {
         timeout:Double? = nil,
         requestBody:Data? = nil,
         URLQuery:String? = nil,
-        asyncProgressHandler:((HTTPProgress?) -> Void)? = nil,
+        asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
 
