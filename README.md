@@ -8,10 +8,12 @@
 
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
-Just requires Swift 2.
+Just suppports Swift 2 and 3. For Swift 3 support, use the `swift3`
+[branch][swift3].
 
 *Follow [@JustHTTP][twitter] for updates, if you are into that kind of things* 😉
 
+[swift3]: https://github.com/JustHTTP/Just/tree/swift3
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
 #   Features
@@ -50,7 +52,7 @@ let r = Just.post(
     files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
 )
 
-if (r.ok) { /* success! */ }
+if r.ok { /* success! */ }
 ```
 
 Here's the same example done asynchronously:
@@ -60,9 +62,9 @@ Here's the same example done asynchronously:
 Just.post(
     "http://justiceleauge.org/member/register",
     data: ["username": "barryallen", "password":"ReverseF1ashSucks"],
-    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)]
-) { (r)
-    if (r.ok) { /* success! */ }
+    files: ["profile_photo": .URL(fileURLWithPath:"flash.jpeg", nil)])
+{ r in
+    if r.ok { /* success! */ }
 }
 
 ```
