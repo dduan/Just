@@ -785,6 +785,7 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
         json:AnyObject?,
         headers:CaseInsensitiveDictionary<String,String>,
         files:[String:HTTPFile],
+        auth:Credentials?,
         timeout:Double?,
         requestBody:NSData?,
         URLQuery:String?
@@ -824,6 +825,12 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
 
                 if let contentTypeValue = contentType {
                     finalHeaders["Content-Type"] = contentTypeValue
+                }
+
+                if let auth = auth,
+                    authData = "\(auth.0):\(auth.1)".dataUsingEncoding(NSUTF8StringEncoding)
+                {
+                    finalHeaders["Authorization"] = "Basic \(authData.base64EncodedStringWithOptions([]))"
                 }
 
                 if let URL = urlComponent.URL {
@@ -879,8 +886,9 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                 json: json,
                 headers: caseInsensitiveHeaders,
                 files: files,
-                timeout:timeout,
-                requestBody:requestBody,
+                auth: auth,
+                timeout: timeout,
+                requestBody: requestBody,
                 URLQuery: URLQuery
                 ) {
                     addCookies(request.URL!, newCookies: cookies)
