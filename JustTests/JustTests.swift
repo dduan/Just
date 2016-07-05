@@ -670,12 +670,14 @@ final class Timeout: XCTestCase {
 final class LinkHeader: XCTestCase {
   func testShouldContainLinkInfoForAppropriateEndPoint() {
     var auth: (String, String)? = nil
-    if let username = ProcessInfo.processInfo().environment["GITHUB_USERNAME"],
-        token = ProcessInfo.processInfo().environment["GITHUB_TOKEN"]
+    if let username = ProcessInfo.processInfo.environment["GITHUB_USERNAME"],
+        token = ProcessInfo.processInfo.environment["GITHUB_TOKEN"]
     {
         auth = (username, token)
     }
+
     let r = Just.get("https://api.github.com/users/dduan/repos?page=1&per_page=10", auth: auth)
+
     XCTAssertTrue(r.ok)
     XCTAssertNotNil(r.links)
     XCTAssertNotNil(r.links["next"])

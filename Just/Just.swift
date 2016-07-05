@@ -650,7 +650,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         if let initialSession = session {
             self.session = initialSession
         } else {
-            self.session = URLSession(configuration: URLSessionConfiguration.default(), delegate:self, delegateQueue:nil)
+            self.session = URLSession(configuration: URLSessionConfiguration.default, delegate:self, delegateQueue:nil)
         }
         if let initialDefaults = defaults {
             self.defaults = initialDefaults
@@ -776,6 +776,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         json:AnyObject?,
         headers:CaseInsensitiveDictionary<String,String>,
         files:[String:HTTPFile],
+        auth:Credentials?,
         timeout:Double?,
         requestBody:Data?,
         URLQuery:String?
@@ -817,6 +818,11 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
                     finalHeaders["Content-Type"] = contentTypeValue
                 }
 
+                if let auth = auth,
+                    utf8Data = "\(auth.0):\(auth.1)".data(using: String.Encoding.utf8)
+                {
+                    finalHeaders["Authorization"] = "Basic \(utf8Data.base64EncodedString())"
+                }
                 if let URL = urlComponent.url {
                     let request = NSMutableURLRequest(url: URL)
                     request.cachePolicy = defaults.cachePolicy
@@ -870,8 +876,9 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
                 json: json,
                 headers: caseInsensitiveHeaders,
                 files: files,
-                timeout:timeout,
-                requestBody:requestBody,
+                auth: auth,
+                timeout: timeout,
+                requestBody: requestBody,
                 URLQuery: URLQuery
                 ) {
                     addCookies(request.url!, newCookies: cookies)
