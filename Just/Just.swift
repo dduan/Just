@@ -714,7 +714,9 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
         if originalObject is NSNull {
             return "null"
         } else {
-            return "\(originalObject)".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) ?? ""
+            let reserved = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+            reserved.removeCharactersInString(":#[]@!$&'()*+,;=")
+            return "\(originalObject)".stringByAddingPercentEncodingWithAllowedCharacters(reserved) ?? ""
         }
     }
 
