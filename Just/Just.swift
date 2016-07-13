@@ -705,7 +705,8 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         if originalObject is NSNull {
             return "null"
         } else {
-            return "\(originalObject)".addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? ""
+          let reserved = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: ":#[]@!$&'()*+,;="))
+          return String(originalObject).addingPercentEncoding(withAllowedCharacters: reserved) ?? ""
         }
     }
 
