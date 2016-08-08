@@ -16,12 +16,12 @@ let statusCodeDescriptions = [
     201: "created"                       , 202: "accepted"                        , 203: "non authoritative info"               ,
     204: "no content"                    , 205: "reset content"                   , 206: "partial content"                      ,
     207: "multi status"                  , 208: "already reported"                , 226: "im used"                              ,
-
+    
     // Redirection.
     300: "multiple choices"              , 301: "moved permanently"               , 302: "found"                                ,
     303: "see other"                     , 304: "not modified"                    , 305: "use proxy"                            ,
     306: "switch proxy"                  , 307: "temporary redirect"              , 308: "permanent redirect"                   ,
-
+    
     // Client Error.
     400: "bad request"                   , 401: "unauthorized"                    , 402: "payment required"                     ,
     403: "forbidden"                     , 404: "not found"                       , 405: "method not allowed"                   ,
@@ -34,7 +34,7 @@ let statusCodeDescriptions = [
     428: "precondition required"         , 429: "too many requests"               , 431: "header fields too large"              ,
     444: "no response"                   , 449: "retry with"                      , 450: "blocked by windows parental controls" ,
     451: "unavailable for legal reasons" , 499: "client closed request"           ,
-
+    
     // Server Error.
     500: "internal server error"         , 501: "not implemented"                 , 502: "bad gateway"                          ,
     503: "service unavailable"           , 504: "gateway timeout"                 , 505: "http version not supported"           ,
@@ -73,29 +73,29 @@ public final class HTTPResult : NSObject {
     public var task:URLSessionTask?
     public var encoding = String.Encoding.utf8
     public var JSONReadingOptions = JSONSerialization.ReadingOptions(rawValue: 0)
-
+    
     public var reason:String {
         if  let code = self.statusCode,
             let text = statusCodeDescriptions[code] {
-                return text
+            return text
         }
         if let error = self.error {
             return error.localizedDescription
         }
         return "Unknown"
     }
-
+    
     public var isRedirect:Bool {
         if let code = self.statusCode {
             return code >= 300 && code < 400
         }
         return false
     }
-
+    
     public var isPermanentRedirect:Bool {
         return self.statusCode == 301
     }
-
+    
     public override var description:String {
         if let status = statusCode,
             urlString = request?.url?.absoluteString,
@@ -106,39 +106,39 @@ public final class HTTPResult : NSObject {
             return "<Empty>"
         }
     }
-
+    
     public init(data:Data?, response:URLResponse?, error:NSError?, task:URLSessionTask?) {
         self.content = data
         self.response = response
         self.error = error
         self.task = task
     }
-
+    
     public var json:AnyObject? {
         if let theData = self.content {
             return try? JSONSerialization.jsonObject(with: theData, options: JSONReadingOptions)
         }
         return nil
     }
-
+    
     public var statusCode: Int? {
         if let theResponse = self.response as? HTTPURLResponse {
             return theResponse.statusCode
         }
         return nil
     }
-
+    
     public var text:String? {
         if let theData = self.content {
             return NSString(data:theData, encoding:encoding.rawValue) as? String
         }
         return nil
     }
-
+    
     public lazy var headers:CaseInsensitiveDictionary<String,String> = {
         return CaseInsensitiveDictionary<String,String>(dictionary: (self.response as? HTTPURLResponse)?.allHeaderFields as? [String:String] ?? [:])
     }()
-
+    
     public lazy var cookies:[String:HTTPCookie] = {
         let foundCookies: [HTTPCookie]
         if let responseHeaders = (self.response as? HTTPURLResponse)?.allHeaderFields as? [String: String] {
@@ -152,15 +152,15 @@ public final class HTTPResult : NSObject {
         }
         return result
     }()
-
+    
     public var ok:Bool {
         return statusCode != nil && !(statusCode! >= 400 && statusCode! < 600)
     }
-
+    
     public var url:URL? {
         return response?.url
     }
-
+    
     public lazy var links: [String:[String:String]] = {
         var result = [String:[String:String]]()
         if let content = self.headers["link"] {
@@ -190,7 +190,7 @@ public final class HTTPResult : NSObject {
         }
         return result
     }()
-
+    
     public func cancel() {
         task?.cancel()
     }
@@ -199,7 +199,7 @@ public final class HTTPResult : NSObject {
 public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection, DictionaryLiteralConvertible {
     private var _data:[Key: Value] = [:]
     private var _keyMap: [String: Key] = [:]
-
+    
     public typealias Element = (key: Key, value: Value)
     public typealias Index = DictionaryIndex<Key, Value>
     public var startIndex: Index {
@@ -211,34 +211,34 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection, Dicti
     public func index(after: Index) -> Index {
         return _data.index(after: after)
     }
-
+    
     public var count: Int {
         assert(_data.count == _keyMap.count, "internal keys out of sync")
         return _data.count
     }
-
+    
     public var isEmpty: Bool {
         return _data.isEmpty
     }
-
+    
     public init(dictionaryLiteral elements: (Key, Value)...) {
         for (key, value) in elements {
             _keyMap["\(key)".lowercased()] = key
             _data[key] = value
         }
     }
-
+    
     public init(dictionary:[Key:Value]) {
         for (key, value) in dictionary {
             _keyMap["\(key)".lowercased()] = key
             _data[key] = value
         }
     }
-
+    
     public subscript (position: Index) -> Element {
         return _data[position]
     }
-
+    
     public subscript (key: Key) -> Value? {
         get {
             if let realKey = _keyMap["\(key)".lowercased()] {
@@ -254,11 +254,11 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection, Dicti
             _data[_keyMap[lowerKey]!] = newValue
         }
     }
-
+    
     public func makeIterator() -> DictionaryIterator<Key, Value> {
         return _data.makeIterator()
     }
-
+    
     public var keys: LazyMapCollection<[Key : Value], Key> {
         return _data.keys
     }
@@ -296,7 +296,7 @@ public struct JustSessionDefaults {
         credentialPersistence: URLCredential.Persistence = .forSession,
         encoding: String.Encoding = String.Encoding.utf8,
         cachePolicy: NSURLRequest.CachePolicy = .reloadIgnoringLocalCacheData
-    ) {
+        ) {
         self.JSONReadingOptions = JSONReadingOptions
         self.JSONWritingOptions = JSONWritingOptions
         self.headers = headers
@@ -313,7 +313,7 @@ public struct HTTPProgress {
         case upload
         case download
     }
-
+    
     public let type:Type
     public let bytesProcessed:Int64
     public let bytesExpectedToProcess:Int64
@@ -387,7 +387,7 @@ extension JustOf {
             asyncProgressHandler: asyncProgressHandler,
             asyncCompletionHandler: asyncCompletionHandler
         )
-
+        
     }
     public func delete(
         _ URLString:String,
@@ -405,26 +405,26 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .DELETE,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout:timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        
+        return adaptor.request(
+            .DELETE,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout:timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
-
+    
     public func get(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -441,26 +441,26 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .GET,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout:timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        
+        return adaptor.request(
+            .GET,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout:timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
-
+    
     public func head(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -477,26 +477,26 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .HEAD,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout: timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        
+        return adaptor.request(
+            .HEAD,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout: timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
-
+    
     public func options(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -513,25 +513,25 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-            return adaptor.request(
-                .OPTIONS,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout: timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        return adaptor.request(
+            .OPTIONS,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout: timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
-
+    
     public func patch(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -548,27 +548,27 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .PATCH,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout: timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
-
+        
+        return adaptor.request(
+            .PATCH,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout: timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
+        
     }
-
+    
     public func post(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -585,26 +585,26 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .POST,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout: timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        
+        return adaptor.request(
+            .POST,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout: timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
-
+    
     public func put(
         _ URLString:String,
         params:[String:AnyObject] = [:],
@@ -621,30 +621,30 @@ extension JustOf {
         asyncProgressHandler:(TaskProgressHandler)? = nil,
         asyncCompletionHandler:((HTTPResult?) -> Void)? = nil
         ) -> HTTPResult {
-
-            return adaptor.request(
-                .PUT,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: headers,
-                files:files,
-                auth: auth,
-                cookies: cookies,
-                redirects: allowRedirects,
-                timeout: timeout,
-                URLQuery: URLQuery,
-                requestBody: requestBody,
-                asyncProgressHandler: asyncProgressHandler,
-                asyncCompletionHandler: asyncCompletionHandler
-            )
+        
+        return adaptor.request(
+            .PUT,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: headers,
+            files:files,
+            auth: auth,
+            cookies: cookies,
+            redirects: allowRedirects,
+            timeout: timeout,
+            URLQuery: URLQuery,
+            requestBody: requestBody,
+            asyncProgressHandler: asyncProgressHandler,
+            asyncCompletionHandler: asyncCompletionHandler
+        )
     }
 }
 
 
 public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
-
+    
     public init(session:Foundation.URLSession? = nil, defaults:JustSessionDefaults? = nil) {
         super.init()
         if let initialSession = session {
@@ -658,7 +658,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
             self.defaults = JustSessionDefaults()
         }
     }
-
+    
     var taskConfigs:[TaskID:TaskConfiguration]=[:]
     var defaults:JustSessionDefaults!
     var session: URLSession!
@@ -667,13 +667,13 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         code: 0,
         userInfo: [NSLocalizedDescriptionKey:"[Just] URL is invalid"]
     )
-
+    
     var syncResultAccessError = NSError(
         domain: errorDomain,
         code: 1,
         userInfo: [NSLocalizedDescriptionKey:"[Just] You are accessing asynchronous result synchronously."]
     )
-
+    
     func queryComponents(_ key: String, _ value: AnyObject) -> [(String, String)] {
         var components: [(String, String)] = []
         if let dictionary = value as? [String: AnyObject] {
@@ -687,36 +687,38 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         } else {
             components.append(contentsOf: [(percentEncodeString(key), percentEncodeString("\(value)"))])
         }
-
+        
         return components
     }
-
+    
     func query(_ parameters: [String: AnyObject]) -> String {
         var components: [(String, String)] = []
-        for key in Array(parameters.keys).sorted(isOrderedBefore: <) {
+        
+        
+        for key in Array(parameters.keys).sorted(by: <){
             let value: AnyObject! = parameters[key]
             components += self.queryComponents(key, value)
         }
-
+        
         return (components.map{"\($0)=\($1)"} as [String]).joined(separator: "&")
     }
-
+    
     func percentEncodeString(_ originalObject: AnyObject) -> String {
         if originalObject is NSNull {
             return "null"
         } else {
-          let reserved = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: ":#[]@!$&'()*+,;="))
-          return String(originalObject).addingPercentEncoding(withAllowedCharacters: reserved) ?? ""
+            let reserved = CharacterSet.urlQueryAllowed.subtracting(CharacterSet(charactersIn: ":#[]@!$&'()*+,;="))
+            return String(originalObject).addingPercentEncoding(withAllowedCharacters: reserved) ?? ""
         }
     }
-
-
+    
+    
     func makeTask(_ request:URLRequest, configuration: TaskConfiguration) -> URLSessionDataTask? {
         let task = session.dataTask(with: request)
         taskConfigs[task.taskIdentifier] = configuration
         return task
     }
-
+    
     func synthesizeMultipartBody(_ data:[String:AnyObject], files:[String:HTTPFile]) -> Data? {
         let body = NSMutableData()
         let boundary = "--\(self.defaults.multipartBoundary)\r\n".data(using: defaults.encoding)!
@@ -726,7 +728,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
             body.append("Content-Disposition: form-data; name=\"\(k)\"\r\n\r\n".data(using: defaults.encoding)!)
             body.append("\(valueToSend)\r\n".data(using: defaults.encoding)!)
         }
-
+        
         for (k,v) in files {
             body.append(boundary)
             var partContent: Data? = nil
@@ -734,7 +736,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
             var partMimetype:String? = nil
             switch v {
             case let .url(URL, mimetype):
-                if let component = URL.lastPathComponent {
+                if let component:String = URL.lastPathComponent {
                     partFilename = component
                 }
                 if let URLContent = try? Data(contentsOf: URL) {
@@ -768,7 +770,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         }
         return body as Data
     }
-
+    
     public func synthesizeRequest(
         _ method:HTTPMethod,
         URLString:String,
@@ -782,71 +784,71 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         requestBody:Data?,
         URLQuery:String?
         ) -> URLRequest? {
-            if let urlComponent = NSURLComponents(string: URLString) {
-                let queryString = query(params)
-
-                if queryString.characters.count > 0 {
-                    urlComponent.percentEncodedQuery = queryString
-                }
-
-                var finalHeaders = headers
-                var contentType:String? = nil
-                var body:Data?
-
-                if let requestData = requestBody {
-                    body = requestData
-                } else if files.count > 0 {
-                    body = synthesizeMultipartBody(data, files:files)
-                    contentType = "multipart/form-data; boundary=\(self.defaults.multipartBoundary)"
+        if let urlComponent = NSURLComponents(string: URLString) {
+            let queryString = query(params)
+            
+            if queryString.characters.count > 0 {
+                urlComponent.percentEncodedQuery = queryString
+            }
+            
+            var finalHeaders = headers
+            var contentType:String? = nil
+            var body:Data?
+            
+            if let requestData = requestBody {
+                body = requestData
+            } else if files.count > 0 {
+                body = synthesizeMultipartBody(data, files:files)
+                contentType = "multipart/form-data; boundary=\(self.defaults.multipartBoundary)"
+            } else {
+                if let requestJSON = json {
+                    contentType = "application/json"
+                    body = try? JSONSerialization.data(withJSONObject: requestJSON, options: defaults.JSONWritingOptions)
+                    
                 } else {
-                    if let requestJSON = json {
-                        contentType = "application/json"
-                        body = try? JSONSerialization.data(withJSONObject: requestJSON, options: defaults.JSONWritingOptions)
-
-                    } else {
-                        if data.count > 0 {
-                            if headers["content-type"]?.lowercased() == "application/json" { // assume user wants JSON if she is using this header
-                                body = try? JSONSerialization.data(withJSONObject: data, options: defaults.JSONWritingOptions)
-                            } else {
-                                contentType = "application/x-www-form-urlencoded"
-                                body = query(data).data(using: defaults.encoding)
-                            }
+                    if data.count > 0 {
+                        if headers["content-type"]?.lowercased() == "application/json" { // assume user wants JSON if she is using this header
+                            body = try? JSONSerialization.data(withJSONObject: data, options: defaults.JSONWritingOptions)
+                        } else {
+                            contentType = "application/x-www-form-urlencoded"
+                            body = query(data).data(using: defaults.encoding)
                         }
                     }
                 }
-
-                if let contentTypeValue = contentType {
-                    finalHeaders["Content-Type"] = contentTypeValue
-                }
-
-                if let auth = auth,
-                    utf8Data = "\(auth.0):\(auth.1)".data(using: String.Encoding.utf8)
-                {
-                    finalHeaders["Authorization"] = "Basic \(utf8Data.base64EncodedString())"
-                }
-                if let URL = urlComponent.url {
-                    let request = NSMutableURLRequest(url: URL)
-                    request.cachePolicy = defaults.cachePolicy
-                    request.httpBody = body
-                    request.httpMethod = method.rawValue
-                    if let requestTimeout = timeout {
-                        request.timeoutInterval = requestTimeout
-                    }
-
-                    for (k,v) in defaults.headers {
-                        request.addValue(v, forHTTPHeaderField: k)
-                    }
-
-                    for (k,v) in finalHeaders {
-                        request.addValue(v, forHTTPHeaderField: k)
-                    }
-                    return request as URLRequest
-                }
-
             }
-            return nil
+            
+            if let contentTypeValue = contentType {
+                finalHeaders["Content-Type"] = contentTypeValue
+            }
+            
+            if let auth = auth,
+                utf8Data = "\(auth.0):\(auth.1)".data(using: String.Encoding.utf8)
+            {
+                finalHeaders["Authorization"] = "Basic \(utf8Data.base64EncodedString())"
+            }
+            if let URL = urlComponent.url {
+                let request = NSMutableURLRequest(url: URL)
+                request.cachePolicy = defaults.cachePolicy
+                request.httpBody = body
+                request.httpMethod = method.rawValue
+                if let requestTimeout = timeout {
+                    request.timeoutInterval = requestTimeout
+                }
+                
+                for (k,v) in defaults.headers {
+                    request.addValue(v, forHTTPHeaderField: k)
+                }
+                
+                for (k,v) in finalHeaders {
+                    request.addValue(v, forHTTPHeaderField: k)
+                }
+                return request as URLRequest
+            }
+            
+        }
+        return nil
     }
-
+    
     public func request(
         _ method:HTTPMethod,
         URLString:String,
@@ -863,72 +865,72 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         requestBody:Data?,
         asyncProgressHandler:TaskProgressHandler?,
         asyncCompletionHandler:((HTTPResult?) -> Void)?) -> HTTPResult {
-
-            let isSync = asyncCompletionHandler == nil
-            let semaphore = DispatchSemaphore(value: 0)
-            var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, task: nil)
-
-            let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
-            if let request = synthesizeRequest(
-                method,
-                URLString: URLString,
-                params: params,
-                data: data,
-                json: json,
-                headers: caseInsensitiveHeaders,
-                files: files,
-                auth: auth,
-                timeout: timeout,
-                requestBody: requestBody,
-                URLQuery: URLQuery
-                ) {
-                    addCookies(request.url!, newCookies: cookies)
-                    let config = TaskConfiguration(
-                        credential:auth,
-                        redirects:redirects,
-                        originalRequest:request,
-                        data:NSMutableData(),
-                        progressHandler: asyncProgressHandler
-                        ) { result in
-                            if let handler = asyncCompletionHandler {
-                                handler(result)
-                            }
-                            if isSync {
-                                requestResult = result
-                                semaphore.signal()
-                            }
-
-                    }
-                    if let task = makeTask(request, configuration:config) {
-                        task.resume()
-                    }
-                    if isSync {
-
-                        // See Issue #30 for an explanation of why this is needed.
-                        if let timeout = timeout {
-                            // Need to multiply *before* downcasting, to avoid losing precision.
-                            let timeoutNanosecs: Int64 = Int64(timeout * Double(NSEC_PER_SEC))
-
-                            let howLong = DispatchTime.now() + Double(timeoutNanosecs) / Double(NSEC_PER_SEC)
-
-                            // We are ignoring the error code for now.
-                            _ = semaphore.wait(timeout: howLong)
-                        } else {
-                            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-                        }
-                        return requestResult
-                    }
-            } else {
-                let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, task: nil)
+        
+        let isSync = asyncCompletionHandler == nil
+        let semaphore = DispatchSemaphore(value: 0)
+        var requestResult:HTTPResult = HTTPResult(data: nil, response: nil, error: syncResultAccessError, task: nil)
+        
+        let caseInsensitiveHeaders = CaseInsensitiveDictionary<String,String>(dictionary:headers)
+        if let request = synthesizeRequest(
+            method,
+            URLString: URLString,
+            params: params,
+            data: data,
+            json: json,
+            headers: caseInsensitiveHeaders,
+            files: files,
+            auth: auth,
+            timeout: timeout,
+            requestBody: requestBody,
+            URLQuery: URLQuery
+            ) {
+            addCookies(request.url!, newCookies: cookies)
+            let config = TaskConfiguration(
+                credential:auth,
+                redirects:redirects,
+                originalRequest:request,
+                data:NSMutableData(),
+                progressHandler: asyncProgressHandler
+            ) { result in
                 if let handler = asyncCompletionHandler {
-                    handler(erronousResult)
-                } else {
-                    return erronousResult
+                    handler(result)
                 }
+                if isSync {
+                    requestResult = result
+                    semaphore.signal()
+                }
+                
             }
-            return requestResult
+            if let task = makeTask(request, configuration:config) {
+                task.resume()
+            }
+            if isSync {
+                
+                // See Issue #30 for an explanation of why this is needed.
+                if let timeout = timeout {
+                    // Need to multiply *before* downcasting, to avoid losing precision.
+                    let timeoutNanosecs: Int64 = Int64(timeout * Double(NSEC_PER_SEC))
+                    
+                    let howLong = DispatchTime.now() + Double(timeoutNanosecs) / Double(NSEC_PER_SEC)
+                    
+                    // We are ignoring the error code for now.
+                    _ = semaphore.wait(timeout: howLong)
+                } else {
+                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+                }
+                return requestResult
+            }
+        } else {
+            let erronousResult = HTTPResult(data: nil, response: nil, error: invalidURLError, task: nil)
+            if let handler = asyncCompletionHandler {
+                handler(erronousResult)
+            } else {
+                return erronousResult
+            }
+        }
+        return requestResult
     }
-
+    
     func addCookies(_ URL:Foundation.URL, newCookies:[String:String]) {
         for (k,v) in newCookies {
             if let cookie = HTTPCookie(properties: [
@@ -937,7 +939,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
                 HTTPCookiePropertyKey.originURL: URL,
                 HTTPCookiePropertyKey.path: "/"
                 ]) {
-                    session.configuration.httpCookieStorage?.setCookie(cookie)
+                session.configuration.httpCookieStorage?.setCookie(cookie)
             }
         }
     }
@@ -950,38 +952,38 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
         ) {
-            var endCredential:URLCredential? = nil
-
-            if let taskConfig = taskConfigs[task.taskIdentifier], let credential = taskConfig.credential {
-                if !(challenge.previousFailureCount > 0) {
-                    endCredential = URLCredential(
-                        user: credential.0,
-                        password: credential.1,
-                        persistence: self.defaults.credentialPersistence
-                    )
-                }
+        var endCredential:URLCredential? = nil
+        
+        if let taskConfig = taskConfigs[task.taskIdentifier], let credential = taskConfig.credential {
+            if !(challenge.previousFailureCount > 0) {
+                endCredential = URLCredential(
+                    user: credential.0,
+                    password: credential.1,
+                    persistence: self.defaults.credentialPersistence
+                )
             }
-
-            completionHandler(.useCredential, endCredential)
+        }
+        
+        completionHandler(.useCredential, endCredential)
     }
-
+    
     public func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
         willPerformHTTPRedirection response: HTTPURLResponse,
         newRequest request: URLRequest, completionHandler: (URLRequest?) -> Void
         ) {
-            if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
-                if !allowRedirects {
-                    completionHandler(nil)
-                    return
-                }
-                completionHandler(request)
-            } else {
-                completionHandler(request)
+        if let allowRedirects = taskConfigs[task.taskIdentifier]?.redirects {
+            if !allowRedirects {
+                completionHandler(nil)
+                return
             }
+            completionHandler(request)
+        } else {
+            completionHandler(request)
+        }
     }
-
+    
     public func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
@@ -989,17 +991,17 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
         totalBytesSent: Int64,
         totalBytesExpectedToSend: Int64
         ) {
-            if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
-                handler(
-                    HTTPProgress(
-                        type: .upload,
-                        bytesProcessed: totalBytesSent,
-                        bytesExpectedToProcess: totalBytesExpectedToSend
-                    )
+        if let handler = taskConfigs[task.taskIdentifier]?.progressHandler {
+            handler(
+                HTTPProgress(
+                    type: .upload,
+                    bytesProcessed: totalBytesSent,
+                    bytesExpectedToProcess: totalBytesExpectedToSend
                 )
-            }
+            )
+        }
     }
-
+    
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         if let handler = taskConfigs[dataTask.taskIdentifier]?.progressHandler {
             handler(
@@ -1014,7 +1016,7 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
             taskConfigs[dataTask.taskIdentifier]?.data.append(data)
         }
     }
-
+    
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {
         if let config = taskConfigs[task.taskIdentifier], let handler = config.completionHandler {
             let result = HTTPResult(
