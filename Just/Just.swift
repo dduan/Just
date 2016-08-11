@@ -902,7 +902,9 @@ public final class HTTP: NSObject, NSURLSessionDelegate, JustAdaptor {
                         progressHandler: asyncProgressHandler
                         ) { result in
                             if let handler = asyncCompletionHandler {
-                                handler(result)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    handler(result)
+                                }
                             }
                             if isSync {
                                 requestResult = result
