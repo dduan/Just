@@ -79,7 +79,7 @@ Read *Getting Started* [on the web][starting link] or
 
 Here are some ways to leverage Just.
 
-## Carthage (recommended)
+## Carthage (Swift 3 only)
 
 Include the following in your Cartfile:
 
@@ -96,6 +96,15 @@ The usual way:
 
     target 'MyApp' do
       pod 'Just'
+    end
+
+If you use Swift 2.3:
+
+    platform :ios, '8.0'
+    use_frameworks!
+
+    target 'MyApp' do
+      pod 'Just', :git => 'https://github.com/JustHTTP/Just.git', :branch => 'swift-2.3'
     end
 
 ## Manual
