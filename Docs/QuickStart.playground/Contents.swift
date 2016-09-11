@@ -144,12 +144,11 @@ Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedir
 
 import Foundation
 
-let elonPhotoURL = Bundle.main.urlForResource("elon", withExtension: "jpg")!
+let elonPhotoURL = Bundle.main.url(forResource: "elon", withExtension: "jpg")!
 let uploadResult = Just.post("http://httpbin.org/post", files:["elon": .url(elonPhotoURL, nil)]) // <== that's it
 print(uploadResult.text ?? "")
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
-
 let someData = "Marco".data(using: String.Encoding.utf8)! // this shouldn't fail
 
 if let text = Just.post(
