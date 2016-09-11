@@ -4,10 +4,4 @@
    <FileRef
       location = "group:Just.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Externals/Quick/Quick.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Externals/Quick/Externals/Nimble/Nimble.xcodeproj">
-   </FileRef>
 </Workspace>

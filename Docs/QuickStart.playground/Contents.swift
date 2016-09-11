@@ -42,7 +42,6 @@ Just.get("http://httpbin.org/get", params:["page": 3])
 
 var r = Just.get("http://httpbin.org/get", params:["page": 3])
 // … "r" becomes available here
-
 //: However, Just doesn't force you to choose. The same request can be made
 //: asynchronously like this
 
@@ -98,7 +97,7 @@ r.headers["Content-Length"] == r.headers["cOnTeNt-LeNgTh"] // true
 //: The original request is preserved as a *NSURLRequest*:
 
 r.request               // NSURLRequest sent
-r.request?.HTTPMethod   // GET
+r.request?.httpMethod   // GET
 
 //: When things aren't going so well:
 let erronous = Just.get("http://httpbin.org/does/not/exist") // oops
@@ -145,23 +144,20 @@ Just.get("http://httpbin.org/status/302", allowRedirects:false).isPermanentRedir
 
 import Foundation
 
-
-
-let elonPhotoURL = NSBundle.mainBundle().URLForResource("elon", withExtension: "jpg")! // assume the file exist
-let uploadResult = Just.post("http://httpbin.org/post", files:["elon":.URL(elonPhotoURL, nil)]) // <== that's it
+let elonPhotoURL = Bundle.main.url(forResource: "elon", withExtension: "jpg")!
+let uploadResult = Just.post("http://httpbin.org/post", files:["elon": .url(elonPhotoURL, nil)]) // <== that's it
 print(uploadResult.text ?? "")
 
 //: Here a file is specified with an NSURL. Alternatively, a file can be a NSData or just a string. Although in both cases, a filename is needed.
-
-let someData = "Marco".dataUsingEncoding(NSUTF8StringEncoding)! // this shouldn't fail
+let someData = "Marco".data(using: String.Encoding.utf8)! // this shouldn't fail
 
 if let text = Just.post(
     "http://httpbin.org/post",
     files:[
-        "a":.Data("marco.text", someData, nil), // file #1, an NSData
-        "b":.Text("polo.txt", "Polo", nil)      // file #2, a String
+        "a":.data("marco.text", someData, nil), // file #1, an NSData
+        "b":.text("polo.txt", "Polo", nil)      // file #2, a String
     ]
-).text {
+    ).text {
     print(text)
 }
 
@@ -175,8 +171,8 @@ if let text = Just.post(
 if let json = Just.post(
     "http://httpbin.org/post",
     data:["lastName":"Musk"],
-    files:["elon":.URL(elonPhotoURL, nil)]
-).json as? [String:AnyObject] {
+    files:["elon":.url(elonPhotoURL, nil)]
+    ).json as? [String:AnyObject] {
     print(json["form"] ?? [:])      // lastName:Musk
     print(json["files"] ?? [:])     // elon
 }
@@ -227,16 +223,17 @@ Just.get("http://httpbin.org/delay/5", timeout:0.2).reason
 //: When dealing with large files, you may be interested in knowing the progress
 //: of their uploading or downloading. You can do that by supplynig a call back
 //: to the parameter **asyncProgressHandler**.
+
 Just.post(
     "http://httpbin.org/post",
-    files:["large file":.Text("or", "pretend this is a large file", nil)],
-    asyncProgressHandler: {(p) in
+    files:["large file":.text("or", "pretend this is a large file", nil)],
+    asyncProgressHandler: { p in
         p.type // either .Upload or .Download
         p.bytesProcessed
         p.bytesExpectedToProcess
         p.percent
     }
-) { (r) in
+) { r in
     // finished
 }
 
@@ -253,14 +250,15 @@ Just.post(
 //: To change these settings, one must create a separate instance of Just instead of using the
 //: default one. Doing so opens up the oppurtunity to customize NSURLSession in
 //: powerful ways. A `JustSessionDefaults` can be used to provide some customization points:
+//
 
 let myJustDefaults = JustSessionDefaults(
-    JSONReadingOptions: .MutableContainers, // NSJSONSerialization reading options
-    JSONWritingOptions: .PrettyPrinted,     // NSJSONSerialization writing options
+    JSONReadingOptions: .mutableContainers, // NSJSONSerialization reading options
+    JSONWritingOptions: .prettyPrinted,     // NSJSONSerialization writing options
     headers:  ["OH":"MY"],                  // headers to include in every request
     multipartBoundary: "Ju5tH77P15Aw350m3", // multipart post request boundaries
-    credentialPersistence: .None,           // NSURLCredential persistence options
-    encoding: NSUTF8StringEncoding          // en(de)coding for HTTP body
+    credentialPersistence: .none,           // NSURLCredential persistence options
+    encoding: String.Encoding.utf8          // en(de)coding for HTTP body
 )
 
 //: Just initializer accepts an `defaults` argement. Use it like this:
