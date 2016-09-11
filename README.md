@@ -9,7 +9,7 @@
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
 Just supports Swift 3. You can use it with Swift 2 with version
-[0.4.7](https://github.com/JustHTTP/Just/tree/v0.4.7).
+[0.4.8](https://github.com/JustHTTP/Just/tree/v0.4.8).
 
 *Follow [@JustHTTP][twitter] for updates, if you are into that kind of things* 😉
 
