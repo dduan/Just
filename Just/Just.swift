@@ -408,6 +408,7 @@ public struct JustOf<Adaptor: JustAdaptor> {
 
 extension JustOf {
 
+  @discardableResult
   public func request(
     _ method: HTTPMethod,
     URLString: String,
@@ -444,6 +445,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func delete(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -480,6 +482,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func get(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -516,6 +519,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func head(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -552,6 +556,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func options(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -587,6 +592,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func patch(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -623,6 +629,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func post(
     _ URLString: String,
     params: [String: Any] = [:],
@@ -659,6 +666,7 @@ extension JustOf {
     )
   }
 
+  @discardableResult
   public func put(
     _ URLString: String,
     params: [String: Any] = [:],

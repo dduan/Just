@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Just"
-  s.version      = "0.5.0"
+  s.version      = "0.5.1"
   s.summary      = "Swift HTTP for Humans"
 
   s.description  = <<-DESC
