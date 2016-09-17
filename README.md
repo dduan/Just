@@ -1,7 +1,6 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CocoaPods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
 [![Build Status](https://travis-ci.org/JustHTTP/Just.svg?branch=master)](https://travis-ci.org/JustHTTP/Just)
-![MIT License](https://img.shields.io/cocoapods/l/Just.svg)
 ![Supported Flatform](https://img.shields.io/cocoapods/p/Just.svg)
 
 <img src="https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/IconMasked.png" width="280" height="280">
