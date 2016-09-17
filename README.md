@@ -139,8 +139,8 @@ Work in `Just.xcworkspace`.
 
 The tests for link headers relies on Github APIs, which has a low per-hour
 limit. To overcome this, you can edit the Xcode build schemes and add
-[environment variables][XcodeEnvVar] `GITHUB_USERNAME` and `GITHUB_TOKEN`.
-Learn more about personal tokens [here][GithubToken].
+[environment variables][XcodeEnvVar]  `GITHUB_TOKEN`. Learn more about
+personal tokens [here][GithubToken].
 
 For Xcode rebels, checkout `Makefile` (you'll need [xcpretty][]).
 
