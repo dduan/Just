@@ -391,7 +391,7 @@ public protocol JustAdaptor {
     URLQuery: String?,
     requestBody: Data?,
     asyncProgressHandler: TaskProgressHandler?,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)?
+    asyncCompletionHandler: ((HTTPResult) -> Void)?
     ) -> HTTPResult
 
   init(session: URLSession?, defaults: JustSessionDefaults?)
@@ -424,7 +424,7 @@ extension JustOf {
     URLQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
     return adaptor.request(
       method,
@@ -460,7 +460,7 @@ extension JustOf {
     URLQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -497,7 +497,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -534,7 +534,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -571,7 +571,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
     return adaptor.request(
       .OPTIONS,
@@ -607,7 +607,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -644,7 +644,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -681,7 +681,7 @@ extension JustOf {
     requestBody: Data? = nil,
     URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)? = nil
+    asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
 
     return adaptor.request(
@@ -948,7 +948,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     URLQuery: String?,
     requestBody: Data?,
     asyncProgressHandler: TaskProgressHandler?,
-    asyncCompletionHandler: ((HTTPResult?) -> Void)?) -> HTTPResult {
+    asyncCompletionHandler: ((HTTPResult) -> Void)?) -> HTTPResult {
 
     let isSynchronous = asyncCompletionHandler == nil
     let semaphore = DispatchSemaphore(value: 0)
