@@ -710,16 +710,16 @@ final class LinkHeader: XCTestCase {
     var url = "https://api.github.com/users/dduan/repos?page=1&per_page=10"
     if let token = ProcessInfo.processInfo.environment["GITHUB_TOKEN"] {
       url = url+"&access_token=\(token)"
+
+      let r = Just.get(url)
+
+      XCTAssertTrue(r.ok)
+      XCTAssertNotNil(r.links)
+      XCTAssertNotNil(r.links["next"])
+      XCTAssertNotNil(r.links["last"])
+      XCTAssertNotNil(r.links["next"]?["url"])
+      XCTAssertNotNil(r.links["last"]?["url"])
     }
-
-    let r = Just.get(url)
-
-    XCTAssertTrue(r.ok)
-    XCTAssertNotNil(r.links)
-    XCTAssertNotNil(r.links["next"])
-    XCTAssertNotNil(r.links["last"])
-    XCTAssertNotNil(r.links["next"]?["url"])
-    XCTAssertNotNil(r.links["last"]?["url"])
   }
 }
 
