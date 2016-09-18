@@ -79,6 +79,14 @@ Read *Getting Started* [on the web][starting link] or
 
 Here are some ways to leverage Just.
 
+## Swift Package Manager
+
+Add the following to your `dependencies`:
+
+```swift
+    .Package(url: "https://github.com/JustHTTP/Just.git", majorVersion: 0, minor: 5)
+```
+
 ## Carthage (Swift 3 only)
 
 Include the following in your Cartfile:

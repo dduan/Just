@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Just"
-  s.version      = "0.5.2"
+  s.version      = "0.5.3"
   s.summary      = "Swift HTTP for Humans"
 
   s.description  = <<-DESC
@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
 
   s.source       = {
     :git => "https://github.com/JustHTTP/Just.git",
-    :tag => "v#{s.version}"
+    :tag => "#{s.version}"
   }
 
   s.source_files  = "Just", "Just/**/*.{swift}"
