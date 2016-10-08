@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "948CA83A1AF3FF55001E0FD3"
+               BlueprintIdentifier = "37C817061DA973C600881C06"
                BuildableName = "Just.framework"
-               BlueprintName = "Just-OSX"
+               BlueprintName = "Just"
                ReferencedContainer = "container:Just.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "948CA8441AF3FF55001E0FD3"
-               BuildableName = "Just-OSXTests.xctest"
-               BlueprintName = "Just-OSXTests"
+               BlueprintIdentifier = "37C8170E1DA973C600881C06"
+               BuildableName = "JustTests.xctest"
+               BlueprintName = "JustTests"
                ReferencedContainer = "container:Just.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "948CA83A1AF3FF55001E0FD3"
+            BlueprintIdentifier = "37C817061DA973C600881C06"
             BuildableName = "Just.framework"
-            BlueprintName = "Just-OSX"
+            BlueprintName = "Just"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "948CA83A1AF3FF55001E0FD3"
+            BlueprintIdentifier = "37C817061DA973C600881C06"
             BuildableName = "Just.framework"
-            BlueprintName = "Just-OSX"
+            BlueprintName = "Just"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -82,9 +82,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "948CA83A1AF3FF55001E0FD3"
+            BlueprintIdentifier = "37C817061DA973C600881C06"
             BuildableName = "Just.framework"
-            BlueprintName = "Just-OSX"
+            BlueprintName = "Just"
             ReferencedContainer = "container:Just.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

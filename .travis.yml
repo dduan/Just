@@ -1,7 +1,14 @@
+matrix:
+  include:
+    - os: osx
+      env: ACTION=iOS
+    - os: osx
+      env: ACTION=OSX
+    - os: osx
+      env: ACTION=tvOS
+
 language: objective-c
 osx_image: xcode8
-before_install:
-    - git submodule update --init --recursive
-    - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
-    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
-script: make test
+
+script:
+  - make test-$ACTION

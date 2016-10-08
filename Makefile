@@ -1,12 +1,32 @@
-all : clean test
+all : clean test-OSX
 
 docs : playground html
 
-test :
-	@set -o pipefail \
-	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-OSX -destination 'platform=OS X' | xcpretty \
-	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-iOS -destination 'OS=9.1,name=iPhone 6 Plus' | xcpretty \
-	&& xcodebuild test -workspace Just.xcworkspace -scheme Just-tvOS -destination 'OS=10.0,name=Apple TV 1080p' | xcpretty \
+test-iOS:
+	set -o pipefail && \
+		xcodebuild \
+		-project Just.xcodeproj \
+		-scheme Just \
+		-destination "name=iPhone 6s" \
+		test \
+		| xcpretty -ct
+
+test-OSX:
+	set -o pipefail && \
+		xcodebuild \
+		-project Just.xcodeproj \
+		-scheme Just \
+		test \
+		| xcpretty -ct
+
+test-tvOS:
+	set -o pipefail && \
+		xcodebuild \
+		-project Just.xcodeproj \
+		-scheme Just \
+		-destination "name=Apple TV 1080p" \
+		test \
+		| xcpretty -ct
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
