@@ -72,7 +72,7 @@ Just.post(
 Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
-[starting playground]: https://github.com/JustHTTP/Just/blob/swift3/Docs/QuickStart.zip?raw=true
+[starting playground]: https://github.com/JustHTTP/Just/blob/master/Docs/QuickStart.zip
 [starting link]: http://docs.justhttp.net/QuickStart.html
 
 #  Install
