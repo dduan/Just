@@ -28,7 +28,7 @@
 		37C817071DA973C600881C06 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37C8170A1DA973C600881C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37C8170F1DA973C600881C06 /* JustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		37C817161DA973C600881C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../JustTests/Info.plist; sourceTree = "<group>"; };
+		37C817161DA973C600881C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37C817241DA9753500881C06 /* UniversalFramework_Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Base.xcconfig; sourceTree = "<group>"; };
 		37C817251DA9753500881C06 /* UniversalFramework_Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Framework.xcconfig; sourceTree = "<group>"; };
 		37C817261DA9753500881C06 /* UniversalFramework_Test.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Test.xcconfig; sourceTree = "<group>"; };
@@ -73,8 +73,7 @@
 				37C817231DA974DC00881C06 /* xcconfigs */,
 				37C8170A1DA973C600881C06 /* Info.plist */,
 			);
-			name = "Supporting Files";
-			path = Just;
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		37C8171E1DA9747200881C06 /* Supporting Files */ = {
@@ -82,7 +81,7 @@
 			children = (
 				37C817161DA973C600881C06 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		37C817231DA974DC00881C06 /* xcconfigs */ = {
@@ -92,7 +91,7 @@
 				37C817251DA9753500881C06 /* UniversalFramework_Framework.xcconfig */,
 				37C817261DA9753500881C06 /* UniversalFramework_Test.xcconfig */,
 			);
-			name = xcconfigs;
+			path = xcconfigs;
 			sourceTree = "<group>";
 		};
 		37D060B61D8E0F4400014437 /* Just */ = {
@@ -106,10 +105,10 @@
 		94DA2B4A1AE640390082DC6D = {
 			isa = PBXGroup;
 			children = (
-				94DA2B561AE640390082DC6D /* Sources */,
-				94DA2B631AE640390082DC6D /* Tests */,
-				37C817081DA973C600881C06 /* Supporting Files */,
 				94DA2B551AE640390082DC6D /* Products */,
+				94DA2B561AE640390082DC6D /* Sources */,
+				37C817081DA973C600881C06 /* Supporting Files */,
+				94DA2B631AE640390082DC6D /* Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,8 +132,8 @@
 		94DA2B631AE640390082DC6D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				37C8171E1DA9747200881C06 /* Supporting Files */,
 				37068BFC1D8E10820047A2F5 /* JustTests */,
+				37C8171E1DA9747200881C06 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -330,7 +329,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = JustTests/Info.plist;
+				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.JustTests;
@@ -348,7 +347,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				INFOPLIST_FILE = JustTests/Info.plist;
+				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.JustTests;
@@ -468,6 +467,7 @@
 				37C817191DA973C600881C06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		37C8171D1DA973C600881C06 /* Build configuration list for PBXNativeTarget "JustTests" */ = {
 			isa = XCConfigurationList;
@@ -476,6 +476,7 @@
 				37C8171B1DA973C600881C06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		94DA2B4E1AE640390082DC6D /* Build configuration list for PBXProject "Just" */ = {
 			isa = XCConfigurationList;
