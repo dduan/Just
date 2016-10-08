@@ -84,7 +84,7 @@ Here are some ways to leverage Just.
 Add the following to your `dependencies`:
 
 ```swift
-    .Package(url: "https://github.com/JustHTTP/Just.git", majorVersion: 0, minor: 5)
+.Package(url: "https://github.com/JustHTTP/Just.git", majorVersion: 0, minor: 5)
 ```
 
 ## Carthage (Swift 3 only)
