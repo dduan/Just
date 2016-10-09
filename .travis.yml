@@ -1,14 +1,10 @@
-matrix:
-  include:
-    - os: osx
-      env: ACTION=iOS
-    - os: osx
-      env: ACTION=OSX
-    - os: osx
-      env: ACTION=tvOS
-
 language: objective-c
 osx_image: xcode8
 
+before_install:
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
+
 script:
-  - make test-$ACTION
+  - make test
+  - make test-integration

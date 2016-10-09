@@ -1,37 +1,11 @@
-all : clean test-OSX
+test-integration: \
+	clean \
+	test-integration-spm \
+	test-integration-cocoapods \
+	test-integration-carthage
 
-docs : playground html
-
-test: test-iOS test-macOS test-tvOS
-
-test-iOS:
-	set -o pipefail && \
-		xcodebuild \
-		-project Just.xcodeproj \
-		-scheme Just \
-		-destination "name=iPhone 6s" \
-		test \
-		| xcpretty -ct
-
-test-macOS:
-	set -o pipefail && \
-		xcodebuild \
-		-project Just.xcodeproj \
-		-scheme Just \
-		test \
-		| xcpretty -ct
-
-test-tvOS:
-	set -o pipefail && \
-		xcodebuild \
-		-project Just.xcodeproj \
-		-scheme Just \
-		-destination "name=Apple TV 1080p" \
-		test \
-		| xcpretty -ct
-
-test-integration:
-	cd Example && make -f Makefile
+test-integration-spm:
+	cd SPM && swift build
 
 test-integration-cocoapods: \
 	test-integration-cocoapods-iOS \
@@ -40,7 +14,7 @@ test-integration-cocoapods: \
 	test-integration-cocoapods-tvOS
 
 test-integration-cocoapods-iOS:
-	cd Example/Cocoapods && \
+	cd Cocoapods && \
 	pod install && \
 	set -o pipefail && \
 		xcodebuild \
@@ -50,7 +24,7 @@ test-integration-cocoapods-iOS:
 		| xcpretty -ct
 
 test-integration-cocoapods-macOS:
-	cd Example/Cocoapods && \
+	cd Cocoapods && \
 	pod install && \
 	set -o pipefail && \
 		xcodebuild \
@@ -59,17 +33,17 @@ test-integration-cocoapods-macOS:
 		| xcpretty -ct
 
 test-integration-cocoapods-watchOS:
-	cd Example/Cocoapods && \
+	cd Cocoapods && \
 	pod install && \
 	set -o pipefail && \
 		xcodebuild \
 		-workspace Example.xcworkspace \
 		-scheme Example-watchOS \
-		-destination "name=iPhone 6s" \
+		-destination "name=iPhone 6" \
 		| xcpretty -ct
 
 test-integration-cocoapods-tvOS:
-	cd Example/Cocoapods && \
+	cd Cocoapods && \
 	pod install && \
 	set -o pipefail && \
 		xcodebuild \
@@ -85,7 +59,7 @@ test-integration-carthage: \
 	test-integration-carthage-tvOS
 
 test-integration-carthage-iOS:
-	cd Example/Carthage && \
+	cd Carthage && \
 	carthage update --platform iOS && \
 	set -o pipefail && \
 		xcodebuild \
@@ -95,8 +69,8 @@ test-integration-carthage-iOS:
 		| xcpretty -ct
 
 test-integration-carthage-macOS:
-	cd Example/carthage && \
-	carthage update --platform macOS && \
+	cd carthage && \
+	carthage update --platform Mac && \
 	set -o pipefail && \
 		xcodebuild \
 		-project Example.xcodeproj \
@@ -104,17 +78,17 @@ test-integration-carthage-macOS:
 		| xcpretty -ct
 
 test-integration-carthage-watchOS:
-	cd Example/carthage && \
+	cd carthage && \
 	carthage update --platform watchOS && \
 	set -o pipefail && \
 		xcodebuild \
 		-project Example.xcodeproj \
 		-scheme Example-watchOS \
-		-destination "name=iPhone 6s" \
+		-destination "name=iPhone 6" \
 		| xcpretty -ct
 
 test-integration-carthage-tvOS:
-	cd Example/carthage && \
+	cd carthage && \
 	carthage update --platform tvOS && \
 	set -o pipefail && \
 		xcodebuild \
@@ -123,18 +97,9 @@ test-integration-carthage-tvOS:
 		-destination "name=Apple TV 1080p" \
 		| xcpretty -ct
 
-test-integration-spm:
-	cd Example/SPM && swift build
-
-playground :
-	@mkdir -p Docs/QuickStart.playground/Sources
-	@cp Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
-	cd ./Docs && zip -r -X QuickStart.zip QuickStart.playground/*
-
-html :
-	@docco -L Docs/docco.json -l linear -o Docs/html Docs/QuickStart.playground/Contents.swift
-	mv Docs/html/Contents.html Docs/html/QuickStart.html
-
-clean :
-	@xcodebuild clean
-	@rm -rf build
+clean:
+	rm -rf Carthage/Carthage
+	rm -rf Carthage/Cartfile.resolved
+	rm -rf Cococapods/Pods
+	rm -rf Cococapods/Podfile.lock
+	cd SPM && swift build --clean
