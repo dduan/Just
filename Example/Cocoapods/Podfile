@@ -4,24 +4,24 @@ use_frameworks!
 
 target 'Example-iOS' do
   project 'Example.xcodeproj'
-  pod 'Just'
+  pod 'Just', :git => 'https://github.com/JustHTTP/Just.git'
 end
 
 target 'Example-tvOS' do
   platform :tvos, '10.11'
   project 'Example.xcodeproj'
-  pod 'Just'
+  pod 'Just', :git => 'https://github.com/JustHTTP/Just.git'
 end
 
 target 'Example-macOS' do
   platform :osx, '10.11'
   project 'Example.xcodeproj'
-  pod 'Just'
+  pod 'Just', :git => 'https://github.com/JustHTTP/Just.git'
 end
 
 target 'Example-watchOS Extension' do
   platform :watchos, '3.0'
 
   project 'Example.xcodeproj'
-  pod 'Just'
+  pod 'Just', :git => 'https://github.com/JustHTTP/Just.git'
 end
