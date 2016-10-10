@@ -100,6 +100,6 @@ test-integration-carthage-tvOS:
 clean:
 	rm -rf Carthage/Carthage
 	rm -rf Carthage/Cartfile.resolved
-	rm -rf Cococapods/Pods
-	rm -rf Cococapods/Podfile.lock
+	rm -rf Cocoapods/Pods
+	rm -rf Cocoapods/Podfile.lock
 	cd SPM && swift build --clean
