@@ -143,12 +143,12 @@
 			isa = PBXGroup;
 			children = (
 				372C01A21DA9D19B009C0D56 /* Example-iOS */,
-				372C01BA1DA9D6CF009C0D56 /* Example-watchOS */,
-				372C01C91DA9D6CF009C0D56 /* Example-watchOS Extension */,
-				372C01E41DA9D87C009C0D56 /* Example-tvOS */,
 				372C01FA1DA9D91A009C0D56 /* Example-macOS */,
-				372C01A11DA9D19B009C0D56 /* Products */,
+				372C01E41DA9D87C009C0D56 /* Example-tvOS */,
+				372C01BA1DA9D6CF009C0D56 /* Example-watchOS */,
+				372C01C91DA9D6CF009C0D56 /* Example-watchOS-Extension */,
 				372C01B41DA9D4E1009C0D56 /* Frameworks */,
+				372C01A11DA9D19B009C0D56 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,11 +168,11 @@
 			isa = PBXGroup;
 			children = (
 				372C01A31DA9D19B009C0D56 /* AppDelegate.swift */,
-				372C01A51DA9D19B009C0D56 /* ViewController.swift */,
-				372C01A71DA9D19B009C0D56 /* Main.storyboard */,
 				372C01AA1DA9D19B009C0D56 /* Assets.xcassets */,
-				372C01AC1DA9D19B009C0D56 /* LaunchScreen.storyboard */,
 				372C01AF1DA9D19B009C0D56 /* Info.plist */,
+				372C01AC1DA9D19B009C0D56 /* LaunchScreen.storyboard */,
+				372C01A71DA9D19B009C0D56 /* Main.storyboard */,
+				372C01A51DA9D19B009C0D56 /* ViewController.swift */,
 			);
 			path = "Example-iOS";
 			sourceTree = "<group>";
@@ -191,32 +191,32 @@
 		372C01BA1DA9D6CF009C0D56 /* Example-watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				372C01BB1DA9D6CF009C0D56 /* Interface.storyboard */,
 				372C01BE1DA9D6CF009C0D56 /* Assets.xcassets */,
 				372C01C01DA9D6CF009C0D56 /* Info.plist */,
+				372C01BB1DA9D6CF009C0D56 /* Interface.storyboard */,
 			);
 			path = "Example-watchOS";
 			sourceTree = "<group>";
 		};
-		372C01C91DA9D6CF009C0D56 /* Example-watchOS Extension */ = {
+		372C01C91DA9D6CF009C0D56 /* Example-watchOS-Extension */ = {
 			isa = PBXGroup;
 			children = (
-				372C01CA1DA9D6CF009C0D56 /* InterfaceController.swift */,
-				372C01CC1DA9D6CF009C0D56 /* ExtensionDelegate.swift */,
 				372C01CE1DA9D6CF009C0D56 /* Assets.xcassets */,
+				372C01CC1DA9D6CF009C0D56 /* ExtensionDelegate.swift */,
 				372C01D01DA9D6CF009C0D56 /* Info.plist */,
+				372C01CA1DA9D6CF009C0D56 /* InterfaceController.swift */,
 			);
-			path = "Example-watchOS Extension";
+			path = "Example-watchOS-Extension";
 			sourceTree = "<group>";
 		};
 		372C01E41DA9D87C009C0D56 /* Example-tvOS */ = {
 			isa = PBXGroup;
 			children = (
 				372C01E51DA9D87C009C0D56 /* AppDelegate.swift */,
-				372C01E71DA9D87C009C0D56 /* ViewController.swift */,
-				372C01E91DA9D87C009C0D56 /* Main.storyboard */,
 				372C01EC1DA9D87C009C0D56 /* Assets.xcassets */,
 				372C01EE1DA9D87C009C0D56 /* Info.plist */,
+				372C01E91DA9D87C009C0D56 /* Main.storyboard */,
+				372C01E71DA9D87C009C0D56 /* ViewController.swift */,
 			);
 			path = "Example-tvOS";
 			sourceTree = "<group>";
@@ -225,10 +225,10 @@
 			isa = PBXGroup;
 			children = (
 				372C01FB1DA9D91A009C0D56 /* AppDelegate.swift */,
-				372C01FD1DA9D91A009C0D56 /* ViewController.swift */,
 				372C01FF1DA9D91A009C0D56 /* Assets.xcassets */,
-				372C02011DA9D91A009C0D56 /* Main.storyboard */,
 				372C02041DA9D91A009C0D56 /* Info.plist */,
+				372C02011DA9D91A009C0D56 /* Main.storyboard */,
+				372C01FD1DA9D91A009C0D56 /* ViewController.swift */,
 			);
 			path = "Example-macOS";
 			sourceTree = "<group>";
@@ -528,6 +528,7 @@
 				372C01A81DA9D19B009C0D56 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		372C01AC1DA9D19B009C0D56 /* LaunchScreen.storyboard */ = {
@@ -536,6 +537,7 @@
 				372C01AD1DA9D19B009C0D56 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		372C01BB1DA9D6CF009C0D56 /* Interface.storyboard */ = {
@@ -544,6 +546,7 @@
 				372C01BC1DA9D6CF009C0D56 /* Base */,
 			);
 			name = Interface.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		372C01E91DA9D87C009C0D56 /* Main.storyboard */ = {
@@ -552,6 +555,7 @@
 				372C01EA1DA9D87C009C0D56 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		372C02011DA9D91A009C0D56 /* Main.storyboard */ = {
@@ -560,6 +564,7 @@
 				372C02021DA9D91A009C0D56 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -734,7 +739,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Example-watchOS Extension/Info.plist";
+				INFOPLIST_FILE = "Example-watchOS-Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -788,7 +793,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Example-watchOS Extension/Info.plist";
+				INFOPLIST_FILE = "Example-watchOS-Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.JustHTTP.Example-iOS.watchkitapp.watchkitextension";
