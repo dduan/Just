@@ -28,7 +28,7 @@
 		37C817071DA973C600881C06 /* Just.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Just.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37C8170A1DA973C600881C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37C8170F1DA973C600881C06 /* JustTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		37C817161DA973C600881C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37C817161DA973C600881C06 /* Info-Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Tests.plist"; sourceTree = "<group>"; };
 		37C817241DA9753500881C06 /* UniversalFramework_Base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Base.xcconfig; sourceTree = "<group>"; };
 		37C817251DA9753500881C06 /* UniversalFramework_Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Framework.xcconfig; sourceTree = "<group>"; };
 		37C817261DA9753500881C06 /* UniversalFramework_Test.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = UniversalFramework_Test.xcconfig; sourceTree = "<group>"; };
@@ -71,15 +71,8 @@
 			isa = PBXGroup;
 			children = (
 				37C817231DA974DC00881C06 /* xcconfigs */,
+				37C817161DA973C600881C06 /* Info-Tests.plist */,
 				37C8170A1DA973C600881C06 /* Info.plist */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		37C8171E1DA9747200881C06 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				37C817161DA973C600881C06 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -133,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				37068BFC1D8E10820047A2F5 /* JustTests */,
-				37C8171E1DA9747200881C06 /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -326,7 +318,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Supporting Files/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.JustTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -343,7 +335,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Supporting Files/Info-Tests.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.JustHTTP.JustTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
