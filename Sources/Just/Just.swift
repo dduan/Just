@@ -457,8 +457,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
     requestBody: Data? = nil,
+    URLQuery: String? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -491,8 +491,8 @@ extension JustOf {
     headers: [String: String] = [:],
     files: [String: HTTPFile] = [:],
     auth: (String, String)? = nil,
-    allowRedirects: Bool = true,
     cookies: [String: String] = [:],
+    allowRedirects: Bool = true,
     timeout: Double? = nil,
     requestBody: Data? = nil,
     URLQuery: String? = nil,
