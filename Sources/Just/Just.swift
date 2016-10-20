@@ -457,8 +457,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -494,8 +494,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -531,8 +531,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -568,8 +568,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -604,8 +604,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -641,8 +641,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -678,8 +678,8 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    requestBody: Data? = nil,
     URLQuery: String? = nil,
+    requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
@@ -861,8 +861,8 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     files: [String: HTTPFile],
     auth: Credentials?,
     timeout: Double?,
-    requestBody: Data?,
-    URLQuery: String?
+    URLQuery: String?,
+    requestBody: Data?
     ) -> URLRequest? {
     if let urlComponent = NSURLComponents(string: URLString) {
       let queryString = query(params)
@@ -959,8 +959,8 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
       dictionary: headers)
     guard let request = synthesizeRequest(method, URLString: URLString,
       params: params, data: data, json: json, headers: caseInsensitiveHeaders,
-      files: files, auth: auth, timeout: timeout, requestBody: requestBody,
-      URLQuery: URLQuery) else
+      files: files, auth: auth, timeout: timeout, URLQuery: URLQuery,
+      requestBody: requestBody) else
     {
       let erronousResult = HTTPResult(data: nil, response: nil,
         error: invalidURLError, task: nil)
