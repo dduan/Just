@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 // stolen from python-requests
 let statusCodeDescriptions = [
@@ -96,8 +97,7 @@ public enum HTTPMethod: String {
 
 extension URLResponse {
   var HTTPHeaders: [String: String] {
-    return (self as? HTTPURLResponse)?.allHeaderFields as? [String: String]
-      ?? [:]
+    return (self as? HTTPURLResponse)?.allHeaderFields ?? [:]
   }
 }
 
@@ -179,7 +179,7 @@ public final class HTTPResult : NSObject {
     let foundCookies: [HTTPCookie]
     if let headers = self.response?.HTTPHeaders, let url = self.response?.url {
       foundCookies = HTTPCookie.cookies(withResponseHeaderFields: headers,
-                                        for: url) as [HTTPCookie]
+                                        forURL: url) as [HTTPCookie]
     } else {
       foundCookies = []
     }
@@ -206,7 +206,7 @@ public final class HTTPResult : NSObject {
     content.components(separatedBy: ", ").forEach { s in
       let linkComponents = s.components(separatedBy: ";")
         .map {
-          ($0 as NSString).trimmingCharacters(in: CharacterSet.whitespaces)
+          NSString(string: $0).trimmingCharacters(in: CharacterSet.whitespaces)
       }
       // although a link without a rel is valid, there's no way to reference it.
       if linkComponents.count > 1 {
@@ -1092,7 +1092,7 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
       let handler = config.completionHandler
     {
       let result = HTTPResult(
-        data: config.data as Data,
+        data: Data(referencing: config.data),
         response: task.response,
         error: error,
         task: task
