@@ -97,7 +97,7 @@ public enum HTTPMethod: String {
 
 extension URLResponse {
   var HTTPHeaders: [String: String] {
-    return (self as? HTTPURLResponse)?.allHeaderFields ?? [:]
+    return (self as? HTTPURLResponse)?.allHeaderFields as? [String : String] ?? [:]
   }
 }
 
@@ -179,7 +179,7 @@ public final class HTTPResult : NSObject {
     let foundCookies: [HTTPCookie]
     if let headers = self.response?.HTTPHeaders, let url = self.response?.url {
       foundCookies = HTTPCookie.cookies(withResponseHeaderFields: headers,
-                                        forURL: url) as [HTTPCookie]
+                                        for: url) as [HTTPCookie]
     } else {
       foundCookies = []
     }
