@@ -35,7 +35,7 @@ test-integration:
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
-	@cp Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
+	@cp Sources/Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
 	cd ./Docs && zip -r -X QuickStart.zip QuickStart.playground/*
 
 html :
