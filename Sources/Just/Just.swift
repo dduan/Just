@@ -906,7 +906,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
       }
 
       if let auth = auth,
-        let utf8 = "\(auth.0): \(auth.1)".data(using: String.Encoding.utf8)
+        let utf8 = "\(auth.0):\(auth.1)".data(using: String.Encoding.utf8)
       {
         finalHeaders["Authorization"] = "Basic \(utf8.base64EncodedString())"
       }
