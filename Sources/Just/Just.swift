@@ -368,8 +368,22 @@ public struct HTTPProgress {
   public let type: Type
   public let bytesProcessed: Int64
   public let bytesExpectedToProcess: Int64
+  public var chunk: Data?
   public var percent: Float {
     return Float(bytesProcessed) / Float(bytesExpectedToProcess)
+  }
+
+  init(type: Type, bytesProcessed: Int64, bytesExpectedToProcess: Int64) {
+    self.type = type
+    self.bytesProcessed = bytesProcessed
+    self.bytesExpectedToProcess = bytesExpectedToProcess
+  }
+
+  init(type: Type, bytesProcessed: Int64, bytesExpectedToProcess: Int64, chunk: Data) {
+    self.type = type
+    self.bytesProcessed = bytesProcessed
+    self.bytesExpectedToProcess = bytesExpectedToProcess
+    self.chunk = chunk
   }
 }
 
@@ -1076,7 +1090,8 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
         HTTPProgress(
           type: .download,
           bytesProcessed: dataTask.countOfBytesReceived,
-          bytesExpectedToProcess: dataTask.countOfBytesExpectedToReceive
+          bytesExpectedToProcess: dataTask.countOfBytesExpectedToReceive,
+          chunk: data
         )
       )
     }
