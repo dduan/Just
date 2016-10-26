@@ -373,13 +373,12 @@ public struct HTTPProgress {
     return Float(bytesProcessed) / Float(bytesExpectedToProcess)
   }
 
-  init(type: Type, bytesProcessed: Int64, bytesExpectedToProcess: Int64) {
-    self.type = type
-    self.bytesProcessed = bytesProcessed
-    self.bytesExpectedToProcess = bytesExpectedToProcess
-  }
-
-  init(type: Type, bytesProcessed: Int64, bytesExpectedToProcess: Int64, chunk: Data) {
+  init(
+    type: Type,
+    bytesProcessed: Int64,
+    bytesExpectedToProcess: Int64,
+    chunk: Data? = nil)
+ {
     self.type = type
     self.bytesProcessed = bytesProcessed
     self.bytesExpectedToProcess = bytesExpectedToProcess
