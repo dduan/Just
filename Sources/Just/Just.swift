@@ -372,18 +372,6 @@ public struct HTTPProgress {
   public var percent: Float {
     return Float(bytesProcessed) / Float(bytesExpectedToProcess)
   }
-
-  init(
-    type: Type,
-    bytesProcessed: Int64,
-    bytesExpectedToProcess: Int64,
-    chunk: Data? = nil)
- {
-    self.type = type
-    self.bytesProcessed = bytesProcessed
-    self.bytesExpectedToProcess = bytesExpectedToProcess
-    self.chunk = chunk
-  }
 }
 
 let errorDomain = "net.justhttp.Just"
@@ -1075,7 +1063,8 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
         HTTPProgress(
           type: .upload,
           bytesProcessed: totalBytesSent,
-          bytesExpectedToProcess: totalBytesExpectedToSend
+          bytesExpectedToProcess: totalBytesExpectedToSend,
+          chunk: nil
         )
       )
     }
