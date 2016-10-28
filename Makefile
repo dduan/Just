@@ -1,4 +1,4 @@
-all : clean test-OSX
+all : clean test-macOS
 
 docs : playground html
 
