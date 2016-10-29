@@ -8,3 +8,4 @@
 8. wait for CI to clear.
 9. merge the branch.
 10. create a new release with the version number being its name on Github.
+11. push to Cocoapods trunk (`pod trunk push`).
