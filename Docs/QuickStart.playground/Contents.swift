@@ -231,6 +231,7 @@ Just.post(
         p.type // either .Upload or .Download
         p.bytesProcessed
         p.bytesExpectedToProcess
+        p.chunk // present when type == .Download
         p.percent
     }
 ) { r in
