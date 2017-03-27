@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 // stolen from python-requests
 let statusCodeDescriptions = [
@@ -96,8 +97,7 @@ public enum HTTPMethod: String {
 
 extension URLResponse {
   var HTTPHeaders: [String: String] {
-    return (self as? HTTPURLResponse)?.allHeaderFields as? [String: String]
-      ?? [:]
+    return (self as? HTTPURLResponse)?.allHeaderFields ?? [:]
   }
 }
 
@@ -195,7 +195,7 @@ public final class HTTPResult : NSObject {
     let foundCookies: [HTTPCookie]
     if let headers = self.response?.HTTPHeaders, let url = self.response?.url {
       foundCookies = HTTPCookie.cookies(withResponseHeaderFields: headers,
-                                        for: url) as [HTTPCookie]
+                                        forURL: url) as [HTTPCookie]
     } else {
       foundCookies = []
     }
@@ -222,7 +222,7 @@ public final class HTTPResult : NSObject {
     content.components(separatedBy: ", ").forEach { s in
       let linkComponents = s.components(separatedBy: ";")
         .map {
-          ($0 as NSString).trimmingCharacters(in: CharacterSet.whitespaces)
+          ($0 as String).trimmingCharacters(in: CharacterSet.whitespaces)
       }
       // although a link without a rel is valid, there's no way to reference it.
       if linkComponents.count > 1 {
@@ -340,7 +340,7 @@ struct TaskConfiguration {
   let credential: Credentials?
   let redirects: Bool
   let originalRequest: URLRequest?
-  var data: NSMutableData
+  var data: Data
   let progressHandler: TaskProgressHandler?
   let completionHandler: TaskCompletionHandler?
 }
@@ -991,7 +991,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
       credential: auth,
       redirects: redirects,
       originalRequest: request,
-      data: NSMutableData(),
+      data: Data(),
       progressHandler: asyncProgressHandler)
     { result in
       if let handler = asyncCompletionHandler {
