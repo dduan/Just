@@ -1,5 +1,8 @@
 import Foundation
+
+#if os(Linux)
 import Dispatch
+#endif
 
 // stolen from python-requests
 let statusCodeDescriptions = [
@@ -97,7 +100,12 @@ public enum HTTPMethod: String {
 
 extension URLResponse {
   var HTTPHeaders: [String: String] {
+    #if os(Linux)
     return (self as? HTTPURLResponse)?.allHeaderFields ?? [:]
+    #else
+    return (self as? HTTPURLResponse)?.allHeaderFields as? [String: String]
+      ?? [:]
+    #endif
   }
 }
 
@@ -194,8 +202,13 @@ public final class HTTPResult : NSObject {
   public lazy var cookies: [String: HTTPCookie] = {
     let foundCookies: [HTTPCookie]
     if let headers = self.response?.HTTPHeaders, let url = self.response?.url {
+      #if os(Linux)
       foundCookies = HTTPCookie.cookies(withResponseHeaderFields: headers,
                                         forURL: url) as [HTTPCookie]
+      #else
+      foundCookies = HTTPCookie.cookies(withResponseHeaderFields: headers,
+                                        for: url) as [HTTPCookie]
+      #endif
     } else {
       foundCookies = []
     }
