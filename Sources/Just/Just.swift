@@ -339,9 +339,9 @@ public struct JustSessionDefaults {
   public var cachePolicy: NSURLRequest.CachePolicy
   public init(
     JSONReadingOptions: JSONSerialization.ReadingOptions =
-    JSONSerialization.ReadingOptions(rawValue: 0),
+      JSONSerialization.ReadingOptions(rawValue: 0),
     JSONWritingOptions: JSONSerialization.WritingOptions =
-    JSONSerialization.WritingOptions(rawValue: 0),
+      JSONSerialization.WritingOptions(rawValue: 0),
     headers: [String: String] = [:],
     multipartBoundary: String = "Ju5tH77P15Aw350m3",
     credentialPersistence: URLCredential.Persistence = .forSession,
@@ -379,7 +379,7 @@ let errorDomain = "net.justhttp.Just"
 public protocol JustAdaptor {
   func request(
     _ method: HTTPMethod,
-    URLString: String,
+    urlString: String,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -389,7 +389,7 @@ public protocol JustAdaptor {
     cookies: [String: String],
     redirects: Bool,
     timeout: Double?,
-    URLQuery: String?,
+    urlQuery: String?,
     requestBody: Data?,
     asyncProgressHandler: TaskProgressHandler?,
     asyncCompletionHandler: ((HTTPResult) -> Void)?
@@ -412,7 +412,7 @@ extension JustOf {
   @discardableResult
   public func request(
     _ method: HTTPMethod,
-    URLString: String,
+    urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -422,14 +422,14 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
     return adaptor.request(
       method,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -439,7 +439,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -448,7 +448,7 @@ extension JustOf {
 
   @discardableResult
   public func delete(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -458,7 +458,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -466,7 +466,7 @@ extension JustOf {
 
     return adaptor.request(
       .DELETE,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -476,7 +476,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -485,7 +485,7 @@ extension JustOf {
 
   @discardableResult
   public func get(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -495,7 +495,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -503,7 +503,7 @@ extension JustOf {
 
     return adaptor.request(
       .GET,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -513,7 +513,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -522,7 +522,7 @@ extension JustOf {
 
   @discardableResult
   public func head(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -532,7 +532,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -540,7 +540,7 @@ extension JustOf {
 
     return adaptor.request(
       .HEAD,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -550,7 +550,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -559,7 +559,7 @@ extension JustOf {
 
   @discardableResult
   public func options(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -569,14 +569,14 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
     return adaptor.request(
       .OPTIONS,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -586,7 +586,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -595,7 +595,7 @@ extension JustOf {
 
   @discardableResult
   public func patch(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -605,7 +605,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -613,7 +613,7 @@ extension JustOf {
 
     return adaptor.request(
       .PATCH,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -623,7 +623,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -632,7 +632,7 @@ extension JustOf {
 
   @discardableResult
   public func post(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -642,7 +642,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -650,7 +650,7 @@ extension JustOf {
 
     return adaptor.request(
       .POST,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -660,7 +660,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -669,7 +669,7 @@ extension JustOf {
 
   @discardableResult
   public func put(
-    _ URLString: String,
+    _ urlString: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -679,7 +679,7 @@ extension JustOf {
     cookies: [String: String] = [:],
     allowRedirects: Bool = true,
     timeout: Double? = nil,
-    URLQuery: String? = nil,
+    urlQuery: String? = nil,
     requestBody: Data? = nil,
     asyncProgressHandler: (TaskProgressHandler)? = nil,
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
@@ -687,7 +687,7 @@ extension JustOf {
 
     return adaptor.request(
       .PUT,
-      URLString: URLString,
+      urlString: urlString,
       params: params,
       data: data,
       json: json,
@@ -697,7 +697,7 @@ extension JustOf {
       cookies: cookies,
       redirects: allowRedirects,
       timeout: timeout,
-      URLQuery: URLQuery,
+      urlQuery: urlQuery,
       requestBody: requestBody,
       asyncProgressHandler: asyncProgressHandler,
       asyncCompletionHandler: asyncCompletionHandler
@@ -854,7 +854,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   public func synthesizeRequest(
     _ method: HTTPMethod,
-    URLString: String,
+    urlString: String,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -862,10 +862,10 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     files: [String: HTTPFile],
     auth: Credentials?,
     timeout: Double?,
-    URLQuery: String?,
+    urlQuery: String?,
     requestBody: Data?
     ) -> URLRequest? {
-    if let urlComponent = NSURLComponents(string: URLString) {
+    if let urlComponent = NSURLComponents(string: urlString) {
       let queryString = query(params)
 
       if queryString.characters.count > 0 {
@@ -936,7 +936,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   public func request(
     _ method: HTTPMethod,
-    URLString: String,
+    urlString: String,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -946,7 +946,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     cookies: [String: String],
     redirects: Bool,
     timeout: Double?,
-    URLQuery: String?,
+    urlQuery: String?,
     requestBody: Data?,
     asyncProgressHandler: TaskProgressHandler?,
     asyncCompletionHandler: ((HTTPResult) -> Void)?) -> HTTPResult {
@@ -958,9 +958,9 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
     let caseInsensitiveHeaders = CaseInsensitiveDictionary<String, String>(
       dictionary: headers)
-    guard let request = synthesizeRequest(method, URLString: URLString,
+    guard let request = synthesizeRequest(method, urlString: urlString,
       params: params, data: data, json: json, headers: caseInsensitiveHeaders,
-      files: files, auth: auth, timeout: timeout, URLQuery: URLQuery,
+      files: files, auth: auth, timeout: timeout, urlQuery: urlQuery,
       requestBody: requestBody) else
     {
       let erronousResult = HTTPResult(data: nil, response: nil,
