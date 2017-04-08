@@ -312,7 +312,7 @@ final class JustSendingJSON: XCTestCase {
 
 final class JustSendingFiles: XCTestCase {
   static var allTests = [
-    ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
+    // ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
     // ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
     // ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
     ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
@@ -657,7 +657,7 @@ final class SendingHeader: XCTestCase {
 final class BasicAuthentication: XCTestCase {
   static var allTests = [
     ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
-    ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+    // ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
     ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
   ]
 
@@ -824,7 +824,7 @@ final class LinkHeader: XCTestCase {
 
 final class Configurations: XCTestCase {
   static var allTests = [
-    ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
+    // ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
   ]
 
   func testSendingDefaultHeadersWhenAnyIsSpecified() {
