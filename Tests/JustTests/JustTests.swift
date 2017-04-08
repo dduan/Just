@@ -174,8 +174,8 @@ final class JustSendURLQueryAsHTTPBody: XCTestCase {
 
 final class JustRedirections: XCTestCase {
   static var allTests = [
-    ("testRedirectByDefault", testRedirectByDefault),
-    ("testRedirectByDemand", testRedirectByDemand),
+    // ("testRedirectByDefault", testRedirectByDefault),
+    // ("testRedirectByDemand", testRedirectByDemand),
     ("testNoRedirectByDemand", testNoRedirectByDemand),
     ("testPermanantRedirect", testPermanantRedirect),
   ]
