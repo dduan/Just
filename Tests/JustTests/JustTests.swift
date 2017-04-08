@@ -318,7 +318,7 @@ final class JustSendingFiles: XCTestCase {
     ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
     ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
     ("testSendAFileSpecifiedByTextWithoutMimetype", testSendAFileSpecifiedByTextWithoutMimetype),
-    ("testSendAFileSpecifiedByTextWithMimetype", testSendAFileSpecifiedByTextWithMimetype),
+    // ("testSendAFileSpecifiedByTextWithMimetype", testSendAFileSpecifiedByTextWithMimetype),
     ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
     ("testSendingMultipleFilesSpecifiedInDifferentWays", testSendingMultipleFilesSpecifiedInDifferentWays),
     ("testSendingAFileAlongWithSomeData", testSendingAFileAlongWithSomeData),
