@@ -2,10 +2,18 @@ import XCTest
 import Just
 
 final class JustQueryStringTests: XCTestCase {
+  static var allTests = [
+    "testDownloadingFileWithProgress": testDownloadingFileWithProgress,
+    "testSendSimpleQueryStringWithGet": testSendSimpleQueryStringWithGet,
+    "testSendCompoundQueryStringWithGet": testSendCompoundQueryStringWithGet,
+    "testSendSimpleQueryStringWithPost": testSendSimpleQueryStringWithPost,
+    "testSendCompoundQueryStringWithPost": testSendCompoundQueryStringWithPost,
+  ]
+
   func testDownloadingFileWithProgress() {
     var count = 0
     let expectation = self.expectation(description: "download a large file")
-    _ = Just.get("http://www.math.mcgill.ca/triples/Barr-Wells-ctcs.pdf", 
+    _ = Just.get("http://www.math.mcgill.ca/triples/Barr-Wells-ctcs.pdf",
       asyncProgressHandler: { p in count += 1 })
     { _ in
       expectation.fulfill()
@@ -78,6 +86,10 @@ final class JustQueryStringTests: XCTestCase {
 
 
 final class JustSimpleRequestTests: XCTestCase {
+  static var allTests = [
+    JustSimpleRequestTests.testSimpleRequestWithDifferentMethods,
+  ]
+
   func testSimpleRequestWithDifferentMethods() {
     var r = Just.delete("http://httpbin.org/delete")
     XCTAssertTrue(r.ok)
@@ -110,6 +122,12 @@ final class JustSimpleRequestTests: XCTestCase {
 }
 
 final class JustSendURLQueryAsHTTPBody: XCTestCase {
+  static var allTests = [
+    "testAddFormHeaderWhenBodyIsInURLFormat": testAddFormHeaderWhenBodyIsInURLFormat,
+    "testSendSimpleFormURLQueryByDemand": testSendSimpleFormURLQueryByDemand,
+    "testSendCompoundFormURLQueryByDemand": testSendCompoundFormURLQueryByDemand,
+  ]
+
   func testAddFormHeaderWhenBodyIsInURLFormat() {
     let r = Just.post("http://httpbin.org/post", data: ["a": 1])
     XCTAssertNotNil(r.json)
@@ -155,6 +173,13 @@ final class JustSendURLQueryAsHTTPBody: XCTestCase {
 }
 
 final class JustRedirections: XCTestCase {
+  static var allTests = [
+    "testRedirectByDefault": testRedirectByDefault,
+    "testRedirectByDemand": testRedirectByDemand,
+    "testNoRedirectByDemand": testNoRedirectByDemand,
+    "testPermanantRedirect": testPermanantRedirect,
+  ]
+
   func testRedirectByDefault() {
     let r = Just.get("http://httpbin.org/redirect/2")
     XCTAssertNotEqual(r.statusCode, 302)
@@ -189,6 +214,14 @@ final class JustRedirections: XCTestCase {
 }
 
 final class JustSendingJSON: XCTestCase {
+  static var allTests = [
+    "testNoJSONHeaderIfNoJSONIsSupplied": testNoJSONHeaderIfNoJSONIsSupplied,
+    "testShouldAddJSONHeaderForEvenEmptyJSONArgument": testShouldAddJSONHeaderForEvenEmptyJSONArgument,
+    "testSendingFlatJSONData": testSendingFlatJSONData,
+    "testSendingNestedJSONData": testSendingNestedJSONData,
+    "testJSONArgumentShouldOverrideDataArgument": testJSONArgumentShouldOverrideDataArgument,
+  ]
+
   func testNoJSONHeaderIfNoJSONIsSupplied() {
     let r = Just.post("http://httpbin.org/post", data: ["A": "a"])
     XCTAssertNotNil(r.json)
@@ -278,6 +311,21 @@ final class JustSendingJSON: XCTestCase {
 }
 
 final class JustSendingFiles: XCTestCase {
+  static var allTests = [
+    "testNotIncludeMultipartHeaderForEmptyFiles": testNotIncludeMultipartHeaderForEmptyFiles,
+    "testSendingAFileSpecifiedByURLWithoutMimetype": testSendingAFileSpecifiedByURLWithoutMimetype,
+    "testSendingAFileSpecifiedByURLWithMimetype": testSendingAFileSpecifiedByURLWithMimetype,
+    "testSendingAFileSpecifiedByDataWithoutMimetype": testSendingAFileSpecifiedByDataWithoutMimetype,
+    "testSendingAFileSpecifiedByDataWithMimetype": testSendingAFileSpecifiedByDataWithMimetype,
+    "testSendAFileSpecifiedByTextWithoutMimetype": testSendAFileSpecifiedByTextWithoutMimetype,
+    "testSendAFileSpecifiedByTextWithMimetype": testSendAFileSpecifiedByTextWithMimetype,
+    "testSendingMultipleFilesSpecifiedTheSameWay": testSendingMultipleFilesSpecifiedTheSameWay,
+    "testSendingMultipleFilesSpecifiedInDifferentWays": testSendingMultipleFilesSpecifiedInDifferentWays,
+    "testSendingAFileAlongWithSomeData": testSendingAFileAlongWithSomeData,
+    "testSendingMultipleFilesWithSomeData": testSendingMultipleFilesWithSomeData,
+    "testSendingFilesOveridesJSON": testSendingFilesOveridesJSON,
+  ]
+
   func testNotIncludeMultipartHeaderForEmptyFiles() {
     let r = Just.post("http://httpbin.org/post", files: [: ])
     XCTAssertNotNil(r.json)
@@ -311,7 +359,7 @@ final class JustSendingFiles: XCTestCase {
   }
 
   func testSendingAFileSpecifiedByURLWithMimetype() {
-    if let elonPhotoURL = Bundle(for: JustSendingFiles.self)
+    if let elonPhotoURL = Bundle(for: type(of: self))
       .url(forResource: "elon", withExtension: "jpg")
     {
       let r = Just.post("http://httpbin.org/post",
@@ -504,6 +552,14 @@ final class JustSendingFiles: XCTestCase {
 }
 
 final class Result: XCTestCase {
+  static var allTests = [
+    "testResultShouldContainURLFromResponse": testResultShouldContainURLFromResponse,
+    "testOkayWithNonErrorStatusCode": testOkayWithNonErrorStatusCode,
+    "testNotOkayWith4xxCodes": testNotOkayWith4xxCodes,
+    "testNotOkayWith5xxCodes": testNotOkayWith5xxCodes,
+    "testStatusCodeMatching": testStatusCodeMatching,
+  ]
+
   func testResultShouldContainURLFromResponse() {
     let targetURLString = "http://httpbin.org/get"
     let r = Just.get(targetURLString)
@@ -545,6 +601,13 @@ final class Result: XCTestCase {
 }
 
 final class SendingHeader: XCTestCase {
+  static var allTests = [
+    "testAcceptingEmptyHeaders": testAcceptingEmptyHeaders,
+    "testSendingSingleConventionalHeaderAsProvided": testSendingSingleConventionalHeaderAsProvided,
+    "testSendingMultipleConventionalHeaderAsProvided": testSendingMultipleConventionalHeaderAsProvided,
+    "testSendingMultipleUnconventionalHeaderAsProvided": testSendingMultipleUnconventionalHeaderAsProvided,
+  ]
+
   func testAcceptingEmptyHeaders() {
     XCTAssertTrue(Just.get("http://httpbin.org/get", headers: [: ]).ok)
   }
@@ -592,6 +655,12 @@ final class SendingHeader: XCTestCase {
 }
 
 final class BasicAuthentication: XCTestCase {
+  static var allTests = [
+    "testFailingAtAChallengeWhenAuthIsMissing": testFailingAtAChallengeWhenAuthIsMissing,
+    "testSucceedingWithCorrectAuthInfo": testSucceedingWithCorrectAuthInfo,
+    "testFailingWithWrongAuthInfo": testFailingWithWrongAuthInfo,
+  ]
+
   func testFailingAtAChallengeWhenAuthIsMissing() {
     let r = Just.get("http://httpbin.org/basic-auth/dan/pass")
     XCTAssertFalse(r.ok)
@@ -616,6 +685,12 @@ final class BasicAuthentication: XCTestCase {
 }
 
 class DigestAuthentication: XCTestCase {
+  static var allTests = [
+    "testFailingAtAChallengeWhenAuthIsMissing": testFailingAtAChallengeWhenAuthIsMissing,
+    "testSucceedingWithCorrectAuthInfo": testSucceedingWithCorrectAuthInfo,
+    "testFailingWithWrongAuthInfo": testFailingWithWrongAuthInfo,
+  ]
+
   func testFailingAtAChallengeWhenAuthIsMissing() {
     let r = Just.get("http://httpbin.org/digest-auth/auth/dan/pass")
     XCTAssertFalse(r.ok)
@@ -640,6 +715,11 @@ class DigestAuthentication: XCTestCase {
 }
 
 final class Cookies: XCTestCase {
+  static var allTests = [
+    "testCookiesFromResponse": testCookiesFromResponse,
+    "testCookiesSpecifiedInRequest": testCookiesSpecifiedInRequest,
+  ]
+
   func testCookiesFromResponse() {
     let r = Just.get("http://httpbin.org/cookies/set/test/just",
                      allowRedirects: false)
@@ -665,6 +745,16 @@ final class Cookies: XCTestCase {
 }
 
 final class RequestMethods: XCTestCase {
+  static var allTests = [
+    "testOPTIONS": testOPTIONS,
+    "testHEAD": testHEAD,
+    "testGET": testGET,
+    "testPOST": testPOST,
+    "testPUT": testPUT,
+    "testPATCH": testPATCH,
+    "testDELETE": testDELETE,
+  ]
+
   func testOPTIONS() {
     XCTAssertTrue(Just.options("http://httpbin.org/get").ok)
   }
@@ -695,6 +785,11 @@ final class RequestMethods: XCTestCase {
 }
 
 final class Timeout: XCTestCase {
+  static var allTests = [
+    "testTimeoutWhenRequestTakesLonger": testTimeoutWhenRequestTakesLonger,
+    "testShouldNotTimeoutWhenResponseComesInSooner": testShouldNotTimeoutWhenResponseComesInSooner,
+  ]
+
   func testTimeoutWhenRequestTakesLonger() {
     XCTAssertFalse(Just.get("http://httpbin.org/delay/10", timeout: 0.2).ok)
   }
@@ -706,6 +801,10 @@ final class Timeout: XCTestCase {
 
 
 final class LinkHeader: XCTestCase {
+  static var allTests = [
+    "testShouldContainLinkInfoForAppropriateEndPoint": testShouldContainLinkInfoForAppropriateEndPoint,
+  ]
+
   func testShouldContainLinkInfoForAppropriateEndPoint() {
     var url = "https://api.github.com/users/dduan/repos?page=1&per_page=10"
     if let token = ProcessInfo.processInfo.environment["GITHUB_TOKEN"] {
@@ -723,8 +822,11 @@ final class LinkHeader: XCTestCase {
   }
 }
 
-
 final class Configurations: XCTestCase {
+  static var allTests = [
+    "testSendingDefaultHeadersWhenAnyIsSpecified": testSendingDefaultHeadersWhenAnyIsSpecified,
+  ]
+
   func testSendingDefaultHeadersWhenAnyIsSpecified() {
     let sessionDefaults = JustSessionDefaults(headers: ["Authorization": "WUT"])
     let session = JustOf<HTTP>(defaults: sessionDefaults)
