@@ -31,7 +31,12 @@ test-tvOS:
 		| xcpretty -ct
 
 test-integration:
-	cd DistributionTests && make -f Makefile
+	rm -rf DistributionTests
+	git clone https://github.com/dduan/DistributionTests.git
+	cd DistributionTests && \
+		git checkout f161a0df63a2da168e190b2f6127f781d924304c && \
+		./customize --name Just --git "https://github.com/JustHTTP/Just.git" --major 0 && \
+		make -f Makefile
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
