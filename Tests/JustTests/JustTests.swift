@@ -217,9 +217,9 @@ final class JustSendingJSON: XCTestCase {
   static var allTests = [
     ("testNoJSONHeaderIfNoJSONIsSupplied", testNoJSONHeaderIfNoJSONIsSupplied),
     ("testShouldAddJSONHeaderForEvenEmptyJSONArgument", testShouldAddJSONHeaderForEvenEmptyJSONArgument),
-    ("testSendingFlatJSONData", testSendingFlatJSONData),
-    ("testSendingNestedJSONData", testSendingNestedJSONData),
-    ("testJSONArgumentShouldOverrideDataArgument", testJSONArgumentShouldOverrideDataArgument),
+    // ("testSendingFlatJSONData", testSendingFlatJSONData),
+    // ("testSendingNestedJSONData", testSendingNestedJSONData),
+    // ("testJSONArgumentShouldOverrideDataArgument", testJSONArgumentShouldOverrideDataArgument),
   ]
 
   func testNoJSONHeaderIfNoJSONIsSupplied() {
