@@ -125,7 +125,7 @@ final class JustSendURLQueryAsHTTPBody: XCTestCase {
   static var allTests = [
     ("testAddFormHeaderWhenBodyIsInURLFormat", testAddFormHeaderWhenBodyIsInURLFormat),
     ("testSendSimpleFormURLQueryByDemand", testSendSimpleFormURLQueryByDemand),
-    ("testSendCompoundFormURLQueryByDemand", testSendCompoundFormURLQueryByDemand),
+    // ("testSendCompoundFormURLQueryByDemand", testSendCompoundFormURLQueryByDemand),
   ]
 
   func testAddFormHeaderWhenBodyIsInURLFormat() {
