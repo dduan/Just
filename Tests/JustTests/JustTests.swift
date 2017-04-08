@@ -313,7 +313,7 @@ final class JustSendingJSON: XCTestCase {
 final class JustSendingFiles: XCTestCase {
   static var allTests = [
     ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
-    ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
+    // ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
     ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
     ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
     ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
