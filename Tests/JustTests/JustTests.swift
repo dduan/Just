@@ -215,7 +215,7 @@ final class JustRedirections: XCTestCase {
 
 final class JustSendingJSON: XCTestCase {
   static var allTests = [
-    ("testNoJSONHeaderIfNoJSONIsSupplied", testNoJSONHeaderIfNoJSONIsSupplied),
+    // ("testNoJSONHeaderIfNoJSONIsSupplied", testNoJSONHeaderIfNoJSONIsSupplied),
     ("testShouldAddJSONHeaderForEvenEmptyJSONArgument", testShouldAddJSONHeaderForEvenEmptyJSONArgument),
     // ("testSendingFlatJSONData", testSendingFlatJSONData),
     // ("testSendingNestedJSONData", testSendingNestedJSONData),
@@ -319,7 +319,7 @@ final class JustSendingFiles: XCTestCase {
     ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
     ("testSendAFileSpecifiedByTextWithoutMimetype", testSendAFileSpecifiedByTextWithoutMimetype),
     // ("testSendAFileSpecifiedByTextWithMimetype", testSendAFileSpecifiedByTextWithMimetype),
-    ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
+    // ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
     ("testSendingMultipleFilesSpecifiedInDifferentWays", testSendingMultipleFilesSpecifiedInDifferentWays),
     ("testSendingAFileAlongWithSomeData", testSendingAFileAlongWithSomeData),
     // ("testSendingMultipleFilesWithSomeData", testSendingMultipleFilesWithSomeData),
