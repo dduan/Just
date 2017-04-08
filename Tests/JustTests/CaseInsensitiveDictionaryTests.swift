@@ -1,11 +1,3 @@
-//
-//  CaseInsensitiveDictionaryTests.swift
-//  Just
-//
-//  Created by Daniel Duan on 6/16/16.
-//  Copyright © 2016 JustHTTP. All rights reserved.
-//
-
 import XCTest
 import Just
 
@@ -13,15 +5,15 @@ import Just
 final class CaseInsensitiveDictionaryTests: XCTestCase {
 
     static var allTests = [
-        "testInitWithDictionaryLiteral": testInitWithDictionaryLiteral,
-        "testInitWithDictionary": testInitWithDictionary,
-        "testInsertingNewValueViaSubscript": testInsertingNewValueViaSubscript,
-        "testRetainAllValueFromInitAfterMutation": testRetainAllValueFromInitAfterMutation,
-        "testRetainAllValueFromLiteralAfterMutation": testRetainAllValueFromLiteralAfterMutation,
-        "testMutatingCopyDoesNotMutateTheOriginal": testMutatingCopyDoesNotMutateTheOriginal,
-        "testMutatingOriginalDoesNotMutateTheCopy": testMutatingOriginalDoesNotMutateTheCopy,
-        "testValueCasesAreKept": testValueCasesAreKept,
-        "testCaseInsensitivityForKeys": testCaseInsensitivityForKeys,
+        ("testInitWithDictionaryLiteral", testInitWithDictionaryLiteral),
+        ("testInitWithDictionary", testInitWithDictionary),
+        ("testInsertingNewValueViaSubscript", testInsertingNewValueViaSubscript),
+        ("testRetainAllValueFromInitAfterMutation", testRetainAllValueFromInitAfterMutation),
+        ("testRetainAllValueFromLiteralAfterMutation", testRetainAllValueFromLiteralAfterMutation),
+        ("testMutatingCopyDoesNotMutateTheOriginal", testMutatingCopyDoesNotMutateTheOriginal),
+        ("testMutatingOriginalDoesNotMutateTheCopy", testMutatingOriginalDoesNotMutateTheCopy),
+        ("testValueCasesAreKept", testValueCasesAreKept),
+        ("testCaseInsensitivityForKeys", testCaseInsensitivityForKeys),
     ]
 
     func testInitWithDictionaryLiteral() {

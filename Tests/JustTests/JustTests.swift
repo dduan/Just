@@ -3,11 +3,11 @@ import Just
 
 final class JustQueryStringTests: XCTestCase {
   static var allTests = [
-    "testDownloadingFileWithProgress": testDownloadingFileWithProgress,
-    "testSendSimpleQueryStringWithGet": testSendSimpleQueryStringWithGet,
-    "testSendCompoundQueryStringWithGet": testSendCompoundQueryStringWithGet,
-    "testSendSimpleQueryStringWithPost": testSendSimpleQueryStringWithPost,
-    "testSendCompoundQueryStringWithPost": testSendCompoundQueryStringWithPost,
+    ("testDownloadingFileWithProgress", testDownloadingFileWithProgress),
+    ("testSendSimpleQueryStringWithGet", testSendSimpleQueryStringWithGet),
+    ("testSendCompoundQueryStringWithGet", testSendCompoundQueryStringWithGet),
+    ("testSendSimpleQueryStringWithPost", testSendSimpleQueryStringWithPost),
+    ("testSendCompoundQueryStringWithPost", testSendCompoundQueryStringWithPost),
   ]
 
   func testDownloadingFileWithProgress() {
@@ -87,7 +87,7 @@ final class JustQueryStringTests: XCTestCase {
 
 final class JustSimpleRequestTests: XCTestCase {
   static var allTests = [
-    JustSimpleRequestTests.testSimpleRequestWithDifferentMethods,
+    ("testSimpleRequestWithDifferentMethods", testSimpleRequestWithDifferentMethods),
   ]
 
   func testSimpleRequestWithDifferentMethods() {
@@ -123,9 +123,9 @@ final class JustSimpleRequestTests: XCTestCase {
 
 final class JustSendURLQueryAsHTTPBody: XCTestCase {
   static var allTests = [
-    "testAddFormHeaderWhenBodyIsInURLFormat": testAddFormHeaderWhenBodyIsInURLFormat,
-    "testSendSimpleFormURLQueryByDemand": testSendSimpleFormURLQueryByDemand,
-    "testSendCompoundFormURLQueryByDemand": testSendCompoundFormURLQueryByDemand,
+    ("testAddFormHeaderWhenBodyIsInURLFormat", testAddFormHeaderWhenBodyIsInURLFormat),
+    ("testSendSimpleFormURLQueryByDemand", testSendSimpleFormURLQueryByDemand),
+    ("testSendCompoundFormURLQueryByDemand", testSendCompoundFormURLQueryByDemand),
   ]
 
   func testAddFormHeaderWhenBodyIsInURLFormat() {
@@ -174,10 +174,10 @@ final class JustSendURLQueryAsHTTPBody: XCTestCase {
 
 final class JustRedirections: XCTestCase {
   static var allTests = [
-    "testRedirectByDefault": testRedirectByDefault,
-    "testRedirectByDemand": testRedirectByDemand,
-    "testNoRedirectByDemand": testNoRedirectByDemand,
-    "testPermanantRedirect": testPermanantRedirect,
+    ("testRedirectByDefault", testRedirectByDefault),
+    ("testRedirectByDemand", testRedirectByDemand),
+    ("testNoRedirectByDemand", testNoRedirectByDemand),
+    ("testPermanantRedirect", testPermanantRedirect),
   ]
 
   func testRedirectByDefault() {
@@ -215,11 +215,11 @@ final class JustRedirections: XCTestCase {
 
 final class JustSendingJSON: XCTestCase {
   static var allTests = [
-    "testNoJSONHeaderIfNoJSONIsSupplied": testNoJSONHeaderIfNoJSONIsSupplied,
-    "testShouldAddJSONHeaderForEvenEmptyJSONArgument": testShouldAddJSONHeaderForEvenEmptyJSONArgument,
-    "testSendingFlatJSONData": testSendingFlatJSONData,
-    "testSendingNestedJSONData": testSendingNestedJSONData,
-    "testJSONArgumentShouldOverrideDataArgument": testJSONArgumentShouldOverrideDataArgument,
+    ("testNoJSONHeaderIfNoJSONIsSupplied", testNoJSONHeaderIfNoJSONIsSupplied),
+    ("testShouldAddJSONHeaderForEvenEmptyJSONArgument", testShouldAddJSONHeaderForEvenEmptyJSONArgument),
+    ("testSendingFlatJSONData", testSendingFlatJSONData),
+    ("testSendingNestedJSONData", testSendingNestedJSONData),
+    ("testJSONArgumentShouldOverrideDataArgument", testJSONArgumentShouldOverrideDataArgument),
   ]
 
   func testNoJSONHeaderIfNoJSONIsSupplied() {
@@ -312,18 +312,18 @@ final class JustSendingJSON: XCTestCase {
 
 final class JustSendingFiles: XCTestCase {
   static var allTests = [
-    "testNotIncludeMultipartHeaderForEmptyFiles": testNotIncludeMultipartHeaderForEmptyFiles,
-    "testSendingAFileSpecifiedByURLWithoutMimetype": testSendingAFileSpecifiedByURLWithoutMimetype,
-    "testSendingAFileSpecifiedByURLWithMimetype": testSendingAFileSpecifiedByURLWithMimetype,
-    "testSendingAFileSpecifiedByDataWithoutMimetype": testSendingAFileSpecifiedByDataWithoutMimetype,
-    "testSendingAFileSpecifiedByDataWithMimetype": testSendingAFileSpecifiedByDataWithMimetype,
-    "testSendAFileSpecifiedByTextWithoutMimetype": testSendAFileSpecifiedByTextWithoutMimetype,
-    "testSendAFileSpecifiedByTextWithMimetype": testSendAFileSpecifiedByTextWithMimetype,
-    "testSendingMultipleFilesSpecifiedTheSameWay": testSendingMultipleFilesSpecifiedTheSameWay,
-    "testSendingMultipleFilesSpecifiedInDifferentWays": testSendingMultipleFilesSpecifiedInDifferentWays,
-    "testSendingAFileAlongWithSomeData": testSendingAFileAlongWithSomeData,
-    "testSendingMultipleFilesWithSomeData": testSendingMultipleFilesWithSomeData,
-    "testSendingFilesOveridesJSON": testSendingFilesOveridesJSON,
+    ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
+    ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
+    ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
+    ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
+    ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
+    ("testSendAFileSpecifiedByTextWithoutMimetype", testSendAFileSpecifiedByTextWithoutMimetype),
+    ("testSendAFileSpecifiedByTextWithMimetype", testSendAFileSpecifiedByTextWithMimetype),
+    ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
+    ("testSendingMultipleFilesSpecifiedInDifferentWays", testSendingMultipleFilesSpecifiedInDifferentWays),
+    ("testSendingAFileAlongWithSomeData", testSendingAFileAlongWithSomeData),
+    ("testSendingMultipleFilesWithSomeData", testSendingMultipleFilesWithSomeData),
+    ("testSendingFilesOveridesJSON", testSendingFilesOveridesJSON),
   ]
 
   func testNotIncludeMultipartHeaderForEmptyFiles() {
@@ -553,11 +553,11 @@ final class JustSendingFiles: XCTestCase {
 
 final class Result: XCTestCase {
   static var allTests = [
-    "testResultShouldContainURLFromResponse": testResultShouldContainURLFromResponse,
-    "testOkayWithNonErrorStatusCode": testOkayWithNonErrorStatusCode,
-    "testNotOkayWith4xxCodes": testNotOkayWith4xxCodes,
-    "testNotOkayWith5xxCodes": testNotOkayWith5xxCodes,
-    "testStatusCodeMatching": testStatusCodeMatching,
+    ("testResultShouldContainURLFromResponse", testResultShouldContainURLFromResponse),
+    ("testOkayWithNonErrorStatusCode", testOkayWithNonErrorStatusCode),
+    ("testNotOkayWith4xxCodes", testNotOkayWith4xxCodes),
+    ("testNotOkayWith5xxCodes", testNotOkayWith5xxCodes),
+    ("testStatusCodeMatching", testStatusCodeMatching),
   ]
 
   func testResultShouldContainURLFromResponse() {
@@ -602,10 +602,10 @@ final class Result: XCTestCase {
 
 final class SendingHeader: XCTestCase {
   static var allTests = [
-    "testAcceptingEmptyHeaders": testAcceptingEmptyHeaders,
-    "testSendingSingleConventionalHeaderAsProvided": testSendingSingleConventionalHeaderAsProvided,
-    "testSendingMultipleConventionalHeaderAsProvided": testSendingMultipleConventionalHeaderAsProvided,
-    "testSendingMultipleUnconventionalHeaderAsProvided": testSendingMultipleUnconventionalHeaderAsProvided,
+    ("testAcceptingEmptyHeaders", testAcceptingEmptyHeaders),
+    ("testSendingSingleConventionalHeaderAsProvided", testSendingSingleConventionalHeaderAsProvided),
+    ("testSendingMultipleConventionalHeaderAsProvided", testSendingMultipleConventionalHeaderAsProvided),
+    ("testSendingMultipleUnconventionalHeaderAsProvided", testSendingMultipleUnconventionalHeaderAsProvided),
   ]
 
   func testAcceptingEmptyHeaders() {
@@ -656,9 +656,9 @@ final class SendingHeader: XCTestCase {
 
 final class BasicAuthentication: XCTestCase {
   static var allTests = [
-    "testFailingAtAChallengeWhenAuthIsMissing": testFailingAtAChallengeWhenAuthIsMissing,
-    "testSucceedingWithCorrectAuthInfo": testSucceedingWithCorrectAuthInfo,
-    "testFailingWithWrongAuthInfo": testFailingWithWrongAuthInfo,
+    ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
+    ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+    ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
   ]
 
   func testFailingAtAChallengeWhenAuthIsMissing() {
@@ -686,9 +686,9 @@ final class BasicAuthentication: XCTestCase {
 
 class DigestAuthentication: XCTestCase {
   static var allTests = [
-    "testFailingAtAChallengeWhenAuthIsMissing": testFailingAtAChallengeWhenAuthIsMissing,
-    "testSucceedingWithCorrectAuthInfo": testSucceedingWithCorrectAuthInfo,
-    "testFailingWithWrongAuthInfo": testFailingWithWrongAuthInfo,
+    ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
+    ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+    ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
   ]
 
   func testFailingAtAChallengeWhenAuthIsMissing() {
@@ -716,8 +716,8 @@ class DigestAuthentication: XCTestCase {
 
 final class Cookies: XCTestCase {
   static var allTests = [
-    "testCookiesFromResponse": testCookiesFromResponse,
-    "testCookiesSpecifiedInRequest": testCookiesSpecifiedInRequest,
+    ("testCookiesFromResponse", testCookiesFromResponse),
+    ("testCookiesSpecifiedInRequest", testCookiesSpecifiedInRequest),
   ]
 
   func testCookiesFromResponse() {
@@ -746,13 +746,13 @@ final class Cookies: XCTestCase {
 
 final class RequestMethods: XCTestCase {
   static var allTests = [
-    "testOPTIONS": testOPTIONS,
-    "testHEAD": testHEAD,
-    "testGET": testGET,
-    "testPOST": testPOST,
-    "testPUT": testPUT,
-    "testPATCH": testPATCH,
-    "testDELETE": testDELETE,
+    ("testOPTIONS", testOPTIONS),
+    ("testHEAD", testHEAD),
+    ("testGET", testGET),
+    ("testPOST", testPOST),
+    ("testPUT", testPUT),
+    ("testPATCH", testPATCH),
+    ("testDELETE", testDELETE),
   ]
 
   func testOPTIONS() {
@@ -786,8 +786,8 @@ final class RequestMethods: XCTestCase {
 
 final class Timeout: XCTestCase {
   static var allTests = [
-    "testTimeoutWhenRequestTakesLonger": testTimeoutWhenRequestTakesLonger,
-    "testShouldNotTimeoutWhenResponseComesInSooner": testShouldNotTimeoutWhenResponseComesInSooner,
+    ("testTimeoutWhenRequestTakesLonger", testTimeoutWhenRequestTakesLonger),
+    ("testShouldNotTimeoutWhenResponseComesInSooner", testShouldNotTimeoutWhenResponseComesInSooner),
   ]
 
   func testTimeoutWhenRequestTakesLonger() {
@@ -802,7 +802,7 @@ final class Timeout: XCTestCase {
 
 final class LinkHeader: XCTestCase {
   static var allTests = [
-    "testShouldContainLinkInfoForAppropriateEndPoint": testShouldContainLinkInfoForAppropriateEndPoint,
+    ("testShouldContainLinkInfoForAppropriateEndPoint", testShouldContainLinkInfoForAppropriateEndPoint),
   ]
 
   func testShouldContainLinkInfoForAppropriateEndPoint() {
@@ -824,7 +824,7 @@ final class LinkHeader: XCTestCase {
 
 final class Configurations: XCTestCase {
   static var allTests = [
-    "testSendingDefaultHeadersWhenAnyIsSpecified": testSendingDefaultHeadersWhenAnyIsSpecified,
+    ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
   ]
 
   func testSendingDefaultHeadersWhenAnyIsSpecified() {
