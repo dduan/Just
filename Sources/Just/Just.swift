@@ -85,13 +85,13 @@ public enum HTTPFile {
 
 // Supported request types
 public enum HTTPMethod: String {
-  case DELETE = "DELETE"
-  case GET = "GET"
-  case HEAD = "HEAD"
-  case OPTIONS = "OPTIONS"
-  case PATCH = "PATCH"
-  case POST = "POST"
-  case PUT = "PUT"
+  case delete = "DELETE"
+  case get = "GET"
+  case head = "HEAD"
+  case options = "OPTIONS"
+  case patch = "PATCH"
+  case post = "POST"
+  case put = "PUT"
 }
 
 extension URLResponse {
@@ -481,7 +481,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .DELETE,
+      .delete,
       url: url,
       params: params,
       data: data,
@@ -518,7 +518,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .GET,
+      .get,
       url: url,
       params: params,
       data: data,
@@ -555,7 +555,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .HEAD,
+      .head,
       url: url,
       params: params,
       data: data,
@@ -591,7 +591,7 @@ extension JustOf {
     asyncCompletionHandler: ((HTTPResult) -> Void)? = nil
     ) -> HTTPResult {
     return adaptor.request(
-      .OPTIONS,
+      .options,
       url: url,
       params: params,
       data: data,
@@ -628,7 +628,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .PATCH,
+      .patch,
       url: url,
       params: params,
       data: data,
@@ -665,7 +665,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .POST,
+      .post,
       url: url,
       params: params,
       data: data,
@@ -702,7 +702,7 @@ extension JustOf {
     ) -> HTTPResult {
 
     return adaptor.request(
-      .PUT,
+      .put,
       url: url,
       params: params,
       data: data,
