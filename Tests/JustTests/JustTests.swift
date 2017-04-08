@@ -823,7 +823,7 @@ final class LinkHeader: XCTestCase {
 }
 
 final class Configurations: XCTestCase {
-   static var allTests: [(String, () -> Void)] = [
+   static var allTests: [(String, (XCTestCase) -> () -> Void)] = [
     // ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
    ]
 
