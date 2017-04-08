@@ -823,9 +823,9 @@ final class LinkHeader: XCTestCase {
 }
 
 final class Configurations: XCTestCase {
-  // static var allTests = [
+   static var allTests: [(String, () -> Void)] = [
     // ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
-  // ]
+   ]
 
   func testSendingDefaultHeadersWhenAnyIsSpecified() {
     let sessionDefaults = JustSessionDefaults(headers: ["Authorization": "WUT"])
