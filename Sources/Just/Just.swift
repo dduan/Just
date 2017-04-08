@@ -101,6 +101,22 @@ extension URLResponse {
   }
 }
 
+public protocol URLComponentsConvertible {
+  var urlComponents: URLComponents? { get }
+}
+
+extension String: URLComponentsConvertible {
+  public var urlComponents: URLComponents? {
+    return URLComponents(string: self)
+  }
+}
+
+extension URL: URLComponentsConvertible {
+  public var urlComponents: URLComponents? {
+    return URLComponents(url: self, resolvingAgainstBaseURL: true)
+  }
+}
+
 /// The only reason this is not a struct is the requirements for
 /// lazy evaluation of `headers` and `cookies`, which is mutating the
 /// struct. This would make those properties unusable with `HTTPResult`s
@@ -379,7 +395,7 @@ let errorDomain = "net.justhttp.Just"
 public protocol JustAdaptor {
   func request(
     _ method: HTTPMethod,
-    urlString: String,
+    url: URLComponentsConvertible,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -412,7 +428,7 @@ extension JustOf {
   @discardableResult
   public func request(
     _ method: HTTPMethod,
-    urlString: String,
+    url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -429,7 +445,7 @@ extension JustOf {
     ) -> HTTPResult {
     return adaptor.request(
       method,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -448,7 +464,7 @@ extension JustOf {
 
   @discardableResult
   public func delete(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -466,7 +482,7 @@ extension JustOf {
 
     return adaptor.request(
       .DELETE,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -485,7 +501,7 @@ extension JustOf {
 
   @discardableResult
   public func get(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -503,7 +519,7 @@ extension JustOf {
 
     return adaptor.request(
       .GET,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -522,7 +538,7 @@ extension JustOf {
 
   @discardableResult
   public func head(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -540,7 +556,7 @@ extension JustOf {
 
     return adaptor.request(
       .HEAD,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -559,7 +575,7 @@ extension JustOf {
 
   @discardableResult
   public func options(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -576,7 +592,7 @@ extension JustOf {
     ) -> HTTPResult {
     return adaptor.request(
       .OPTIONS,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -595,7 +611,7 @@ extension JustOf {
 
   @discardableResult
   public func patch(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -613,7 +629,7 @@ extension JustOf {
 
     return adaptor.request(
       .PATCH,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -632,7 +648,7 @@ extension JustOf {
 
   @discardableResult
   public func post(
-    _ urlString: String,
+    _ url: String,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -650,7 +666,7 @@ extension JustOf {
 
     return adaptor.request(
       .POST,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -669,7 +685,7 @@ extension JustOf {
 
   @discardableResult
   public func put(
-    _ urlString: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
@@ -687,7 +703,7 @@ extension JustOf {
 
     return adaptor.request(
       .PUT,
-      urlString: urlString,
+      url: url,
       params: params,
       data: data,
       json: json,
@@ -854,7 +870,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   public func synthesizeRequest(
     _ method: HTTPMethod,
-    urlString: String,
+    url: URLComponentsConvertible,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -865,11 +881,11 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     urlQuery: String?,
     requestBody: Data?
     ) -> URLRequest? {
-    if let urlComponent = NSURLComponents(string: urlString) {
+    if var urlComponents = url.urlComponents {
       let queryString = query(params)
 
       if queryString.characters.count > 0 {
-        urlComponent.percentEncodedQuery = queryString
+        urlComponents.percentEncodedQuery = queryString
       }
 
       var finalHeaders = headers
@@ -911,7 +927,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
       {
         finalHeaders["Authorization"] = "Basic \(utf8.base64EncodedString())"
       }
-      if let URL = urlComponent.url {
+      if let URL = urlComponents.url {
         var request = URLRequest(url: URL)
         request.cachePolicy = defaults.cachePolicy
         request.httpBody = body
@@ -936,7 +952,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   public func request(
     _ method: HTTPMethod,
-    urlString: String,
+    url: URLComponentsConvertible,
     params: [String: Any],
     data: [String: Any],
     json: Any?,
@@ -958,7 +974,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
     let caseInsensitiveHeaders = CaseInsensitiveDictionary<String, String>(
       dictionary: headers)
-    guard let request = synthesizeRequest(method, urlString: urlString,
+    guard let request = synthesizeRequest(method, url: url,
       params: params, data: data, json: json, headers: caseInsensitiveHeaders,
       files: files, auth: auth, timeout: timeout, urlQuery: urlQuery,
       requestBody: requestBody) else
