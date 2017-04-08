@@ -314,7 +314,7 @@ final class JustSendingFiles: XCTestCase {
   static var allTests = [
     ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
     // ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
-    ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
+    // ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
     ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
     ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
     ("testSendAFileSpecifiedByTextWithoutMimetype", testSendAFileSpecifiedByTextWithoutMimetype),
