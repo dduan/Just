@@ -4,7 +4,7 @@ import Just
 final class JustQueryStringTests: XCTestCase {
   static var allTests = [
     ("testDownloadingFileWithProgress", testDownloadingFileWithProgress),
-    ("testSendSimpleQueryStringWithGet", testSendSimpleQueryStringWithGet),
+    // ("testSendSimpleQueryStringWithGet", testSendSimpleQueryStringWithGet),
     ("testSendCompoundQueryStringWithGet", testSendCompoundQueryStringWithGet),
     // ("testSendSimpleQueryStringWithPost", testSendSimpleQueryStringWithPost),
     ("testSendCompoundQueryStringWithPost", testSendCompoundQueryStringWithPost),
