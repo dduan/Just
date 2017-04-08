@@ -657,7 +657,7 @@ final class SendingHeader: XCTestCase {
 final class BasicAuthentication: XCTestCase {
   static var allTests = [
     ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
-    // ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+    ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
     ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
   ]
 
@@ -687,7 +687,7 @@ final class BasicAuthentication: XCTestCase {
 class DigestAuthentication: XCTestCase {
   static var allTests = [
     ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
-    ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+    // ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
     ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
   ]
 
