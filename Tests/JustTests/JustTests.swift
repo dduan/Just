@@ -6,7 +6,7 @@ final class JustQueryStringTests: XCTestCase {
     ("testDownloadingFileWithProgress", testDownloadingFileWithProgress),
     ("testSendSimpleQueryStringWithGet", testSendSimpleQueryStringWithGet),
     ("testSendCompoundQueryStringWithGet", testSendCompoundQueryStringWithGet),
-    ("testSendSimpleQueryStringWithPost", testSendSimpleQueryStringWithPost),
+    // ("testSendSimpleQueryStringWithPost", testSendSimpleQueryStringWithPost),
     ("testSendCompoundQueryStringWithPost", testSendCompoundQueryStringWithPost),
   ]
 
@@ -322,7 +322,7 @@ final class JustSendingFiles: XCTestCase {
     ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
     ("testSendingMultipleFilesSpecifiedInDifferentWays", testSendingMultipleFilesSpecifiedInDifferentWays),
     ("testSendingAFileAlongWithSomeData", testSendingAFileAlongWithSomeData),
-    ("testSendingMultipleFilesWithSomeData", testSendingMultipleFilesWithSomeData),
+    // ("testSendingMultipleFilesWithSomeData", testSendingMultipleFilesWithSomeData),
     ("testSendingFilesOveridesJSON", testSendingFilesOveridesJSON),
   ]
 
