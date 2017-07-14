@@ -1,4 +1,4 @@
-all : clean test-OSX
+all : clean test-macOS
 
 docs : playground html
 
@@ -31,104 +31,16 @@ test-tvOS:
 		| xcpretty -ct
 
 test-integration:
-	cd Example && make -f Makefile
-
-test-integration-cocoapods: \
-	test-integration-cocoapods-iOS \
-	test-integration-cocoapods-macOS \
-	test-integration-cocoapods-watchOS \
-	test-integration-cocoapods-tvOS
-
-test-integration-cocoapods-iOS:
-	cd Example/Cocoapods && \
-	pod install && \
-	set -o pipefail && \
-		xcodebuild \
-		-workspace Example.xcworkspace \
-		-scheme Example-iOS \
-		-destination "name=iPhone 6s" \
-		| xcpretty -ct
-
-test-integration-cocoapods-macOS:
-	cd Example/Cocoapods && \
-	pod install && \
-	set -o pipefail && \
-		xcodebuild \
-		-workspace Example.xcworkspace \
-		-scheme Example-macOS \
-		| xcpretty -ct
-
-test-integration-cocoapods-watchOS:
-	cd Example/Cocoapods && \
-	pod install && \
-	set -o pipefail && \
-		xcodebuild \
-		-workspace Example.xcworkspace \
-		-scheme Example-watchOS \
-		-destination "name=iPhone 6s" \
-		| xcpretty -ct
-
-test-integration-cocoapods-tvOS:
-	cd Example/Cocoapods && \
-	pod install && \
-	set -o pipefail && \
-		xcodebuild \
-		-workspace Example.xcworkspace \
-		-scheme Example-tvOS \
-		-destination "name=Apple TV 1080p" \
-		| xcpretty -ct
-
-test-integration-carthage: \
-	test-integration-carthage-iOS \
-	test-integration-carthage-macOS \
-	test-integration-carthage-watchOS \
-	test-integration-carthage-tvOS
-
-test-integration-carthage-iOS:
-	cd Example/Carthage && \
-	carthage update --platform iOS && \
-	set -o pipefail && \
-		xcodebuild \
-		-project Example.xcodeproj \
-		-scheme Example-iOS \
-		-destination "name=iPhone 6s" \
-		| xcpretty -ct
-
-test-integration-carthage-macOS:
-	cd Example/carthage && \
-	carthage update --platform macOS && \
-	set -o pipefail && \
-		xcodebuild \
-		-project Example.xcodeproj \
-		-scheme Example-macOS \
-		| xcpretty -ct
-
-test-integration-carthage-watchOS:
-	cd Example/carthage && \
-	carthage update --platform watchOS && \
-	set -o pipefail && \
-		xcodebuild \
-		-project Example.xcodeproj \
-		-scheme Example-watchOS \
-		-destination "name=iPhone 6s" \
-		| xcpretty -ct
-
-test-integration-carthage-tvOS:
-	cd Example/carthage && \
-	carthage update --platform tvOS && \
-	set -o pipefail && \
-		xcodebuild \
-		-project Example.xcodeproj \
-		-scheme Example-tvOS \
-		-destination "name=Apple TV 1080p" \
-		| xcpretty -ct
-
-test-integration-spm:
-	cd Example/SPM && swift build
+	rm -rf DistributionTests
+	git clone https://github.com/dduan/DistributionTests.git
+	cd DistributionTests && \
+		git checkout f161a0df63a2da168e190b2f6127f781d924304c && \
+		./customize --name Just --git "https://github.com/JustHTTP/Just.git" --major 0 && \
+		make -f Makefile
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
-	@cp Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
+	@cp Sources/Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
 	cd ./Docs && zip -r -X QuickStart.zip QuickStart.playground/*
 
 html :

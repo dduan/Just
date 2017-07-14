@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 #if os(Linux)
 import Dispatch
@@ -101,7 +102,6 @@ public enum HTTPMethod: String {
 extension URLResponse {
   var HTTPHeaders: [String: String] {
     return (self as? HTTPURLResponse)?.allHeaderFields as? [String : String] ?? [:]
-      ?? [:]
   }
 }
 
@@ -226,7 +226,11 @@ public final class HTTPResult : NSObject {
     content.components(separatedBy: ", ").forEach { s in
       let linkComponents = s.components(separatedBy: ";")
         .map {
+<<<<<<< HEAD
+          NSString(string: $0).trimmingCharacters(in: CharacterSet.whitespaces)
+=======
           ($0 as String).trimmingCharacters(in: CharacterSet.whitespaces)
+>>>>>>> JustHTTP/master
       }
       // although a link without a rel is valid, there's no way to reference it.
       if linkComponents.count > 1 {
