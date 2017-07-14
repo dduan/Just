@@ -100,7 +100,7 @@ public enum HTTPMethod: String {
 
 extension URLResponse {
   var HTTPHeaders: [String: String] {
-    return (self as? HTTPURLResponse)?.allHeaderFields as? [String : String] ?? [:]
+    return (self as? HTTPURLResponse)?.allHeaderFields as? [String: String]
       ?? [:]
   }
 }
@@ -1115,7 +1115,7 @@ extension HTTP: URLSessionTaskDelegate, URLSessionDataDelegate {
       let handler = config.completionHandler
     {
       let result = HTTPResult(
-        data: Data(referencing: config.data),
+        data: config.data as Data,
         response: task.response,
         error: error,
         task: task
