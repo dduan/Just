@@ -652,7 +652,7 @@ extension JustOf {
 
   @discardableResult
   public func post(
-    _ url: String,
+    _ url: URLComponentsConvertible,
     params: [String: Any] = [:],
     data: [String: Any] = [:],
     json: Any? = nil,
