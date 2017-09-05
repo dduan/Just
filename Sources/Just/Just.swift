@@ -327,10 +327,10 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection,
     return _data.makeIterator()
   }
 
-  public var keys: LazyMapCollection<[Key : Value], Key> {
+  public var keys: Dictionary<Key, Value>.Keys {
     return _data.keys
   }
-  public var values: LazyMapCollection<[Key : Value], Value> {
+  public var values: Dictionary<Key, Value>.Values {
     return _data.values
   }
 }
