@@ -37,7 +37,7 @@ playground :
 
 html :
 	@docco -L Docs/docco.json -l linear -o Docs/html Docs/QuickStart.playground/Contents.swift
-	mv Docs/html/Contents.html Docs/html/QuickStart.html
+	mv Docs/html/Docs/QuickStart.playground/Contents.html Docs/html/QuickStart.html
 
 clean :
 	@xcodebuild clean
