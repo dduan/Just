@@ -231,15 +231,15 @@ public final class HTTPResult : NSObject {
       // although a link without a rel is valid, there's no way to reference it.
       if linkComponents.count > 1 {
         let url = linkComponents.first!
-        let start = url.characters.index(url.startIndex, offsetBy: 1)
-        let end = url.characters.index(url.endIndex, offsetBy: -1)
+        let start = url.index(url.startIndex, offsetBy: 1)
+        let end = url.index(url.endIndex, offsetBy: -1)
         let urlRange = start..<end
-        var link: [String: String] = ["url": String(url.characters[urlRange])]
+        var link: [String: String] = ["url": String(url[urlRange])]
         linkComponents.dropFirst().forEach { s in
-          if let equalIndex = s.characters.index(of: "=") {
-            let componentKey = String(s.characters[s.startIndex..<equalIndex])
+          if let equalIndex = s.index(of: "=") {
+            let componentKey = String(s[s.startIndex..<equalIndex])
             let range = s.index(equalIndex, offsetBy: 1)..<s.endIndex
-            let value = s.characters[range]
+            let value = s[range]
             if value.first == "\"" && value.last == "\"" {
               let start = value.index(value.startIndex, offsetBy: 1)
               let end = value.index(value.endIndex, offsetBy: -1)
@@ -327,10 +327,10 @@ public struct CaseInsensitiveDictionary<Key: Hashable, Value>: Collection,
     return _data.makeIterator()
   }
 
-  public var keys: LazyMapCollection<[Key : Value], Key> {
+  public var keys: Dictionary<Key, Value>.Keys {
     return _data.keys
   }
-  public var values: LazyMapCollection<[Key : Value], Value> {
+  public var values: Dictionary<Key, Value>.Values {
     return _data.values
   }
 }
@@ -785,9 +785,8 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   func query(_ parameters: [String: Any]) -> String {
     var components: [(String, String)] = []
-    for key in Array(parameters.keys).sorted(by: <) {
-      let value: Any! = parameters[key]
-      components += self.queryComponents(key, value)
+    for (key, value) in parameters.sorted(by: { $0.key < $1.key }) {
+        components += self.queryComponents(key, value)
     }
 
     return (components.map{"\($0)=\($1)"} as [String]).joined(separator: "&")
@@ -888,7 +887,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     if var urlComponents = url.urlComponents {
       let queryString = query(params)
 
-      if queryString.characters.count > 0 {
+      if queryString.count > 0 {
         urlComponents.percentEncodedQuery = queryString
       }
 
@@ -907,7 +906,6 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
           contentType = "application/json"
           body = try? JSONSerialization.data(withJSONObject: requestJSON,
             options: defaults.JSONWritingOptions)
-
         } else {
           if data.count > 0 {
             // assume user wants JSON if she is using this header
