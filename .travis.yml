@@ -3,3 +3,4 @@ osx_image: xcode10
 
 script:
   - make test
+  - pod lib lint --verbose
