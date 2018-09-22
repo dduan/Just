@@ -9,17 +9,15 @@ test-iOS:
 		xcodebuild \
 		-project Just.xcodeproj \
 		-scheme Just \
-		-destination "name=iPhone 6s" \
-		test \
-		| xcpretty -ct
+		-destination "name=iPhone X" \
+		test
 
 test-macOS:
 	set -o pipefail && \
 		xcodebuild \
 		-project Just.xcodeproj \
 		-scheme Just \
-		test \
-		| xcpretty -ct
+		test
 
 test-tvOS:
 	set -o pipefail && \
@@ -27,8 +25,7 @@ test-tvOS:
 		-project Just.xcodeproj \
 		-scheme Just \
 		-destination "name=Apple TV 1080p" \
-		test \
-		| xcpretty -ct
+		test
 
 test-integration:
 	rm -rf DistributionTests
