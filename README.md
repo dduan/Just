@@ -86,6 +86,8 @@ Add the following to your `dependencies`:
 .package(url: "https://github.com/JustHTTP/Just.git",  from: "0.7.0")
 ```
 
+… and `"Just"` to your target dependencies.
+
 ## Carthage (Swift 3 only)
 
 Include the following in your Cartfile:
