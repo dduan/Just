@@ -1,8 +1,8 @@
 //: # Just: A Quick Start
 //: This is an introduction to the basics of doning HTTP via
-//: [Just](http://JustHTTP.net).
+//: [Just](https://github.com/JustHTTP/Just).
 //: It's available both on the
-//: [web](http://docs.justhttp.net/QuickStart.html)
+//: [web](https://JustHTTP.github.io)
 //: and as a
 //: [playground](https://raw.githubusercontent.com/JustHTTP/Just/master/Docs/QuickStart.zip).
 //: Readers are assumed to be familiar with the basics of HTTP.
