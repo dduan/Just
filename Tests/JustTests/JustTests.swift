@@ -278,6 +278,13 @@ final class JustSendingJSON: XCTestCase {
 }
 
 final class JustSendingFiles: XCTestCase {
+  private var elonPhotoURL: URL {
+    let lastPathSegmentLength = #file.split(separator: "/").last!.count
+    let parentLength = #file.count - lastPathSegmentLength
+    let elonPhotoPath = String(#file.prefix(parentLength)) + "elon.jpg"
+    return URL(fileURLWithPath: elonPhotoPath)
+  }
+
   func testNotIncludeMultipartHeaderForEmptyFiles() {
     let r = Just.post("http://httpbin.org/post", files: [: ])
     XCTAssertNotNil(r.json)
@@ -293,27 +300,18 @@ final class JustSendingFiles: XCTestCase {
   }
 
   func testSendingAFileSpecifiedByURLWithoutMimetype() {
-    if let elonPhotoURL = Bundle(for: JustSendingFiles.self)
-      .url(forResource: "elon", withExtension: "jpg")
-    {
-      let r = Just.post("http://httpbin.org/post",
-                        files: ["elon": .url(elonPhotoURL, nil)])
-      XCTAssertNotNil(r.json)
-      if let data = r.json as? [String: Any] {
-        XCTAssertNotNil(data["files"])
-        if let files = data["files"] as? [String: String] {
-          XCTAssertNotNil(files["elon"])
-        }
+    let r = Just.post("http://httpbin.org/post",
+                      files: ["elon": .url(elonPhotoURL, nil)])
+    XCTAssertNotNil(r.json)
+    if let data = r.json as? [String: Any] {
+      XCTAssertNotNil(data["files"])
+      if let files = data["files"] as? [String: String] {
+        XCTAssertNotNil(files["elon"])
       }
-    } else {
-      XCTFail("resource needed for this test can't be found")
     }
   }
 
   func testSendingAFileSpecifiedByURLWithMimetype() {
-    if let elonPhotoURL = Bundle(for: JustSendingFiles.self)
-      .url(forResource: "elon", withExtension: "jpg")
-    {
       let r = Just.post("http://httpbin.org/post",
                         files: ["elon": .url(elonPhotoURL, "image/jpeg")])
       XCTAssertNotNil(r.json)
@@ -323,9 +321,6 @@ final class JustSendingFiles: XCTestCase {
           XCTAssertNotNil(files["elon"])
         }
       }
-    } else {
-      XCTFail("resource needed for this test can't be found")
-    }
   }
 
   func testSendingAFileSpecifiedByDataWithoutMimetype() {
