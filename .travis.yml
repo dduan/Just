@@ -1,10 +1,5 @@
 language: objective-c
-osx_image: xcode9
-
-before_install:
-  - brew update
-  - brew outdated carthage || brew upgrade carthage
+osx_image: xcode10
 
 script:
   - make test
-  - make test-integration

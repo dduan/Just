@@ -2,7 +2,7 @@ all : clean test-macOS
 
 docs : playground html
 
-test: test-iOS test-macOS test-tvOS
+test: test-iOS test-macOS test-tvOS test-swiftpm
 
 test-iOS:
 	set -o pipefail && \
@@ -24,16 +24,11 @@ test-tvOS:
 		xcodebuild \
 		-project Just.xcodeproj \
 		-scheme Just \
-		-destination "name=Apple TV 1080p" \
+		-destination "name=Apple TV" \
 		test
 
-test-integration:
-	rm -rf DistributionTests
-	git clone https://github.com/dduan/DistributionTests.git
-	cd DistributionTests && \
-		git checkout f161a0df63a2da168e190b2f6127f781d924304c && \
-		./customize --name Just --git "https://github.com/JustHTTP/Just.git" --major 0 && \
-		make -f Makefile
+test-swiftpm:
+	swift test
 
 playground :
 	@mkdir -p Docs/QuickStart.playground/Sources
