@@ -72,7 +72,7 @@ Read *Getting Started* [on the web][starting link] or
 [in this playground][starting playground] to learn more!
 
 [starting playground]: https://github.com/JustHTTP/Just/blob/master/Docs/QuickStart.zip?raw=true
-[starting link]: http://docs.justhttp.net/QuickStart.html
+[starting link]: https://JustHTTP.github.io
 
 #  Install
 
