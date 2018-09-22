@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
                    -    friendly accessible results
                    DESC
 
-  s.homepage     = "https://github.com/JustHTTP/Just"
+  s.homepage     = "https://JustHTTP.github.io"
 
   s.license      = { :type => "MIT", :file => "LICENSE.md" }
   s.author             = { "Daniel Duan" => "daniel@duan.ca" }
