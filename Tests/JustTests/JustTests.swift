@@ -74,8 +74,17 @@ final class JustQueryStringTests: XCTestCase {
     }
     XCTAssertEqual(array, ["1", "2"])
   }
-}
 
+  static var allTests = {
+    return [
+      ("testDownloadingFileWithProgress", testDownloadingFileWithProgress),
+      ("testSendSimpleQueryStringWithGet", testSendSimpleQueryStringWithGet),
+      ("testSendCompoundQueryStringWithGet", testSendCompoundQueryStringWithGet),
+      ("testSendSimpleQueryStringWithPost", testSendSimpleQueryStringWithPost),
+      ("testSendCompoundQueryStringWithPost", testSendCompoundQueryStringWithPost),
+    ]
+  }
+}
 
 final class JustSimpleRequestTests: XCTestCase {
   func testSimpleRequestWithDifferentMethods() {
@@ -106,6 +115,12 @@ final class JustSimpleRequestTests: XCTestCase {
     r = Just.put("http://httpbin.org/put")
     XCTAssertTrue(r.ok)
     XCTAssertEqual(r.request?.httpMethod, "PUT")
+  }
+
+  static var allTests = {
+    return [
+      ("testSimpleRequestWithDifferentMethods", testSimpleRequestWithDifferentMethods),
+    ]
   }
 }
 
@@ -152,6 +167,14 @@ final class JustSendURLQueryAsHTTPBody: XCTestCase {
     XCTAssertEqual(array, ["1", "2"])
 
   }
+
+  static var allTests = {
+    return [
+      ("testAddFormHeaderWhenBodyIsInURLFormat", testAddFormHeaderWhenBodyIsInURLFormat),
+      ("testSendSimpleFormURLQueryByDemand", testSendSimpleFormURLQueryByDemand),
+      ("testSendCompoundFormURLQueryByDemand", testSendCompoundFormURLQueryByDemand),
+    ]
+  }
 }
 
 final class JustRedirections: XCTestCase {
@@ -185,6 +208,15 @@ final class JustRedirections: XCTestCase {
     r = Just.get("http://httpbin.org/status/301", allowRedirects: false)
     XCTAssertTrue(r.isRedirect)
     XCTAssertTrue(r.isPermanentRedirect)
+  }
+
+  static var allTests = {
+    return [
+      ("testRedirectByDefault", testRedirectByDefault),
+      ("testRedirectByDemand", testRedirectByDemand),
+      ("testNoRedirectByDemand", testNoRedirectByDemand),
+      ("testPermanantRedirect", testPermanantRedirect),
+    ]
   }
 }
 
@@ -274,6 +306,16 @@ final class JustSendingJSON: XCTestCase {
         }
       }
     }
+  }
+
+  static var allTests = {
+    return [
+      ("testNoJSONHeaderIfNoJSONIsSupplied", testNoJSONHeaderIfNoJSONIsSupplied),
+      ("testShouldAddJSONHeaderForEvenEmptyJSONArgument", testShouldAddJSONHeaderForEvenEmptyJSONArgument),
+      ("testSendingFlatJSONData", testSendingFlatJSONData),
+      ("testSendingNestedJSONData", testSendingNestedJSONData),
+      ("testJSONArgumentShouldOverrideDataArgument", testJSONArgumentShouldOverrideDataArgument),
+    ]
   }
 }
 
@@ -501,6 +543,28 @@ final class JustSendingFiles: XCTestCase {
       XCTFail("can't encode text as data")
     }
   }
+
+  static var allTests: () -> [(String, (JustSendingFiles) -> () -> Void)] = {
+    var tests = [
+      ("testNotIncludeMultipartHeaderForEmptyFiles", testNotIncludeMultipartHeaderForEmptyFiles),
+      ("testSendingMultipleFilesSpecifiedTheSameWay", testSendingMultipleFilesSpecifiedTheSameWay),
+      ("testSendingMultipleFilesSpecifiedInDifferentWays", testSendingMultipleFilesSpecifiedInDifferentWays),
+      ("testSendingAFileAlongWithSomeData", testSendingAFileAlongWithSomeData),
+      ("testSendingMultipleFilesWithSomeData", testSendingMultipleFilesWithSomeData),
+      ("testSendingFilesOveridesJSON", testSendingFilesOveridesJSON),
+    ]
+#if !os(Linux)
+    tests += [
+      ("testSendingAFileSpecifiedByURLWithoutMimetype", testSendingAFileSpecifiedByURLWithoutMimetype),
+      ("testSendingAFileSpecifiedByURLWithMimetype", testSendingAFileSpecifiedByURLWithMimetype),
+      ("testSendingAFileSpecifiedByDataWithoutMimetype", testSendingAFileSpecifiedByDataWithoutMimetype),
+      ("testSendingAFileSpecifiedByDataWithMimetype", testSendingAFileSpecifiedByDataWithMimetype),
+      ("testSendAFileSpecifiedByTextWithoutMimetype", testSendAFileSpecifiedByTextWithoutMimetype),
+      ("testSendAFileSpecifiedByTextWithMimetype", testSendAFileSpecifiedByTextWithMimetype),
+    ]
+#endif
+    return tests
+  }
 }
 
 final class Result: XCTestCase {
@@ -541,6 +605,16 @@ final class Result: XCTestCase {
       302)
     XCTAssertEqual(Just.get("http://httpbin.org/status/404").statusCode, 404)
     XCTAssertEqual(Just.get("http://httpbin.org/status/501").statusCode, 501)
+  }
+
+  static var allTests = {
+    return [
+      ("testResultShouldContainURLFromResponse", testResultShouldContainURLFromResponse),
+      ("testOkayWithNonErrorStatusCode", testOkayWithNonErrorStatusCode),
+      ("testNotOkayWith4xxCodes", testNotOkayWith4xxCodes),
+      ("testNotOkayWith5xxCodes", testNotOkayWith5xxCodes),
+      ("testStatusCodeMatching", testStatusCodeMatching),
+    ]
   }
 }
 
@@ -589,6 +663,15 @@ final class SendingHeader: XCTestCase {
       }
     }
   }
+
+  static var allTests = {
+    return [
+      ("testAcceptingEmptyHeaders", testAcceptingEmptyHeaders),
+      ("testSendingSingleConventionalHeaderAsProvided", testSendingSingleConventionalHeaderAsProvided),
+      ("testSendingMultipleConventionalHeaderAsProvided", testSendingMultipleConventionalHeaderAsProvided),
+      ("testSendingMultipleUnconventionalHeaderAsProvided", testSendingMultipleUnconventionalHeaderAsProvided),
+    ]
+  }
 }
 
 final class BasicAuthentication: XCTestCase {
@@ -612,6 +695,14 @@ final class BasicAuthentication: XCTestCase {
       auth: (username, password))
     XCTAssertFalse(r.ok)
     XCTAssertEqual(r.statusCode, 401)
+  }
+
+  static var allTests = {
+    return [
+      ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
+      ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+      ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
+    ]
   }
 }
 
@@ -637,6 +728,14 @@ class DigestAuthentication: XCTestCase {
     XCTAssertFalse(r.ok)
     XCTAssertEqual(r.statusCode, 401)
   }
+
+  static var allTests = {
+    return [
+      ("testFailingAtAChallengeWhenAuthIsMissing", testFailingAtAChallengeWhenAuthIsMissing),
+      ("testSucceedingWithCorrectAuthInfo", testSucceedingWithCorrectAuthInfo),
+      ("testFailingWithWrongAuthInfo", testFailingWithWrongAuthInfo),
+    ]
+  }
 }
 
 final class Cookies: XCTestCase {
@@ -661,6 +760,13 @@ final class Cookies: XCTestCase {
         XCTAssertEqual(cookieValue, "just")
       }
     }
+  }
+
+  static var allTests = {
+    return [
+      ("testCookiesFromResponse", testCookiesFromResponse),
+      ("testCookiesSpecifiedInRequest", testCookiesSpecifiedInRequest),
+    ]
   }
 }
 
@@ -692,6 +798,18 @@ final class RequestMethods: XCTestCase {
   func testDELETE() {
     XCTAssertTrue(Just.delete("http://httpbin.org/delete").ok)
   }
+
+  static var allTests = {
+    return [
+      ("testOPTIONS", testOPTIONS),
+      ("testHEAD", testHEAD),
+      ("testGET", testGET),
+      ("testPOST", testPOST),
+      ("testPUT", testPUT),
+      ("testPATCH", testPATCH),
+      ("testDELETE", testDELETE),
+    ]
+  }
 }
 
 final class Timeout: XCTestCase {
@@ -701,6 +819,13 @@ final class Timeout: XCTestCase {
 
   func testShouldNotTimeoutWhenResponseComesInSooner() {
     XCTAssertTrue(Just.get("http://httpbin.org/", timeout: 2).ok)
+  }
+
+  static var allTests = {
+    return [
+      ("testTimeoutWhenRequestTakesLonger", testTimeoutWhenRequestTakesLonger),
+      ("testShouldNotTimeoutWhenResponseComesInSooner", testShouldNotTimeoutWhenResponseComesInSooner),
+    ]
   }
 }
 
@@ -721,6 +846,12 @@ final class LinkHeader: XCTestCase {
       XCTAssertNotNil(r.links["last"]?["url"])
     }
   }
+
+  static var allTests = {
+    return [
+      ("testShouldContainLinkInfoForAppropriateEndPoint", testShouldContainLinkInfoForAppropriateEndPoint),
+    ]
+  }
 }
 
 
@@ -740,5 +871,11 @@ final class Configurations: XCTestCase {
         }
       }
     }
+  }
+
+  static var allTests = {
+    return [
+      ("testSendingDefaultHeadersWhenAnyIsSpecified", testSendingDefaultHeadersWhenAnyIsSpecified),
+    ]
   }
 }

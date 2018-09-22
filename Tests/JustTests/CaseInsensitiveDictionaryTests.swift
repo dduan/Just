@@ -73,4 +73,18 @@ final class CaseInsensitiveDictionaryTests: XCTestCase {
         XCTAssertEqual(d["AAAA"], "a")
         XCTAssertEqual(d["AaAa"], "a")
     }
+
+    static var allTests = {
+      return [
+        ("testInitWithDictionaryLiteral", testInitWithDictionaryLiteral),
+        ("testInitWithDictionary", testInitWithDictionary),
+        ("testInsertingNewValueViaSubscript", testInsertingNewValueViaSubscript),
+        ("testRetainAllValueFromInitAfterMutation", testRetainAllValueFromInitAfterMutation),
+        ("testRetainAllValueFromLiteralAfterMutation", testRetainAllValueFromLiteralAfterMutation),
+        ("testMutatingCopyDoesNotMutateTheOriginal", testMutatingCopyDoesNotMutateTheOriginal),
+        ("testMutatingOriginalDoesNotMutateTheCopy", testMutatingOriginalDoesNotMutateTheCopy),
+        ("testValueCasesAreKept", testValueCasesAreKept),
+        ("testCaseInsensitivityForKeys", testCaseInsensitivityForKeys),
+      ]
+    }
 }
