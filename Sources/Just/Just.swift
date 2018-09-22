@@ -785,9 +785,8 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
   func query(_ parameters: [String: Any]) -> String {
     var components: [(String, String)] = []
-    for key in Array(parameters.keys).sorted(by: <) {
-      let value: Any! = parameters[key]
-      components += self.queryComponents(key, value)
+    for (key, value) in parameters.sorted(by: { $0.key < $1.key }) {
+        components += self.queryComponents(key, value)
     }
 
     return (components.map{"\($0)=\($1)"} as [String]).joined(separator: "&")
@@ -907,7 +906,6 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
           contentType = "application/json"
           body = try? JSONSerialization.data(withJSONObject: requestJSON,
             options: defaults.JSONWritingOptions)
-
         } else {
           if data.count > 0 {
             // assume user wants JSON if she is using this header
