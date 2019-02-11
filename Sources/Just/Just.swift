@@ -1004,6 +1004,7 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
     }
 
     let task = makeTask(request, configuration: config)
+    requestResult.task = task
     if task != nil {
       task?.resume()
     }
