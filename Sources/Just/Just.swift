@@ -234,7 +234,7 @@ public final class HTTPResult : NSObject {
         let urlRange = start..<end
         var link: [String: String] = ["url": String(url[urlRange])]
         linkComponents.dropFirst().forEach { s in
-          if let equalIndex = s.index(of: "=") {
+          if let equalIndex = s.firstIndex(of: "=") {
             let componentKey = String(s[s.startIndex..<equalIndex])
             let range = s.index(equalIndex, offsetBy: 1)..<s.endIndex
             let value = s[range]
