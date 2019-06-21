@@ -1,4 +1,5 @@
 import Foundation
+import FoundationNetworking
 
 #if os(Linux)
 import Dispatch
@@ -725,7 +726,7 @@ extension JustOf {
 
 public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
 
-  public init(session: Foundation.URLSession? = nil,
+  public init(session: FoundationNetworking.URLSession? = nil,
     defaults: JustSessionDefaults? = nil)
   {
     super.init()
