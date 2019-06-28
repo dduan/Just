@@ -1,8 +1,7 @@
-
 Pod::Spec.new do |s|
 
   s.name         = "Just"
-  s.version      = "0.7.2"
+  s.version      = "0.8.0"
   s.summary      = "Swift HTTP for Humans"
 
   s.description  = <<-DESC
@@ -28,7 +27,7 @@ Pod::Spec.new do |s|
 
   s.license      = { :type => "MIT", :file => "LICENSE.md" }
   s.author             = { "Daniel Duan" => "daniel@duan.ca" }
-  s.social_media_url   = "https://twitter.com/JustHTTP"
+  s.social_media_url   = "https://twitter.com/daniel_duan"
 
   s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.10"
@@ -41,6 +40,5 @@ Pod::Spec.new do |s|
   }
 
   s.source_files  = "Just", "Sources/**/*.{swift}"
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
-  s.swift_version = '4.2'
+  s.swift_versions = ['4.2', '5.0']
 end
