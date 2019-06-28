@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = "3.0"
 
   s.source       = {
-    :git => "https://github.com/JustHTTP/Just.git",
+    :git => "https://github.com/dduan/Just.git",
     :tag => "#{s.version}"
   }
 
