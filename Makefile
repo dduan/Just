@@ -30,7 +30,7 @@ test-tvOS:
 test-swiftpm:
 	swift test
 
-playground :
+playground:
 	@mkdir -p Docs/QuickStart.playground/Sources
 	@cp Sources/Just/Just.swift Docs/QuickStart.playground/Sources/Just.swift
 	cd ./Docs && zip -r -X QuickStart.zip QuickStart.playground/*
