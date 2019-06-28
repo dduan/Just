@@ -1,7 +1,7 @@
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
-[![Build Status](https://travis-ci.org/JustHTTP/Just.svg?branch=master)](https://travis-ci.org/JustHTTP/Just)
 ![Supported Flatform](https://img.shields.io/cocoapods/p/Just.svg)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Just.svg)](https://cocoapods.org/pods/Just)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Build Status](https://travis-ci.org/dduan/Just.svg?branch=master)](https://travis-ci.org/JustHTTP/Just)
 
 <img src="https://raw.githubusercontent.com/dduan/Just/master/Docs/IconMasked.png" width="280" height="280">
 
