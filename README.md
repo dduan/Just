@@ -7,11 +7,12 @@
 
 Just is a client-side HTTP library inspired by [python-requests][] - HTTP for Humans.
 
-Just requires Swift 4.2. For Swift 3.1 support, use version
-[0.6.0](https://github.com/JustHTTP/Just/releases/tag/0.6.0).
+Just requires Swift 4.2. For Swift 3.1 support, use version [0.6.0][].
+
 
 *Follow [@JustHTTP][twitter] for updates, if you are into that kind of things* 😉
 
+[0.6.0]: https://github.com/JustHTTP/Just/releases/tag/0.6.0
 [python-requests]: http://python-requests.org "python-requests"
 [twitter]: https://twitter.com/JustHTTP
 
@@ -83,7 +84,7 @@ Here are some ways to leverage Just.
 Add the following to your `dependencies`:
 
 ```swift
-.package(url: "https://github.com/JustHTTP/Just.git",  from: "0.7.0")
+.package(url: "https://github.com/JustHTTP/Just.git",  from: "0.7.2")
 ```
 
 … and `"Just"` to your target dependencies.
