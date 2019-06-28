@@ -84,7 +84,7 @@ Here are some ways to leverage Just.
 Add the following to your `dependencies`:
 
 ```swift
-.package(url: "https://github.com/JustHTTP/Just.git",  from: "0.7.2")
+.package(url: "https://github.com/JustHTTP/Just.git",  from: "0.8.0")
 ```
 
 … and `"Just"` to your target dependencies.
