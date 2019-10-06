@@ -115,7 +115,7 @@ for your target's platform.
 It's also common to add Just as a git submodule to your projects repository:
 
     cd path/to/your/project
-    git submodule add https://github.org/dduan/Just.git
+    git submodule add https://github.com/dduan/Just.git
 
 
 ## Source File
