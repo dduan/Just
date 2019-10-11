@@ -1006,14 +1006,18 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
       }
     }
 
-    if let task = makeTask(request, configuration: config) {
-      task.resume()
+    let task = makeTask(request, configuration: config)
+    requestResult.task = task
+    if task != nil {
+      task?.resume()
     }
 
     if isSynchronous {
       let timeout = timeout.flatMap { DispatchTime.now() + $0 }
         ?? DispatchTime.distantFuture
-      _ = semaphore.wait(timeout: timeout)
+      if semaphore.wait(timeout: timeout) == .timedOut {
+          task?.cancel()
+      }
       return requestResult
     }
     return requestResult
