@@ -87,7 +87,7 @@ let statusCodeDescriptions = [
 public enum HTTPFile {
   case url(URL, String?) // URL to a file, mimetype
   case data(String, Foundation.Data, String?) // filename, data, mimetype
-  case text(String, String, String?) // filename, text, mimetype
+  case text(String?, String, String?) // filename, text, mimetype
 }
 
 // Supported request types
@@ -850,8 +850,13 @@ public final class HTTP: NSObject, URLSessionDelegate, JustAdaptor {
         partContent = data
         partMimetype = mimetype
       }
-      if let content = partContent, let filename = partFilename {
-        let dispose = "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n"
+      if let content = partContent {
+        let dispose: String
+        if let filename = partFilename {
+          dispose = "Content-Disposition: form-data; name=\"\(k)\"; filename=\"\(filename)\"\r\n"
+        } else {
+          dispose = "Content-Disposition: form-data; name=\"\(k)\"\r\n"
+        }
         body.append(dispose.data(using: defaults.encoding)!)
         if let type = partMimetype {
           body.append(
